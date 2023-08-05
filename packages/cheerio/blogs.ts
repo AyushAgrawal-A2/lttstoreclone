@@ -1,7 +1,10 @@
 import cheerio from 'cheerio';
 
-async function scrapeBlogs() {
-  const blogs: Blog[] = [];
+async function scrapeBlogs(): Promise<{
+  blogCards: BlogCard[];
+  blogContents: BlogContent[][];
+}> {
+  const blogCards: BlogCard[] = [];
   try {
     const url = new URL(
       'https://www.lttstore.com/blogs/the-newsletter-archive'
@@ -24,37 +27,41 @@ async function scrapeBlogs() {
         .find('div.card__content div.card__information p.article-card__excerpt')
         .text()
         .trim();
-      const date = $(blogCardEl)
-        .find(
-          'div.card__content div.card__information div.article-card__info time'
-        )
-        .text();
+      const date = new Date(
+        $(blogCardEl)
+          .find(
+            'div.card__content div.card__information div.article-card__info time'
+          )
+          .prop('datetime')
+      );
       const imgSrc = $(blogCardEl)
         .find('div.article-card__image-wrapper img')
         .prop('src');
       const imgURL = imgSrc
         ? 'https:' + imgSrc.slice(0, imgSrc.indexOf('?'))
         : '';
-      blogs.push({
+      blogCards.push({
         path,
         heading,
         cardText,
         date,
         imgURL,
-        contents: [],
       });
     });
-    await Promise.all(blogs.map((blog) => scrapeBlog(blog)));
-    return blogs;
+    const blogContents = await Promise.all(
+      blogCards.map((blogCard) => scrapeBlog(blogCard))
+    );
+    return { blogCards, blogContents };
   } catch (error) {
     console.error(error);
-    return [];
+    return { blogCards: [], blogContents: [] };
   }
 }
 
-async function scrapeBlog(blog: Blog) {
+async function scrapeBlog(blogCard: BlogCard): Promise<BlogContent[]> {
+  const blogContent: BlogContent[] = [];
   try {
-    const url = new URL('https://www.lttstore.com' + blog.path);
+    const url = new URL('https://www.lttstore.com' + blogCard.path);
     const html = await fetch(url).then((res) => res.text());
     const $ = cheerio.load(html);
     $('main#MainContent article.article-template div.article-template__content')
@@ -75,13 +82,13 @@ async function scrapeBlog(blog: Blog) {
           imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
         }
         if (imageSrc) {
-          blog.contents.push({
-            type: 'image',
+          blogContent.push({
+            isImage: true,
             data: imageSrc,
           });
         } else if (text) {
-          blog.contents.push({
-            type: 'text',
+          blogContent.push({
+            isImage: false,
             data: text,
           });
         }
@@ -89,6 +96,7 @@ async function scrapeBlog(blog: Blog) {
   } catch (error) {
     console.error(error);
   }
+  return blogContent;
 }
 
 export default scrapeBlogs;

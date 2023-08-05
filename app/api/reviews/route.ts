@@ -1,4 +1,4 @@
-import getProductReviews from '@/packages/cheerio/getProductReviews';
+import getProductReviews from '@/packages/cheerio/reviews';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

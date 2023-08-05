@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+model Product {
+  id                String        @id @default(uuid())
+  path              String        @unique
+  title             String
+  inStock           Boolean
+  productId         String
+  ranks             Ranks?
+  collections       String[]
+  type              String
+  gender            String
+  images            Image[]
+  rating            Rating?
+  price             Float
+  colorSwatch       ColorSwatch[]
+  sizeOptions       SizeOption[]
+  details           Json
+  featureImages     String[]
+  reviewStats       ReviewStat?
+  relatedProducts   Product[]     @relation("RelatedProducts")
+  relatedToProducts Product[]     @relation("RelatedProducts")
+}
+
+model Ranks {
+  id         String  @id @default(uuid())
+  date       Int
+  bestseller Int
+  featured   Int
+  Product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String  @unique
+}
+
+model Image {
+  id        String  @id @default(uuid())
+  src       String
+  overlay   String
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+model Rating {
+  id        String  @id @default(uuid())
+  stars     Float
+  reviews   Int
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @unique
+}
+
+model Color {
+  id              String        @id @default(uuid())
+  name            String
+  backgroundColor String
+  backgroundImage String
+  ColorSwatch     ColorSwatch[]
+}
+
+model ColorSwatch {
+  id          String  @id @default(uuid())
+  imgPosition Int
+  color       Color   @relation(fields: [colorId], references: [id])
+  colorId     String
+  Product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   String
+}
+
+model SizeOption {
+  id      String    @id @default(uuid())
+  symbol  String
+  name    String
+  Product Product[]
+}
+
+// model Detail {
+//   id        String  @id @default(uuid())
+//   type      String
+//   data      Json
+//   Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+//   productId String
+// }
+
+model ReviewStat {
+  id        String  @id @default(uuid())
+  star_1    Int
+  star_2    Int
+  star_3    Int
+  star_4    Int
+  star_5    Int
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @unique
+}
+
+model BlogCard {
+  id       String        @id @default(uuid())
+  path     String        @unique
+  heading  String
+  cardText String
+  date     DateTime
+  imgURL   String
+  content  BlogContent[]
+
+  @@index([path])
+}
+
+model BlogContent {
+  id         String   @id @default(uuid())
+  isImage    Boolean
+  data       String
+  BlogCard   BlogCard @relation(fields: [blogCardId], references: [id], onDelete: Cascade)
+  blogCardId String
+}

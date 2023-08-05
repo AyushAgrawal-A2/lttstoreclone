@@ -1,24 +1,25 @@
 interface Product {
-  title: string;
   path: string;
+  title: string;
   inStock: boolean;
-  price: string;
+  price: number;
   productId: string;
   images: Image[];
-  details: {
-    [detail: string]: Detail;
-  };
+  details: Detail[];
   sizeOptions: SizeOption[];
   featureImages: string[];
   collections: string[];
   ranks: {
-    [criteria: string]: number;
+    date: number;
+    bestseller: number;
+    featured: number;
   };
   rating: Rating;
   reviewStats: ReviewStats;
-  colorSwatch?: ColorSwatch;
-  type?: string;
-  gender?: string;
+  colorSwatch: ColorSwatch[];
+  relatedProducts: string[];
+  type: string;
+  gender: string;
 }
 
 interface ProductCard {
@@ -27,46 +28,47 @@ interface ProductCard {
   inStock: boolean;
   price: string;
   images: Image[];
-  colorSwatch?: ColorSwatch;
-  
+  colorSwatch: ColorSwatch[];
 }
 
 interface Rating {
-  [rating: string]: string;
+  stars: number;
+  reviews: number;
 }
 
 interface ReviewStats {
-  [rating: string]: number;
+  star_1: number;
+  star_2: number;
+  star_3: number;
+  star_4: number;
+  star_5: number;
 }
 
 interface Image {
   src: string;
-  overlay?: string;
+  overlay: string;
 }
 
 type Detail =
   | {
       type: 'text';
+      title: string;
       data: string;
     }
   | {
-      type: 'links';
-      data: string[];
-    }
-  | {
       type: 'table';
+      title: string;
       data: string[][];
     };
 
 interface SizeOption {
-  name: string;
   symbol: string;
+  name: string;
 }
 
 interface ColorSwatch {
-  [color: string]: {
-    imgPosition: number;
-    backgroundColor?: string;
-    backgroundImage?: string;
-  };
+  color: string;
+  imgPosition: number;
+  backgroundColor: string;
+  backgroundImage: string;
 }

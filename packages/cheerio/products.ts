@@ -20,19 +20,29 @@ async function scrapeProducts() {
           $(el).find('div.card__content div.card__badge.bottom.left span')
             .length === 0;
         products.push({
-          title,
           path,
+          title,
           inStock,
-          price: '',
+          price: 0,
           productId: '',
           images: [],
-          details: {},
+          details: [],
           sizeOptions: [],
           featureImages: [],
           collections: [],
-          ranks: {},
-          rating: {},
-          reviewStats: {},
+          ranks: { date: 0, bestseller: 0, featured: 0 },
+          rating: { stars: 0, reviews: 0 },
+          reviewStats: {
+            star_1: 0,
+            star_2: 0,
+            star_3: 0,
+            star_4: 0,
+            star_5: 0,
+          },
+          colorSwatch: [],
+          relatedProducts: [],
+          type: '',
+          gender: '',
         });
       });
       if (productLiEl.length < 12) break;
@@ -79,10 +89,9 @@ function scrapeProductImages(product: Product, html: any) {
   ).each((i, el) => {
     let src = $(el).find('img').prop('src');
     let overlay = $(el).find('div.product__media--overlay').text();
-    if (product.images && src) {
+    if (src) {
       src = 'https:' + src.slice(0, src.indexOf('?'));
-      if (overlay) product.images.push({ src, overlay });
-      else product.images.push({ src });
+      product.images.push({ src, overlay });
     }
   });
 }
@@ -90,21 +99,24 @@ function scrapeProductImages(product: Product, html: any) {
 function scrapeProductRatings(product: Product, html: any) {
   const $ = cheerio.load(html);
   const rataingEl = $('div.jdgm-widget.jdgm-preview-badge div.jdgm-prev-badge');
-  product.rating.stars = $(rataingEl)
-    .find('span.jdgm-prev-badge__stars')
-    .prop('data-score');
-  product.rating.text = $(rataingEl)
+  const reviewsText = $(rataingEl)
     .find('span.jdgm-prev-badge__text')
     .text()
     .trim();
+  if (reviewsText === 'No reviews') return;
+  product.rating.stars = parseFloat(
+    $(rataingEl).find('span.jdgm-prev-badge__stars').prop('data-score')
+  );
+  product.rating.reviews = parseInt(reviewsText.split(' ')[0]);
 }
 
 function scrapeProductPrice(product: Product, html: any) {
   const $ = cheerio.load(html);
-  product.price =
+  const priceText =
     $('div.product div.product__info-wrapper div.price span.money').prop(
       'textContent'
     ) || '';
+  product.price = parseFloat(priceText.slice(1, priceText.indexOf(' ')));
 }
 
 function scrapeProductColorSwatch(product: Product, html: any) {
@@ -125,31 +137,50 @@ function scrapeProductColorSwatch(product: Product, html: any) {
     title: string;
   }
   const json: ColorJSON[] = Array.from(JSON.parse(script.text()));
-  json.forEach((color: ColorJSON) => {
-    if (!color || !color.title) return;
-    let title = color.title;
-    if (title.indexOf('/') >= 0)
-      title = title.slice(0, title.indexOf('/')).trim();
-    const imgPosition = parseInt(color.featured_image.position) - 1;
-    if (!product.colorSwatch) product.colorSwatch = {};
-    product.colorSwatch[title] = { imgPosition };
+  json.forEach(({ title, featured_image }) => {
+    const color =
+      title.indexOf('/') >= 0
+        ? title.slice(0, title.indexOf('/')).trim()
+        : title;
+    if (
+      product.colorSwatch.find(
+        (colorSwatchItem) => colorSwatchItem.color === color
+      )
+    )
+      return;
+    const imgPosition = parseInt(featured_image.position) - 1;
+    product.colorSwatch.push({
+      color,
+      imgPosition,
+      backgroundColor: '',
+      backgroundImage: '',
+    });
   });
 
   $(swatchListEl)
     .find('li label')
     .each((i, el) => {
-      const title = $(el).prop('title');
+      const color = $(el).prop('title');
       const style = $(el).prop('style');
-      if (style && product.colorSwatch) {
+      if (style) {
         if (style['background-color']) {
-          product.colorSwatch[title].backgroundColor = style[
-            'background-color'
-          ] as string;
+          const colorSwatchItem = product.colorSwatch.find(
+            (colorSwatchItem) => colorSwatchItem.color === color
+          );
+          if (colorSwatchItem)
+            colorSwatchItem.backgroundColor = style[
+              'background-color'
+            ] as string;
         }
         if (style['background-image']) {
-          let src = style['background-image'] as string;
-          src = 'https:' + src.slice(src.indexOf('/'), src.indexOf('?'));
-          product.colorSwatch[title].backgroundImage = src;
+          const colorSwatchItem = product.colorSwatch.find(
+            (colorSwatchItem) => colorSwatchItem.color === color
+          );
+          if (colorSwatchItem) {
+            let src = style['background-image'] as string;
+            src = 'https:' + src.slice(src.indexOf('/'), src.indexOf('?'));
+            colorSwatchItem.backgroundImage = src;
+          }
         }
       }
     });
@@ -173,10 +204,11 @@ function scrapeProductDetails(product: Product, html: any) {
   const $ = cheerio.load(html);
   $('div.product div.product__info-wrapper details.product__details').each(
     (i, el) => {
-      const key = $(el)
-        .find('summary.product__detail-header')
-        .prop('textContent')
-        ?.replace(/\s{2,}/gm, '');
+      const title =
+        $(el)
+          .find('summary.product__detail-header')
+          .prop('textContent')
+          ?.replace(/\s{2,}/gm, '') ?? '';
       let detail: Detail;
       if ($(el).find('div.content table').length > 0) {
         const table: string[][] = [];
@@ -198,20 +230,17 @@ function scrapeProductDetails(product: Product, html: any) {
           });
         detail = {
           type: 'table',
+          title,
           data: table,
         };
       } else if ($(el).find('div.content.related-product-content').length > 0) {
-        const links: string[] = [];
         $(el)
           .find('div.content.related-product-content div.card-wrapper')
           .each((i, el) => {
             const href = $(el).find('a:first').prop('href');
-            if (href) links.push(href);
+            if (href) product.relatedProducts.push(href);
           });
-        detail = {
-          type: 'links',
-          data: links,
-        };
+        return;
       } else {
         const detailHTML = $(el).find('div.content').prop('innerHTML');
         const text =
@@ -225,12 +254,11 @@ function scrapeProductDetails(product: Product, html: any) {
             .trim() ?? '';
         detail = {
           type: 'text',
+          title,
           data: text,
         };
       }
-      if (key && detail) {
-        product.details[key] = detail;
-      }
+      product.details.push(detail);
     }
   );
 }
@@ -250,16 +278,17 @@ function scrapeProductReviewStats(product: Product, html: any) {
   $(
     'main#MainContent div#judgeme_product_reviews div.jdgm-histogram div.jdgm-histogram__row'
   ).each((i, el) => {
-    const rating = $(el).prop('data-rating');
-    const freq = $(el).prop('data-frequency');
-    if (!freq) return;
-    product.reviewStats[rating] = parseInt(freq);
+    const rating = ('star_' +
+      $(el).prop('data-rating')) as keyof typeof product.reviewStats;
+    const count = $(el).prop('data-frequency');
+    if (product.reviewStats[rating])
+      product.reviewStats[rating] = parseInt(count);
   });
 }
 
 async function scrapeProductRanks(products: Product[]) {
   try {
-    const sortCriterias: { [key: string]: string } = {
+    const sortCriterias = {
       date: 'created-descending',
       bestseller: 'best-selling',
       featured: 'manual',
@@ -268,7 +297,8 @@ async function scrapeProductRanks(products: Product[]) {
       const url = new URL(
         'https://www.lttstore.com/collections/all-products-1'
       );
-      url.searchParams.set('sort_by', sortCriterias[key]);
+      const sortCriteria = key as keyof typeof sortCriterias;
+      url.searchParams.set('sort_by', sortCriterias[sortCriteria]);
       let page = 1;
       let rank = 1;
       while (true) {
@@ -281,7 +311,7 @@ async function scrapeProductRanks(products: Product[]) {
           const path = productLinkEl.prop('href') ?? 'Path not found';
           const product = products.find((product) => product.path === path);
           if (product) {
-            product.ranks[key] = rank++;
+            product.ranks[sortCriteria] = rank++;
           }
         });
         if (productLiEls.length < 12) break;

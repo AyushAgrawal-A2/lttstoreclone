@@ -30,6 +30,8 @@ model Product {
   reviewStats       ReviewStat?
   relatedProducts   Product[]     @relation("RelatedProducts")
   relatedToProducts Product[]     @relation("RelatedProducts")
+
+  @@index([path])
 }
 
 model Ranks {
@@ -59,16 +61,18 @@ model Rating {
 
 model Color {
   id              String        @id @default(uuid())
-  name            String
+  name            String        @unique
   backgroundColor String
   backgroundImage String
   ColorSwatch     ColorSwatch[]
+
+  @@index([name])
 }
 
 model ColorSwatch {
   id          String  @id @default(uuid())
   imgPosition Int
-  color       Color   @relation(fields: [colorId], references: [id])
+  color       Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
   colorId     String
   Product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   String
@@ -76,9 +80,11 @@ model ColorSwatch {
 
 model SizeOption {
   id      String    @id @default(uuid())
-  symbol  String
+  symbol  String    @unique
   name    String
   Product Product[]
+
+  @@index([symbol])
 }
 
 // model Detail {

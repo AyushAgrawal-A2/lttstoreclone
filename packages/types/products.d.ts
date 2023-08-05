@@ -17,7 +17,7 @@ interface Product {
   rating: Rating;
   reviewStats: ReviewStats;
   colorSwatch: ColorSwatch[];
-  relatedProducts: string[];
+  relatedProducts: RelatedProduct[];
   type: string;
   gender: string;
 }
@@ -71,4 +71,8 @@ interface ColorSwatch {
   imgPosition: number;
   backgroundColor: string;
   backgroundImage: string;
+}
+
+interface RelatedProduct {
+  path: string;
 }

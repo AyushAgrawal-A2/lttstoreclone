@@ -1,7 +1,7 @@
-import { getProductCards } from '@/packages/fs/products.fs';
+import { getProductCards } from '@/packages/prisma/products';
 import { NextResponse } from 'next/server';
 
-export function GET(
+export async function GET(
   request: Request,
   { params }: { params: { collection: string } }
 ) {
@@ -11,13 +11,13 @@ export function GET(
   const perPage = parseInt(searchParams.get('perPage') ?? '12');
   const sortBy = searchParams.get('sortBy') ?? '';
   const searchText = searchParams.get('searchText') ?? '';
-  const { productCards, totalCards } = getProductCards(
+  const { productCards, totalCards } = await getProductCards({
     collection,
     page,
     perPage,
     sortBy,
-    [],
-    searchText
-  );
+    filter: [],
+    searchText,
+  });
   return NextResponse.json({ productCards, totalCards });
 }

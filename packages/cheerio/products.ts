@@ -238,7 +238,7 @@ function scrapeProductDetails(product: Product, html: any) {
           .find('div.content.related-product-content div.card-wrapper')
           .each((i, el) => {
             const href = $(el).find('a:first').prop('href');
-            if (href) product.relatedProducts.push(href);
+            if (href) product.relatedProducts.push({ path: href });
           });
         return;
       } else {

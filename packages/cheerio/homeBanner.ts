@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 
 async function scrapeHomeBanner() {
-  const homeBanner: Banner[] = [];
+  const homeBanner: HomeBanner[] = [];
   try {
     const url = new URL('https://www.lttstore.com');
     const html = await fetch(url).then((res) => res.text());
@@ -16,6 +16,7 @@ async function scrapeHomeBanner() {
       homeBanner.push({
         link,
         imgURL,
+        position: i,
       });
     });
   } catch (error) {

@@ -1,11 +1,12 @@
 interface Home {
-  banner: Banner[];
+  homeBanner: HomeBanner[];
   featured: ProductCard[];
   bestseller: ProductCard[];
   blogs: BlogCard[];
 }
 
-interface Banner {
+interface HomeBanner {
   link: string;
   imgURL: string;
+  position: number;
 }

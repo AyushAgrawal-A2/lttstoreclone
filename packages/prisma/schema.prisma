@@ -15,19 +15,19 @@ model Product {
   path              String        @unique
   title             String
   inStock           Boolean
+  price             Float
   productId         String
-  ranks             Ranks?
-  collections       String[]
   type              String
   gender            String
-  images            Image[]
-  rating            Rating?
-  price             Float
-  colorSwatch       ColorSwatch[]
-  sizeOptions       SizeOption[]
-  details           Json
   featureImages     String[]
+  collections       String[]
+  images            Image[]
+  details           Json
+  sizeOptions       SizeOption[]
+  ranks             Ranks?
+  rating            Rating?
   reviewStats       ReviewStat?
+  colorSwatch       ColorSwatch[]
   relatedProducts   Product[]     @relation("RelatedProducts")
   relatedToProducts Product[]     @relation("RelatedProducts")
 
@@ -87,14 +87,6 @@ model SizeOption {
   @@index([symbol])
 }
 
-// model Detail {
-//   id        String  @id @default(uuid())
-//   type      String
-//   data      Json
-//   Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-//   productId String
-// }
-
 model ReviewStat {
   id        String  @id @default(uuid())
   star_1    Int
@@ -124,4 +116,11 @@ model BlogContent {
   data       String
   BlogCard   BlogCard @relation(fields: [blogCardId], references: [id], onDelete: Cascade)
   blogCardId String
+}
+
+model HomeBanner {
+  id       String @id @default(uuid())
+  link     String
+  imgURL   String
+  position Int
 }

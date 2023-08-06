@@ -9,14 +9,14 @@ export async function GET(
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page') ?? '1');
   const perPage = parseInt(searchParams.get('perPage') ?? '12');
-  const sortBy = searchParams.get('sortBy') ?? '';
+  // const sortBy = searchParams.get('sortBy') ?? '';
   const searchText = searchParams.get('searchText') ?? '';
   const { productCards, totalCards } = await getProductCards({
     collection,
     page,
     perPage,
-    sortBy,
-    filter: [],
+    // sortBy,
+    // filter: [],
     searchText,
   });
   return NextResponse.json({ productCards, totalCards });

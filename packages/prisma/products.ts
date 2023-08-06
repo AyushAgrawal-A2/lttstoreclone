@@ -9,65 +9,35 @@ export async function saveProducts({ products }: { products: Product[] }) {
           path,
           title,
           inStock,
+          price,
           productId,
-          ranks,
-          collections,
           type,
           gender,
-          images,
-          rating,
-          price,
-          colorSwatch,
-          sizeOptions,
-          details,
           featureImages,
+          collections,
+          images,
+          details,
+          sizeOptions,
+          ranks,
+          rating,
           reviewStats,
+          colorSwatch,
         }) =>
           prisma.product.create({
             data: {
               path,
               title,
               inStock,
+              price,
               productId,
-              ranks: {
-                create: ranks,
-              },
-              collections,
               type,
               gender,
+              featureImages,
+              collections,
               images: {
                 create: images,
               },
-              rating: {
-                create: rating,
-              },
-              price,
-              colorSwatch: {
-                create: colorSwatch.map(
-                  ({
-                    imgPosition,
-                    color: name,
-                    backgroundColor,
-                    backgroundImage,
-                  }) => {
-                    return {
-                      imgPosition,
-                      color: {
-                        connectOrCreate: {
-                          where: {
-                            name,
-                          },
-                          create: {
-                            name,
-                            backgroundColor,
-                            backgroundImage,
-                          },
-                        },
-                      },
-                    };
-                  }
-                ),
-              },
+              details,
               sizeOptions: {
                 connectOrCreate: sizeOptions.map(({ symbol, name }) => {
                   return {
@@ -76,10 +46,29 @@ export async function saveProducts({ products }: { products: Product[] }) {
                   };
                 }),
               },
-              details,
-              featureImages,
+              ranks: {
+                create: ranks,
+              },
+              rating: {
+                create: rating,
+              },
               reviewStats: {
                 create: reviewStats,
+              },
+              colorSwatch: {
+                create: colorSwatch.map(({ imgPosition, color }) => {
+                  return {
+                    imgPosition,
+                    color: {
+                      connectOrCreate: {
+                        where: {
+                          name: color.name,
+                        },
+                        create: color,
+                      },
+                    },
+                  };
+                }),
               },
             },
           })
@@ -98,15 +87,27 @@ export async function saveProducts({ products }: { products: Product[] }) {
   }
 }
 
+interface GetProductCardsParams {
+  collection?: string;
+  page?: number;
+  perPage?: number;
+  sortBy?: {
+    rank: keyof Ranks;
+    direction: 'asc' | 'desc';
+  };
+  searchText?: string;
+  filter?: [];
+}
+
 export async function getProductCards({
   collection = 'all-products-1',
   page = 1,
   perPage = 12,
-  sortBy = 'featured,desc',
-  filter = [],
+  sortBy: { rank, direction } = { rank: 'featured', direction: 'desc' },
   searchText = '',
-}) {
-  const filteredProducts = await prisma.product.findMany({
+  filter = [],
+}: GetProductCardsParams) {
+  const productCards = await prisma.product.findMany({
     where: {
       collections: {
         has: collection,
@@ -120,21 +121,44 @@ export async function getProductCards({
       title: true,
       inStock: true,
       price: true,
-      images: true,
-      colorSwatch: { include: { color: true } },
+      images: {
+        select: {
+          src: true,
+          overlay: true,
+        },
+      },
+      colorSwatch: {
+        select: {
+          imgPosition: true,
+          color: {
+            select: {
+              name: true,
+              backgroundColor: true,
+              backgroundImage: true,
+            },
+          },
+        },
+      },
     },
-    // orderBy: {
-    //   ranks:{
-    //   [sortBy.split[,][0]]:
-    //   }
-    // },
+    skip: (page - 1) * perPage,
+    take: perPage,
+    orderBy: {
+      ranks: {
+        [rank]: direction,
+      },
+    },
   });
 
-  const productCards = filteredProducts.slice(
-    (page - 1) * perPage,
-    page * perPage
-  );
-  const totalCards = filteredProducts.length;
+  const totalCards = await prisma.product.count({
+    where: {
+      collections: {
+        has: collection,
+      },
+      title: {
+        contains: searchText,
+      },
+    },
+  });
 
   return { productCards, totalCards };
 
@@ -162,21 +186,72 @@ export async function getProduct({ path }: { path: string }) {
     where: {
       path,
     },
-    include: {
-      ranks: true,
-      images: true,
-      rating: true,
-      colorSwatch: { include: { color: true } },
-      sizeOptions: true,
-      reviewStats: true,
+    select: {
+      path: true,
+      title: true,
+      inStock: true,
+      price: true,
+      productId: true,
+      featureImages: true,
+      images: {
+        select: {
+          src: true,
+          overlay: true,
+        },
+      },
+      details: true,
+      sizeOptions: { select: { name: true, symbol: true } },
+      rating: {
+        select: {
+          stars: true,
+          reviews: true,
+        },
+      },
+      reviewStats: {
+        select: {
+          star_1: true,
+          star_2: true,
+          star_3: true,
+          star_4: true,
+          star_5: true,
+        },
+      },
+      colorSwatch: {
+        select: {
+          imgPosition: true,
+          color: {
+            select: {
+              name: true,
+              backgroundColor: true,
+              backgroundImage: true,
+            },
+          },
+        },
+      },
       relatedProducts: {
         select: {
           path: true,
           title: true,
           inStock: true,
           price: true,
-          images: true,
-          colorSwatch: { include: { color: true } },
+          images: {
+            select: {
+              src: true,
+              overlay: true,
+            },
+          },
+          colorSwatch: {
+            select: {
+              imgPosition: true,
+              color: {
+                select: {
+                  name: true,
+                  backgroundColor: true,
+                  backgroundImage: true,
+                },
+              },
+            },
+          },
         },
       },
     },

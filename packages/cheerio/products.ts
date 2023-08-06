@@ -138,48 +138,50 @@ function scrapeProductColorSwatch(product: Product, html: any) {
   }
   const json: ColorJSON[] = Array.from(JSON.parse(script.text()));
   json.forEach(({ title, featured_image }) => {
-    const color =
+    const name =
       title.indexOf('/') >= 0
         ? title.slice(0, title.indexOf('/')).trim()
         : title;
     if (
       product.colorSwatch.find(
-        (colorSwatchItem) => colorSwatchItem.color === color
+        (colorSwatchItem) => colorSwatchItem.color.name === name
       )
     )
       return;
     const imgPosition = parseInt(featured_image.position) - 1;
     product.colorSwatch.push({
-      color,
       imgPosition,
-      backgroundColor: '',
-      backgroundImage: '',
+      color: {
+        name,
+        backgroundColor: '',
+        backgroundImage: '',
+      },
     });
   });
 
   $(swatchListEl)
     .find('li label')
     .each((i, el) => {
-      const color = $(el).prop('title');
+      const name = $(el).prop('title');
       const style = $(el).prop('style');
       if (style) {
         if (style['background-color']) {
           const colorSwatchItem = product.colorSwatch.find(
-            (colorSwatchItem) => colorSwatchItem.color === color
+            (colorSwatchItem) => colorSwatchItem.color.name === name
           );
           if (colorSwatchItem)
-            colorSwatchItem.backgroundColor = style[
+            colorSwatchItem.color.backgroundColor = style[
               'background-color'
             ] as string;
         }
         if (style['background-image']) {
           const colorSwatchItem = product.colorSwatch.find(
-            (colorSwatchItem) => colorSwatchItem.color === color
+            (colorSwatchItem) => colorSwatchItem.color.name === name
           );
           if (colorSwatchItem) {
             let src = style['background-image'] as string;
             src = 'https:' + src.slice(src.indexOf('/'), src.indexOf('?'));
-            colorSwatchItem.backgroundImage = src;
+            colorSwatchItem.color.backgroundImage = src;
           }
         }
       }

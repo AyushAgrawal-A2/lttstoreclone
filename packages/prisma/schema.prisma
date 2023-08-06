@@ -16,7 +16,7 @@ model Product {
   title             String
   inStock           Boolean
   price             Float
-  productId         String
+  lttProductId      String
   type              String
   gender            String
   featureImages     String[]

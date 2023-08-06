@@ -10,7 +10,7 @@ export async function saveProducts({ products }: { products: Product[] }) {
           title,
           inStock,
           price,
-          productId,
+          lttProductId,
           type,
           gender,
           featureImages,
@@ -29,7 +29,7 @@ export async function saveProducts({ products }: { products: Product[] }) {
               title,
               inStock,
               price,
-              productId,
+              lttProductId,
               type,
               gender,
               featureImages,
@@ -114,6 +114,7 @@ export async function getProductCards({
       },
       title: {
         contains: searchText,
+        mode: 'insensitive',
       },
     },
     select: {
@@ -191,7 +192,7 @@ export async function getProduct({ path }: { path: string }) {
       title: true,
       inStock: true,
       price: true,
-      productId: true,
+      lttProductId: true,
       featureImages: true,
       images: {
         select: {

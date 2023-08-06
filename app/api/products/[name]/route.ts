@@ -14,7 +14,10 @@ export async function GET(
         collection: 'all-products-1',
         page: 1,
         perPage: 8,
-        sortBy: 'bestseller,asc',
+        sortBy: {
+          rank: 'bestseller',
+          direction: 'asc',
+        },
       })
     ).productCards;
     return NextResponse.json({ product, recommendations });

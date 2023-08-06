@@ -1,14 +1,20 @@
 import cheerio from 'cheerio';
 
-async function getProductReviews(
-  productId: string,
-  page = '1',
-  reviewStars = ''
-) {
+interface GetProductReviewsParams {
+  lttProductId: string;
+  page: string;
+  reviewStars?: string;
+}
+
+async function getProductReviews({
+  lttProductId,
+  page,
+  reviewStars,
+}: GetProductReviewsParams) {
   try {
     const url = new URL(process.env.REVIEWS_URL ?? '');
-    url.searchParams.set('product_id', productId);
-    if (page) url.searchParams.set('page', page.toString());
+    url.searchParams.set('product_id', lttProductId);
+    url.searchParams.set('page', page);
     if (reviewStars) url.searchParams.set('filter_rating', reviewStars);
     const { html, total_count } = await fetch(url).then((res) => res.json());
     const response: ReviewResponse = {
@@ -17,9 +23,11 @@ async function getProductReviews(
     };
     const $ = cheerio.load(html);
     $('div.jdgm-rev-widg__reviews div.jdgm-rev').each((i, el) => {
-      const stars = $(el)
-        .find('div.jdgm-rev__header span.jdgm-rev__rating')
-        .prop('data-score');
+      const stars = parseFloat(
+        $(el)
+          .find('div.jdgm-rev__header span.jdgm-rev__rating')
+          .prop('data-score')
+      );
       const time = $(el)
         .find('div.jdgm-rev__header span.jdgm-rev__timestamp')
         .prop('data-content');

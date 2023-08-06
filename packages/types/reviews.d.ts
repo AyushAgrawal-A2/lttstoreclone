@@ -7,7 +7,7 @@ interface Review {
   author: string;
   verified: boolean;
   time: string;
-  stars: string;
+  stars: number;
   title: string;
   body: string;
   likes: number;

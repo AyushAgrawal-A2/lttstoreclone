@@ -3,7 +3,7 @@ interface Product {
   title: string;
   inStock: boolean;
   price: number;
-  productId: string;
+  lttProductId: string;
   type: string;
   gender: string;
   featureImages: string[];

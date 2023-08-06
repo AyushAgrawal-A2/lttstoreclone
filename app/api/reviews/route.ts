@@ -3,13 +3,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const productId = searchParams.get('productId') ?? '';
-  const page = searchParams.get('page') ?? '';
+  const lttProductId = searchParams.get('lttProductId') ?? '';
+  const page = searchParams.get('page') ?? '1';
   const reviewStars = searchParams.get('reviewStars') ?? '';
-  const revRes: ReviewResponse = await getProductReviews(
-    productId,
+  const revRes: ReviewResponse = await getProductReviews({
+    lttProductId,
     page,
-    reviewStars
-  );
+    reviewStars,
+  });
   return NextResponse.json(revRes);
 }

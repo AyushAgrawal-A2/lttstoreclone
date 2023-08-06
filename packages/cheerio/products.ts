@@ -24,7 +24,7 @@ async function scrapeProducts() {
           title,
           inStock,
           price: 0,
-          productId: '',
+          lttProductId: '',
           images: [],
           details: [],
           sizeOptions: [],
@@ -65,10 +65,9 @@ async function scrapeProduct(product: Product) {
     const url = new URL('https://www.lttstore.com' + product.path);
     const html = await fetch(url).then((res) => res.text());
     const $ = cheerio.load(html);
-    const productId = $(
+    product.lttProductId = $(
       'div.product div.product__info-wrapper div.jdgm-widget'
     ).prop('data-id');
-    product.productId = productId;
     scrapeProductImages(product, html);
     scrapeProductRatings(product, html);
     scrapeProductPrice(product, html);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ProductColorSwatch from '../ProductColorSwatch';
+import ProductColorSwatch from './ProductColorSwatch';
 import Link from 'next/link';
 
 type ProductCardProps = {
@@ -10,6 +10,12 @@ type ProductCardProps = {
 
 export default function ProductCard({ productCard }: ProductCardProps) {
   const [imgPos, setImgPos] = useState(0);
+  const [colorIdx, setColorIdx] = useState(-1);
+
+  function changeColor(idx: number) {
+    setColorIdx(idx);
+    setImgPos(productCard.colorSwatch[idx].imgPosition);
+  }
 
   return (
     <div className="group">
@@ -31,7 +37,8 @@ export default function ProductCard({ productCard }: ProductCardProps) {
       {productCard.colorSwatch && (
         <ProductColorSwatch
           colorSwatch={productCard.colorSwatch}
-          setImgPos={setImgPos}
+          colorIdx={colorIdx}
+          changeColor={changeColor}
           size={'sm'}
         />
       )}

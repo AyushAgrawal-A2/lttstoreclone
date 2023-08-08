@@ -1,6 +1,6 @@
-import ProductRating from './ProductRating';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import RatingStars from '../../common/RatingStars';
 
 interface ProductReviewProps {
   review: Review;
@@ -17,8 +17,8 @@ export default function ProductReview({ review }: ProductReviewProps) {
           {author[0]}
         </div>
         <div>
-          <div className="flex items-center">
-            <ProductRating rating={{ stars, reviews: 0 }} />
+          <div className="flex items-center gap-1">
+            <RatingStars stars={stars} />
             <div className="font-semibold">{time}</div>
           </div>
           <div className="flex items-center">

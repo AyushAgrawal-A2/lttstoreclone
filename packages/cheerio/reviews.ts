@@ -3,19 +3,20 @@ import cheerio from 'cheerio';
 interface GetProductReviewsParams {
   lttProductId: string;
   page: string;
-  reviewStars?: string;
+  reviewStarsFilter?: string;
 }
 
 async function getProductReviews({
   lttProductId,
   page,
-  reviewStars,
+  reviewStarsFilter,
 }: GetProductReviewsParams) {
   try {
     const url = new URL(process.env.REVIEWS_URL ?? '');
     url.searchParams.set('product_id', lttProductId);
     url.searchParams.set('page', page);
-    if (reviewStars) url.searchParams.set('filter_rating', reviewStars);
+    if (reviewStarsFilter)
+      url.searchParams.set('filter_rating', reviewStarsFilter);
     const { html, total_count } = await fetch(url).then((res) => res.json());
     const response: ReviewResponse = {
       reviews: [],

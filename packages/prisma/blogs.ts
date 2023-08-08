@@ -42,7 +42,8 @@ export async function getBlogCards({
     skip: (page - 1) * perPage,
     take: perPage,
   });
-  return blogCards;
+  const totalCards = await prisma.blogCard.count();
+  return { blogCards, totalCards };
 }
 
 export async function getBlog({ blogPath }: { blogPath: string }) {

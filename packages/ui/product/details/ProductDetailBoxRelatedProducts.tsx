@@ -13,7 +13,7 @@ export default function ProductDetailBoxRelatedProducts({
   if (relatedProducts.length === 0) return <></>;
   return (
     <ProductDetailBox title="Related Products">
-      <div className="pt-3 flex gap-5 overflow-auto">
+      <div className="pt-3 flex gap-5 overflow-auto justify-center">
         {relatedProducts.map((productCard) => (
           <div
             key={productCard.path}

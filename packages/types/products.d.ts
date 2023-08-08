@@ -32,17 +32,16 @@ interface Image {
   overlay: string;
 }
 
-type Detail =
+type Detail = { title: string } & (
   | {
       type: 'text';
-      title: string;
       data: string;
     }
   | {
       type: 'table';
-      title: string;
       data: string[][];
-    };
+    }
+);
 
 interface SizeOption {
   symbol: string;

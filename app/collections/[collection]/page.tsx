@@ -1,6 +1,6 @@
 import SortBy from '@/packages/ui/collections/SortBy';
 import ProductCardsGrid from '@/packages/ui/collections/ProductCardsGrid';
-import fetchProductCards from '@/packages/actions/fetchProductCards';
+import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 // export async function generateStaticParams() {
 //   return ['accessories', 'clothing', 'all-products-1'];

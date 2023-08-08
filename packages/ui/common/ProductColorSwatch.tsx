@@ -4,27 +4,24 @@ import { useState } from 'react';
 
 type ProductColorSwatchProps = {
   colorSwatch: ColorSwatch[];
-  setImgPos: (imgPos: number) => void;
+  colorIdx: number;
+  changeColor: (imgPos: number) => void;
   size: 'sm' | 'lg';
 };
 
 export default function ProductColorSwatch({
   colorSwatch,
-  setImgPos,
+  colorIdx,
+  changeColor,
   size,
 }: ProductColorSwatchProps) {
-  const [colorIdx, setColorIdx] = useState(-1);
-
-  function onClick(idx: number) {
-    setColorIdx(idx);
-    setImgPos(colorSwatch[idx].imgPosition);
-  }
+  if (colorSwatch.length === 0) return <></>;
 
   return (
     <div className="my-5">
       {size === 'lg' && (
         <div className="my-2 text-2xl font-bold uppercase text-center md:text-start">
-          SELECT COLOR: {colorSwatch[colorIdx].color.name}
+          SELECT COLOR: {colorSwatch[colorIdx]?.color.name}
         </div>
       )}
       <ul
@@ -40,7 +37,7 @@ export default function ProductColorSwatch({
               colorIdx === idx &&
               'scale-110 border-2 border-fgPrimary cursor-pointer	'
             }`}
-            onClick={() => onClick(idx)}
+            onClick={() => changeColor(idx)}
             title={color.name}>
             <p
               className="w-full h-full border border-fgPrimary rounded-sm"

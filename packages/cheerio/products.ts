@@ -282,7 +282,7 @@ function scrapeProductReviewStats(product: Product, html: any) {
     const rating = ('star_' +
       $(el).prop('data-rating')) as keyof typeof product.reviewStats;
     const count = $(el).prop('data-frequency');
-    if (product.reviewStats[rating])
+    if (rating in product.reviewStats)
       product.reviewStats[rating] = parseInt(count);
   });
 }

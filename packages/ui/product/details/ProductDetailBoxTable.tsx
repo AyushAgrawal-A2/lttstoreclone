@@ -6,7 +6,7 @@ export default function ProductDetailBoxTable({
   data,
 }: ProductDetailBoxTableProps) {
   return (
-    <table className="text-fgTertiary mt-2 mx-auto">
+    <table className="text-fgTertiary mt-2 w-full">
       <tbody>
         {data.map((row, r) => (
           <tr

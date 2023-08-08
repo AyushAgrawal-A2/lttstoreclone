@@ -1,32 +1,22 @@
-import fetchProduct from '@/packages/actions/fetchProduct';
-import Loading from '@/packages/ui/common/Loading';
-import ProductColorSwatch from '@/packages/ui/ProductColorSwatch';
-import ProductDetails from '@/packages/ui/product/details/ProductDetails';
-import ProductFeatureImages from '@/packages/ui/ProductFeatureImages';
-import ProductPrice from '@/packages/ui/ProductPrice';
-import ProductRating from '@/packages/ui/ProductRating';
-import ProductRecommendation from '@/packages/ui/ProductRecommendation';
-import ProductReviews from '@/packages/ui/ProductReviews';
-import ProductSizeOptions from '@/packages/ui/ProductSizeOptions';
-import ProductTitle from '@/packages/ui/ProductTitle';
-
+import fetchProduct from '@/packages/serverActions/fetchProduct';
+import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import Images from '@/packages/ui/product/images/Images';
-import ProductDetailBoxRelatedProducts from '@/packages/ui/product/details/ProductDetailBoxRelatedProducts';
+import Loading from '@/packages/ui/common/Loading';
+import ProductDetails from '@/packages/ui/product/details/ProductDetails';
+import ProductFeatureImages from '@/packages/ui/product/ProductFeatureImages';
+import ProductOptions from '@/packages/ui/product/options/ProductOptions';
+import ProductPrice from '@/packages/ui/product/ProductPrice';
+import ProductRating from '@/packages/ui/product/reviews/ProductRating';
+import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
+import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
+import ProductTitle from '@/packages/ui/product/ProductTitle';
 
 export default async function Page({ params }: { params: { path: string } }) {
   const path = '/products/' + params.path;
   const product = await fetchProduct(path);
-  if (!product) console.log('Not found');
-  // const [productRecommendations, setProductRecommendations] = useState<
-  //   ProductCard[]
-  // >([]);
-  // const [colorIdx, setColorIdx] = useState(0);
-  // const [sizeIdx, setSizeIdx] = useState(0);
-  // function changeColor(idx: number, imgPos: number) {
-  //   setColorIdx(idx);
-  //   imageScroll(imgPos);
-  // }
-
+  const recommendations = (
+    await fetchProductCards('all-products-1', 1, 8, 'bestseller,asc')
+  ).productCards;
   if (!product) return <Loading />;
 
   // document.title = product.title + ' - Linus Tech Tips Store';
@@ -42,25 +32,12 @@ export default async function Page({ params }: { params: { path: string } }) {
         </div>
         <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4">
           <ProductTitle title={product.title} />
-          {/* {product.rating.reviews !== 0 && (
-            <ProductRating rating={product.rating} />
-          )} */}
+          <ProductRating rating={product.rating} />
           <ProductPrice price={product.price} />
-          {/* {product.colorSwatch && (
-            <ProductColorSwatch
-              colorSwatch={product.colorSwatch}
-              colorIdx={colorIdx}
-              changeColor={changeColor}
-              size={'lg'}
-            />
-          )}
-          {product.sizeOptions.length > 0 && (
-            <ProductSizeOptions
-              sizeOptions={product.sizeOptions}
-              sizeIdx={sizeIdx}
-              setSizeIdx={setSizeIdx}
-            />
-          )} */}
+          <ProductOptions
+            colorSwatch={product.colorSwatch}
+            sizeOptions={product.sizeOptions}
+          />
           <ProductDetails
             details={product.details as Detail[]}
             relatedProducts={product.relatedProducts}
@@ -72,7 +49,7 @@ export default async function Page({ params }: { params: { path: string } }) {
         reviewStats={product.reviewStats}
         lttProductId={product.lttProductId}
       />
-      {/* <ProductRecommendation productCards={productRecommendations} /> */}
+      <ProductRecommendation productCards={recommendations} />
     </main>
   );
 }

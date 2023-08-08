@@ -44,7 +44,7 @@ export async function getHome() {
         sortBy: 'bestseller,asc',
       })
     ).productCards,
-    blogs: await getBlogCards({ page: 1, perPage: 3 }),
+    blogs: (await getBlogCards({ page: 1, perPage: 3 })).blogCards,
   };
   return home;
 }

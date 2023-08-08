@@ -1,4 +1,4 @@
-import fetchHome from '@/packages/actions/fetchHome';
+import fetchHome from '@/packages/serverActions/fetchHome';
 import BlogCard from '@/packages/ui/common/BlogCard';
 import Button from '@/packages/ui/common/Button';
 import ComponentSlides from '@/packages/ui/common/ComponentSlides';

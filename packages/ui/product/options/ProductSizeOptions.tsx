@@ -9,6 +9,9 @@ export default function ProductSizeOptions({
   sizeIdx,
   setSizeIdx,
 }: ProductSizeOptionsProps) {
+  
+  if (sizeOptions.length === 0) return <></>;
+
   return (
     <div className="my-5">
       <div className="my-2 text-2xl font-bold uppercase">

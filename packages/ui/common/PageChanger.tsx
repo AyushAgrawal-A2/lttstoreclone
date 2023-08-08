@@ -9,28 +9,24 @@ import {
 interface PageChangerProps {
   page: number;
   totalPages: number;
-  changePage: (nextPage: number) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function PageChanger({
-  page,
-  totalPages,
-  changePage,
-}: PageChangerProps) {
+export default function PageChanger({ page, totalPages, setPage }: PageChangerProps) {
   return (
     <div className="flex justify-center items-center">
       {page > 1 && (
         <FontAwesomeIcon
           icon={faAnglesLeft}
           className="px-2 cursor-pointer"
-          onClick={() => changePage(1)}
+          onClick={() => setPage(1)}
         />
       )}
       {page > 1 && (
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="px-2 cursor-pointer"
-          onClick={() => changePage(page - 1)}
+          onClick={() => setPage(page - 1)}
         />
       )}
       {Array(5)
@@ -44,7 +40,7 @@ export default function PageChanger({
               className={`p-2 cursor-pointer ${
                 page === num && 'text-2xl font-bold'
               }`}
-              onClick={() => changePage(num)}>
+              onClick={() => setPage(num)}>
               {num}
             </span>
           );
@@ -53,14 +49,14 @@ export default function PageChanger({
         <FontAwesomeIcon
           icon={faAngleRight}
           className="px-2 cursor-pointer"
-          onClick={() => changePage(page + 1)}
+          onClick={() => setPage(page + 1)}
         />
       )}
       {page < totalPages && (
         <FontAwesomeIcon
           icon={faAnglesRight}
           className="px-2 cursor-pointer"
-          onClick={() => changePage(totalPages)}
+          onClick={() => setPage(totalPages)}
         />
       )}
     </div>

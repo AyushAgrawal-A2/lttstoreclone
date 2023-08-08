@@ -2,7 +2,7 @@
 import { useEffect, useState, useTransition } from 'react';
 import ProductCard from '../common/ProductCard';
 import Loading from '../common/Loading';
-import fetchProductCards from '../../actions/fetchProductCards';
+import fetchProductCards from '../../serverActions/fetchProductCards';
 
 interface ProductCardGridProps {
   collection: string;

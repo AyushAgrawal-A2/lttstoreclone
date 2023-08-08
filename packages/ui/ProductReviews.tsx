@@ -1,8 +1,10 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import Loading from './Loading';
+import Loading from './common/Loading';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
 import ProductReview from './ProductReview';
-import PageChanger from './PageChanger';
+import PageChanger from './common/PageChanger';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;

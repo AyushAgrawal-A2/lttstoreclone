@@ -1,3 +1,4 @@
+import { dir } from 'console';
 import prisma from '.';
 
 export async function saveProducts({ products }: { products: Product[] }) {
@@ -78,7 +79,13 @@ export async function saveProducts({ products }: { products: Product[] }) {
       products.map(({ path, relatedProducts }) =>
         prisma.product.update({
           where: { path },
-          data: { relatedProducts: { connect: relatedProducts } },
+          data: {
+            relatedProducts: {
+              connect: relatedProducts.map(({ path }) => ({
+                path,
+              })),
+            },
+          },
         })
       )
     );
@@ -87,26 +94,48 @@ export async function saveProducts({ products }: { products: Product[] }) {
   }
 }
 
-interface GetProductCardsParams {
-  collection?: string;
-  page?: number;
-  perPage?: number;
-  sortBy?: {
-    rank: keyof Ranks;
-    direction: 'asc' | 'desc';
+interface OrderBy {
+  title?: 'asc' | 'desc';
+  price?: 'asc' | 'desc';
+  ranks?: {
+    date?: 'asc' | 'desc';
+    bestseller?: 'asc' | 'desc';
+    featured?: 'asc' | 'desc';
   };
-  searchText?: string;
-  filter?: [];
 }
 
 export async function getProductCards({
   collection = 'all-products-1',
   page = 1,
   perPage = 12,
-  sortBy: { rank, direction } = { rank: 'featured', direction: 'desc' },
+  sortBy = 'featured,desc',
   searchText = '',
   filter = [],
-}: GetProductCardsParams) {
+}) {
+  const [sortRank, sortDirection] = sortBy.split(',');
+  const rank = [
+    'featured',
+    'bestseller',
+    'date',
+    'alphabetically',
+    'price',
+  ].includes(sortRank)
+    ? sortRank
+    : 'featured';
+  const direction: 'asc' | 'desc' =
+    sortDirection === 'asc' || sortDirection === 'desc'
+      ? sortDirection
+      : 'desc';
+  let orderBy: OrderBy = {};
+  if (rank === 'alphabetically') {
+    orderBy.title = direction;
+  } else if (rank === 'price') {
+    orderBy.price = direction;
+  } else {
+    orderBy.ranks = {
+      [rank]: direction,
+    };
+  }
   const productCards = await prisma.product.findMany({
     where: {
       collections: {
@@ -143,11 +172,7 @@ export async function getProductCards({
     },
     skip: (page - 1) * perPage,
     take: perPage,
-    orderBy: {
-      ranks: {
-        [rank]: direction,
-      },
-    },
+    orderBy,
   });
 
   const totalCards = await prisma.product.count({
@@ -182,10 +207,10 @@ export async function getProductCards({
   // }
 }
 
-export async function getProduct({ path }: { path: string }) {
+export async function getProduct(path: string) {
   const product = await prisma.product.findUnique({
     where: {
-      path,
+      path: path,
     },
     select: {
       path: true,

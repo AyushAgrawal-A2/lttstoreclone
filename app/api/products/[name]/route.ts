@@ -7,17 +7,14 @@ export async function GET(
 ) {
   const name = params.name;
   const path = '/products/' + name;
-  const product = await getProduct({ path });
+  const product = await getProduct(path);
   if (product) {
     const recommendations = (
       await getProductCards({
         collection: 'all-products-1',
         page: 1,
         perPage: 8,
-        sortBy: {
-          rank: 'bestseller',
-          direction: 'asc',
-        },
+        sortBy: 'bestseller,asc',
       })
     ).productCards;
     return NextResponse.json({ product, recommendations });

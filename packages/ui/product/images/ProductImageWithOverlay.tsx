@@ -1,14 +1,14 @@
-interface ImageWithOverlayProps {
+interface ProductImageWithOverlayProps {
   image: Image;
   idx: number;
-  imageModal: (idx: number) => void;
+  displayImageModal: (idx: number) => void;
 }
 
-export default function ImageWithOverlay({
+export default function ProductImageWithOverlay({
   image,
   idx,
-  imageModal,
-}: ImageWithOverlayProps) {
+  displayImageModal,
+}: ProductImageWithOverlayProps) {
   return (
     <>
       <img
@@ -16,7 +16,7 @@ export default function ImageWithOverlay({
         src={image.src}
         id={`image${idx}`}
         className="rounded-2xl bg-[#f2f2f2]"
-        onClick={() => imageModal(idx)}
+        onClick={() => displayImageModal(idx)}
         loading="lazy"
       />
       {image.overlay && (

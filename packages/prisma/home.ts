@@ -41,10 +41,7 @@ export async function getHome() {
         collection: 'all-products-1',
         page: 1,
         perPage: 6,
-        sortBy: {
-          rank: 'bestseller',
-          direction: 'asc',
-        },
+        sortBy: 'bestseller,asc',
       })
     ).productCards,
     blogs: await getBlogCards({ page: 1, perPage: 3 }),

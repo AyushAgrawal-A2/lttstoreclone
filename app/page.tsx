@@ -1,46 +1,13 @@
-'use client';
-
-import BlogCard from '@/packages/ui/BlogCard';
-import Button from '@/packages/ui/Button';
-import ComponentSlides from '@/packages/ui/ComponentSlides';
+import fetchHome from '@/packages/actions/fetchHome';
+import BlogCard from '@/packages/ui/common/BlogCard';
+import Button from '@/packages/ui/common/Button';
+import ComponentSlides from '@/packages/ui/common/ComponentSlides';
 import ImageBanner from '@/packages/ui/ImageBanner';
-import Loading from '@/packages/ui/Loading';
-import ProductCard from '@/packages/ui/ProductCard';
+import ProductCard from '@/packages/ui/common/ProductCard';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
-export default function Home() {
-  // document.title = 'Linus Tech Tips Store';
-  const [home, setHome] = useState<Home>();
-  const [blogSlidesPerView, setBlogSlidesPerView] = useState(2);
-  useEffect(() => {
-    if (!home) {
-      const path = '/api/home';
-      fetch(path)
-        .then((res) => {
-          if (res.ok) return res.json();
-          // navigate('/404');
-        })
-        .then((home) => {
-          setHome(home);
-          handleResize();
-        })
-        .catch((error) => {
-          console.log(error);
-          // navigate('/404');
-        });
-    }
-    window.addEventListener('resize', handleResize);
-    function handleResize() {
-      if (blogSlidesPerView !== (window.innerWidth >= 750 ? 2 : 1)) {
-        setBlogSlidesPerView(window.innerWidth >= 750 ? 2 : 1);
-      }
-    }
-    return () => window.removeEventListener('resize', handleResize);
-  }, [home, blogSlidesPerView]);
-
-  if (!home) return <Loading />;
-
+export default async function Page() {
+  const home = await fetchHome();
   const { homeBanner, featured, bestseller, blogs } = home;
 
   return (
@@ -131,7 +98,8 @@ export default function Home() {
                 <BlogCard blogCard={blogCard} />
               </div>
             ))}
-            slidesPerView={blogSlidesPerView}
+            slidesPerView={2}
+            responsive={true}
             centeredSlides={false}
           />
         </div>

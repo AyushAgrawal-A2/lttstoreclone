@@ -14,17 +14,13 @@ export async function GET(
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page') ?? '1');
   const perPage = parseInt(searchParams.get('perPage') ?? '12');
-  const sortBy = searchParams.get('sortBy') ?? '';
-  const sortDirection = searchParams.get('sortDirection') ?? '';
+  const sortBy = searchParams.get('sortBy') ?? undefined;
   const searchText = searchParams.get('searchText') ?? '';
   const { productCards, totalCards } = await getProductCards({
     collection,
     page: isNaN(page) ? 1 : page,
-    perPage: isNaN(perPage) ? 1 : perPage,
-    sortBy: {
-      rank: sortBy in ({} as Ranks) ? (sortBy as keyof Ranks) : 'featured',
-      direction: sortDirection === 'asc' ? 'asc' : 'desc',
-    },
+    perPage: isNaN(perPage) ? 12 : perPage,
+    sortBy,
     searchText,
     filter: undefined,
   });

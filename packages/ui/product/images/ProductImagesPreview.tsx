@@ -3,12 +3,12 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 type ProductImagesPreviewProps = {
   images: Image[];
-  imageScroll: (idx: number) => void;
+  scrollProductImages: (idx: number) => void;
 };
 
 export default function ProductImagesPreview({
   images,
-  imageScroll,
+  scrollProductImages,
 }: ProductImagesPreviewProps) {
   return (
     <div className="flex lg:flex-col pb-4">
@@ -35,7 +35,7 @@ export default function ProductImagesPreview({
             <img
               src={image.src}
               className="object-contain h-14 w-14 lg:h-28 lg:w-28 rounded-lg bg-[#f2f2f2] hover:opacity-90 cursor-pointer"
-              onClick={() => imageScroll(idx)}
+              onClick={() => scrollProductImages(idx)}
               loading="lazy"
             />
           </li>

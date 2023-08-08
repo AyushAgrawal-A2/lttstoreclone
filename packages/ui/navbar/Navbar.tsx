@@ -1,18 +1,16 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import NavbarTitle from './NavbarTitle';
 import NavbarIcon from './NavbarIcon';
-import Logo from './Logo';
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import AppTheme from './AppTheme';
+import Logo from '../common/Logo';
 
-interface NavbarProps {
-  setOverflow: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function Navbar({ setOverflow }: NavbarProps) {
+export default function Navbar() {
   const scrollY = useRef(0);
   const [scrollUp, setScrollUp] = useState(false);
 
@@ -39,11 +37,11 @@ export default function Navbar({ setOverflow }: NavbarProps) {
     <div
       id="navbar"
       className={`${
-        scrollUp && 'top-0 border-b animate-slideInY bg-black'
-      } sticky z-20 bg-bgPrimary`}>
+        scrollUp && 'top-0 border-b animate-slideInY bg-black z-20'
+      } sticky bg-bgPrimary`}>
       <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
         <div className="md:hidden w-24">
-          <Sidebar setOverflow={setOverflow} />
+          <Sidebar />
         </div>
         <NavbarIcon href="/">
           <Logo size={50} />
@@ -68,7 +66,7 @@ export default function Navbar({ setOverflow }: NavbarProps) {
         </div>
         <div className="flex flex-row w-24 md:w-32">
           <AppTheme />
-          <Searchbar setOverflow={setOverflow} />
+          <Searchbar />
           <div className="hidden md:block px-2">
             <NavbarIcon
               href="/account"

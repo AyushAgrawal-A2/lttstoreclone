@@ -1,36 +1,39 @@
-import { useEffect } from 'react';
+'use client';
+
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect } from 'react';
 
 type ProductImagesModalProps = {
   title: string;
   images: Image[];
-  displayModal: boolean;
   modalIdx: number;
+  displayModal: boolean;
   setDisplayModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ProductImagesModal({
   title,
   images,
-  displayModal,
   modalIdx,
+  displayModal,
   setDisplayModal,
 }: ProductImagesModalProps) {
   useEffect(() => {
     if (displayModal) {
+      document.documentElement.style.overflow = 'hidden';
       document.getElementById(`imageModal${modalIdx}`)?.scrollIntoView({
         behavior: 'instant',
         block: 'nearest',
         inline: 'start',
       });
-    }
+    } else document.documentElement.style.overflow = 'auto';
   }, [displayModal, modalIdx]);
 
   return (
     <div
       className={
-        'z-30 h-screen w-full overflow-auto absolute box-border top-0 left-0 p-3 bg-[#000000] ' +
+        'fixed top-0 left-0 z-50 h-screen w-screen overflow-auto overscroll-contain p-3 bg-[#000000] ' +
         (!displayModal && 'hidden')
       }
       onClick={() => setDisplayModal(false)}>
@@ -41,14 +44,16 @@ export default function ProductImagesModal({
         />
       </button>
       {images.map((image, idx) => (
-        <div key={idx}>
+        <div
+          key={idx}
+          className="w-min mx-auto text-fgTertiary font-bold tracking-wide">
           <img
             src={image.src}
             id={`imageModal${idx}`}
-            className="mx-auto max-w-5xl cursor-zoom-out"
+            className="w-screen max-w-5xl cursor-zoom-out"
             loading="lazy"
           />
-          <div>{title}</div>
+          {image.overlay || title}
         </div>
       ))}
     </div>

@@ -5,11 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-interface SearchbarProps {
-  setOverflow: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function Searchbar({ setOverflow }: SearchbarProps) {
+export default function Searchbar() {
   const [searchbarIsShown, setSearchbarIsShown] = useState<boolean>(false);
   const [searchResultsAreShown, setSearchResultsAreShown] =
     useState<boolean>(false);
@@ -27,7 +23,7 @@ export default function Searchbar({ setOverflow }: SearchbarProps) {
       const searchParams = new URLSearchParams({
         page: '1',
         perPage: '4',
-        sortBy: 'bestseller',
+        sortBy: 'bestseller,asc',
         searchText,
       });
       const path = `${apiURL}?${searchParams.toString()}`;
@@ -48,12 +44,12 @@ export default function Searchbar({ setOverflow }: SearchbarProps) {
   }, [searchText]);
 
   function displaySearchbar() {
-    setOverflow('hidden');
+    document.body.style.overflow = 'hidden';
     setSearchbarIsShown(true);
   }
 
   function hideSearchbar() {
-    setOverflow('auto');
+    document.body.style.overflow = 'auto';
     setSearchbarIsShown(false);
   }
 
@@ -135,7 +131,7 @@ export default function Searchbar({ setOverflow }: SearchbarProps) {
       </div>
       <div
         className={
-          'w-full h-screen top-0 left-0 z-[-1] bg-black opacity-30' +
+          'w-full h-screen top-0 left-0 -z-10 bg-black opacity-30' +
           (searchbarIsShown ? ' absolute' : ' hidden')
         }
         onClick={hideSearchbar}

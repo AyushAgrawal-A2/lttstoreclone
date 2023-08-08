@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ProductColorSwatch from './ProductColorSwatch';
+import ProductColorSwatch from '../ProductColorSwatch';
 import Link from 'next/link';
 
 type ProductCardProps = {

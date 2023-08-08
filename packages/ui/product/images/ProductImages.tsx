@@ -1,14 +1,11 @@
-import ImageWithOverlay from './ImageWithOverlay';
+import ImageWithOverlay from './ProductImageWithOverlay';
 
 type ProductImagesProps = {
   images: Image[];
-  imageModal: (idx: number) => void;
+  displayImageModal: (idx: number) => void;
 };
 
-export default function ProductImages({
-  images,
-  imageModal,
-}: ProductImagesProps) {
+export default function ProductImages({ images, displayImageModal }: ProductImagesProps) {
   return (
     <ul className="md:max-h-[50vh] lg:max-h-[90vh] overflow-auto no-scrollbar scroll-smooth snap-x md:snap-y snap-proximity flex flex-row items-center md:flex-col gap-1 md:gap-10 mb-4">
       {images.map((image, idx) => (
@@ -18,7 +15,7 @@ export default function ProductImages({
           <ImageWithOverlay
             image={image}
             idx={idx}
-            imageModal={imageModal}
+            displayImageModal={displayImageModal}
           />
         </li>
       ))}

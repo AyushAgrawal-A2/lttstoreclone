@@ -7,24 +7,42 @@ import {
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ComponentSlidesProps {
   components: JSX.Element[];
   slidesPerView: number;
   centeredSlides: boolean;
+  responsive?: boolean;
 }
 
 export default function ComponentSlides({
   components,
   slidesPerView,
   centeredSlides,
+  responsive,
 }: ComponentSlidesProps) {
   const [curSlide, setCurSlide] = useState<number>(0);
+  const [respSlidesPerView, setRespSlidesPerView] = useState(slidesPerView);
+
+  useEffect(() => {
+    if (responsive) {
+      const handleResize = () => {
+        if (
+          respSlidesPerView !== (window.innerWidth >= 750 ? slidesPerView : 1)
+        )
+          setRespSlidesPerView(window.innerWidth >= 750 ? slidesPerView : 1);
+      };
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [slidesPerView, responsive, respSlidesPerView]);
+
   return (
     <Swiper
       centeredSlides={centeredSlides}
-      slidesPerView={slidesPerView + 0.05}
+      slidesPerView={respSlidesPerView + 0.05}
       spaceBetween={10}
       onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
       {components.map((component, idx) => (

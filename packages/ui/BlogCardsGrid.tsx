@@ -29,7 +29,9 @@ export default function ProductCardGrid({
           document.documentElement.scrollTop >=
           document.documentElement.scrollHeight
       ) {
-        startTransition(() => loadNextPage(blogCards.length / perPage + 1));
+        startTransition(
+          async () => await loadNextPage(blogCards.length / perPage + 1)
+        );
       }
     }
     async function loadNextPage(page: number) {

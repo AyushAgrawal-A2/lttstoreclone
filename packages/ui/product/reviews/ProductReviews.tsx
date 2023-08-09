@@ -23,16 +23,17 @@ export default function ProductReviews({
   const totalPages = Math.ceil((reviewsResponse?.total_count ?? 0) / 5);
 
   useEffect(() => {
-    startTransition(() =>
-      fetchReviews({
-        lttProductId,
-        page: page.toString(),
-        reviewStarsFilter,
-      })
-        .then(setReviewsResponse)
-        .catch((error) => {
-          console.log(error);
+    startTransition(
+      async () =>
+        await fetchReviews({
+          lttProductId,
+          page: page.toString(),
+          reviewStarsFilter,
         })
+          .then(setReviewsResponse)
+          .catch((error) => {
+            console.log(error);
+          })
     );
   }, [lttProductId, page, reviewStarsFilter]);
 

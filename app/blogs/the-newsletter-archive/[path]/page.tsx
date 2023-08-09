@@ -1,5 +1,7 @@
 import fetchBlog from '@/packages/serverActions/fetchBlog';
 
+export const runtime = 'edge';
+
 export default async function Page({
   params: { path },
 }: {

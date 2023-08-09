@@ -33,8 +33,6 @@ export default function Navbar() {
     return () => document.removeEventListener('scroll', onScroll);
   }, [scrollUp]);
 
-  console.log(scrollUp);
-
   return (
     <div
       id="navbar"

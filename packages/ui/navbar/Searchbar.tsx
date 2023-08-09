@@ -1,5 +1,6 @@
 'use client';
 
+import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -15,28 +16,14 @@ export default function Searchbar() {
 
   useEffect(() => {
     function getSearchResult() {
-      if (!searchText) {
-        setSearchResultsAreShown(false);
-        return;
-      }
-      const apiURL = '/api/collections/all-products-1';
-      const searchParams = new URLSearchParams({
-        page: '1',
-        perPage: '4',
-        sortBy: 'bestseller,asc',
-        searchText,
-      });
-      const path = `${apiURL}?${searchParams.toString()}`;
-      fetch(path)
-        .then((res) => {
-          if (res.ok) return res.json();
-          throw new Error('fetch failed');
-        })
-        .then(({ productCards }) => {
-          setProductCards(productCards);
-          setSearchResultsAreShown(true);
-        })
-        .catch((error) => console.log(error));
+      if (!searchText) setSearchResultsAreShown(false);
+      else
+        fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
+          .then(({ productCards }) => {
+            setProductCards(productCards);
+            setSearchResultsAreShown(true);
+          })
+          .catch((error) => console.log(error));
     }
     clearTimeout(timeoutId.current);
     timeoutId.current = setTimeout(getSearchResult, 250);

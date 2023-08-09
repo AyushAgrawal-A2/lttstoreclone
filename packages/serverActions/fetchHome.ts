@@ -1,7 +1,8 @@
 'use server';
 
+import { cache } from 'react';
 import { getHome } from '../prisma/home';
 
-export default async function fetchHome() {
-  return await getHome();
-}
+const fetchHome = cache(async () => await getHome());
+
+export default fetchHome;

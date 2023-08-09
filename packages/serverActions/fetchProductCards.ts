@@ -6,13 +6,16 @@ export default async function fetchProductCards(
   collection: string,
   page: number,
   perPage: number,
-  sortBy?: string
+  sortBy?: string,
+  searchText = '',
+  filter = []
 ) {
   return await getProductCards({
     collection,
     page,
     perPage,
     sortBy,
-    filter: undefined,
+    searchText,
+    filter,
   });
 }

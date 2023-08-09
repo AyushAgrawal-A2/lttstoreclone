@@ -1,7 +1,10 @@
 'use server';
 
+import { cache } from 'react';
 import { getBlog } from '../prisma/blogs';
 
-export default async function fetchBlog(blogPath: string) {
-  return await getBlog({ blogPath });
-}
+const fetchBlog = cache(
+  async (blogPath: string) => await getBlog({ blogPath })
+);
+
+export default fetchBlog;

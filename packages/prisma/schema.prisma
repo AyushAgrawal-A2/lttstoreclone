@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -24,25 +24,23 @@ model Product {
   images            Image[]
   details           Json
   sizeOptions       SizeOption[]
-  ranks             Ranks         @relation(fields: [ranksId], references: [id], onDelete: Cascade)
-  rating            Rating        @relation(fields: [ratingId], references: [id], onDelete: Cascade)
-  reviewStats       ReviewStat    @relation(fields: [reviewStatId], references: [id], onDelete: Cascade)
+  ranks             Ranks?
+  rating            Rating?
+  reviewStats       ReviewStat?
   colorSwatch       ColorSwatch[]
   relatedProducts   Product[]     @relation("RelatedProducts")
   relatedToProducts Product[]     @relation("RelatedProducts")
-  ranksId           String        @unique
-  ratingId          String        @unique
-  reviewStatId      String        @unique
 
   @@index([path])
 }
 
 model Ranks {
-  id         String   @id @default(uuid())
+  id         String  @id @default(uuid())
   date       Int
   bestseller Int
   featured   Int
-  Product    Product?
+  Product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String  @unique
 }
 
 model Image {
@@ -54,10 +52,11 @@ model Image {
 }
 
 model Rating {
-  id      String   @id @default(uuid())
-  stars   Float
-  reviews Int
-  Product Product?
+  id        String  @id @default(uuid())
+  stars     Float
+  reviews   Int
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @unique
 }
 
 model Color {
@@ -89,13 +88,14 @@ model SizeOption {
 }
 
 model ReviewStat {
-  id      String   @id @default(uuid())
-  star_1  Int
-  star_2  Int
-  star_3  Int
-  star_4  Int
-  star_5  Int
-  Product Product?
+  id        String  @id @default(uuid())
+  star_1    Int
+  star_2    Int
+  star_3    Int
+  star_4    Int
+  star_5    Int
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @unique
 }
 
 model BlogCard {

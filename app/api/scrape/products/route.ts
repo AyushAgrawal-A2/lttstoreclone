@@ -5,5 +5,5 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const products: Product[] = await scrapeProducts();
   saveProducts({ products });
-  return NextResponse.json({ products }, { headers: {} });
+  return NextResponse.json({ products });
 }

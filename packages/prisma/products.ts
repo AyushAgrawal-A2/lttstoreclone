@@ -4,6 +4,8 @@ import prisma from '.';
 export async function saveProducts({ products }: { products: Product[] }) {
   try {
     await prisma.product.deleteMany();
+    await prisma.color.deleteMany();
+    await prisma.sizeOption.deleteMany();
     await Promise.all(
       products.map(
         ({

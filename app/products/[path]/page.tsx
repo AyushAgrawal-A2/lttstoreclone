@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: { path: string } }) {
         </div>
         <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4">
           <ProductTitle title={product.title} />
-          <ProductRating rating={product.rating} />
+          {product.rating && <ProductRating rating={product.rating} />}
           <ProductPrice price={product.price} />
           <ProductOptions
             colorSwatch={product.colorSwatch}
@@ -45,10 +45,12 @@ export default async function Page({ params }: { params: { path: string } }) {
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
-      <ProductReviews
-        reviewStats={product.reviewStats}
-        lttProductId={product.lttProductId}
-      />
+      {product.reviewStats && (
+        <ProductReviews
+          reviewStats={product.reviewStats}
+          lttProductId={product.lttProductId}
+        />
+      )}
       <ProductRecommendation productCards={recommendations} />
     </main>
   );

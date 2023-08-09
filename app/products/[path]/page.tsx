@@ -11,7 +11,7 @@ import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
 import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export default async function Page({ params }: { params: { path: string } }) {
   const path = '/products/' + params.path;

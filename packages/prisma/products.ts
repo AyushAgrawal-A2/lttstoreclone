@@ -1,14 +1,13 @@
-import { dir } from 'console';
 import prisma from '.';
+import asyncSeq from '../utils/asyncSeq';
 
 export async function saveProducts({ products }: { products: Product[] }) {
   try {
     await prisma.product.deleteMany();
     await prisma.color.deleteMany();
     await prisma.sizeOption.deleteMany();
-    await Promise.all(
-      products.map(
-        ({
+    const fnArray = products.map(
+      ({
           path,
           title,
           inStock,
@@ -26,7 +25,8 @@ export async function saveProducts({ products }: { products: Product[] }) {
           reviewStats,
           colorSwatch,
         }) =>
-          prisma.product.create({
+        async () =>
+          await prisma.product.create({
             data: {
               path,
               title,
@@ -42,12 +42,15 @@ export async function saveProducts({ products }: { products: Product[] }) {
               },
               details,
               sizeOptions: {
-                connectOrCreate: sizeOptions.map(({ symbol, name }) => {
-                  return {
-                    where: { symbol },
-                    create: { symbol, name },
-                  };
-                }),
+                connectOrCreate: sizeOptions.map(({ symbol, name }) => ({
+                  create: {
+                    symbol,
+                    name,
+                  },
+                  where: {
+                    symbol,
+                  },
+                })),
               },
               ranks: {
                 create: ranks,
@@ -59,24 +62,22 @@ export async function saveProducts({ products }: { products: Product[] }) {
                 create: reviewStats,
               },
               colorSwatch: {
-                create: colorSwatch.map(({ imgPosition, color }) => {
-                  return {
-                    imgPosition,
-                    color: {
-                      connectOrCreate: {
-                        where: {
-                          name: color.name,
-                        },
-                        create: color,
+                create: colorSwatch.map(({ imgPosition, color }) => ({
+                  imgPosition,
+                  color: {
+                    connectOrCreate: {
+                      where: {
+                        name: color.name,
                       },
+                      create: color,
                     },
-                  };
-                }),
+                  },
+                })),
               },
             },
           })
-      )
     );
+    await asyncSeq(fnArray);
     await Promise.all(
       products.map(({ path, relatedProducts }) =>
         prisma.product.update({

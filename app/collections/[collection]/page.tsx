@@ -2,7 +2,7 @@ import SortBy from '@/packages/ui/collections/SortBy';
 import ProductCardsGrid from '@/packages/ui/collections/ProductCardsGrid';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 // export async function generateStaticParams() {
 //   return ['accessories', 'clothing', 'all-products-1'];
 // }

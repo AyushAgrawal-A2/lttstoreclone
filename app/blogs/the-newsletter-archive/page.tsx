@@ -1,7 +1,7 @@
 import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 import BlogCardsGrid from '@/packages/ui/BlogCardsGrid';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export default async function Page() {
   // document.title = 'The Newsletter Archive - Linus Tech Tips Store';

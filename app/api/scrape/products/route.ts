@@ -3,7 +3,7 @@ import { saveProducts } from '@/packages/prisma/products';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export async function GET() {
   const products: Product[] = await scrapeProducts();

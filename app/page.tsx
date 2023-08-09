@@ -6,7 +6,7 @@ import ImageBanner from '@/packages/ui/ImageBanner';
 import ProductCard from '@/packages/ui/common/ProductCard';
 import Link from 'next/link';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export default async function Page() {
   const home = await fetchHome();

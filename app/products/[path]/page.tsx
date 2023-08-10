@@ -21,8 +21,12 @@ export async function generateStaticParams() {
   });
 }
 
-export default async function Page({ params }: { params: { path: string } }) {
-  const productPath = API_ENDPOINT + '/products/' + params.path;
+export default async function Page({
+  params: { path },
+}: {
+  params: { path: string };
+}) {
+  const productPath = `${API_ENDPOINT}/blogs/the-newsletter-archive/${path}`;
   const { product, recommendations } = await fetch(productPath)
     .then((res) => {
       if (res.ok) return res.json();

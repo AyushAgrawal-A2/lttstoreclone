@@ -31,20 +31,35 @@ async function getHomeBanner() {
 }
 
 export async function getHome() {
+  const homeBannerPromise = getHomeBanner();
+  const featuredPromise = getProductCards({
+    collection: 'top-sellers',
+    page: 1,
+    perPage: 3,
+  });
+  const bestsellerPromise = getProductCards({
+    collection: 'all-products-1',
+    page: 1,
+    perPage: 6,
+    sortBy: 'bestseller,asc',
+  });
+  const blogCardsPromise = getBlogCards({ page: 1, perPage: 3 });
+  const [
+    homeBanner,
+    { productCards: featured },
+    { productCards: bestseller },
+    { blogCards: blogs },
+  ] = await Promise.all([
+    homeBannerPromise,
+    featuredPromise,
+    bestsellerPromise,
+    blogCardsPromise,
+  ]);
   const home: Home = {
-    homeBanner: await getHomeBanner(),
-    featured: (
-      await getProductCards({ collection: 'top-sellers', page: 1, perPage: 3 })
-    ).productCards,
-    bestseller: (
-      await getProductCards({
-        collection: 'all-products-1',
-        page: 1,
-        perPage: 6,
-        sortBy: 'bestseller,asc',
-      })
-    ).productCards,
-    blogs: (await getBlogCards({ page: 1, perPage: 3 })).blogCards,
+    homeBanner,
+    featured,
+    bestseller,
+    blogs,
   };
   return home;
 }

@@ -35,24 +35,46 @@ export async function getBlogCards({
   page: number;
   perPage: number;
 }) {
-  const blogCards = await prisma.blogCard.findMany({
+  const blogCardsPromise = prisma.blogCard.findMany({
     orderBy: {
       date: 'desc',
     },
     skip: (page - 1) * perPage,
     take: perPage,
+    select: {
+      path: true,
+      heading: true,
+      cardText: true,
+      date: true,
+      imgURL: true,
+    },
   });
-  const totalCards = await prisma.blogCard.count();
+  const totalCardsPromise = prisma.blogCard.count();
+  const [blogCards, totalCards] = await Promise.all([
+    blogCardsPromise,
+    totalCardsPromise,
+  ]);
   return { blogCards, totalCards };
 }
 
 export async function getBlog({ blogPath }: { blogPath: string }) {
-  const blogCards = await prisma.blogCard.findUnique({
+  const blog = await prisma.blogCard.findUnique({
     where: {
       path: blogPath,
     },
-    include: { content: true },
+    select: {
+      heading: true,
+      date: true,
+      content: { select: { isImage: true, data: true } },
+    },
   });
-  const totalCards = await prisma.blogCard.count();
-  return { blogCards, totalCards };
+  return blog;
+}
+
+export async function getBlogPaths() {
+  return await prisma.blogCard.findMany({
+    select: {
+      path: true,
+    },
+  });
 }

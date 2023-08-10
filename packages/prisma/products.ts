@@ -125,10 +125,7 @@ export async function getProductCards({
   ].includes(sortRank)
     ? sortRank
     : 'featured';
-  const direction: 'asc' | 'desc' =
-    sortDirection === 'asc' || sortDirection === 'desc'
-      ? sortDirection
-      : 'desc';
+  const direction: 'asc' | 'desc' = sortDirection === 'asc' ? 'asc' : 'desc';
   let orderBy: OrderBy = {};
   if (rank === 'alphabetically') {
     orderBy.title = direction;
@@ -139,7 +136,7 @@ export async function getProductCards({
       [rank]: direction,
     };
   }
-  const productCards = await prisma.product.findMany({
+  const productCardsPromise = prisma.product.findMany({
     where: {
       collections: {
         has: collection,
@@ -178,7 +175,7 @@ export async function getProductCards({
     orderBy,
   });
 
-  const totalCards = await prisma.product.count({
+  const totalCardsPromise = prisma.product.count({
     where: {
       collections: {
         has: collection,
@@ -188,6 +185,10 @@ export async function getProductCards({
       },
     },
   });
+  const [productCards, totalCards] = await Promise.all([
+    productCardsPromise,
+    totalCardsPromise,
+  ]);
 
   return { productCards, totalCards };
 
@@ -211,7 +212,7 @@ export async function getProductCards({
 }
 
 export async function getProduct(path: string) {
-  const product = await prisma.product.findUnique({
+  return await prisma.product.findUnique({
     where: {
       path: path,
     },
@@ -285,14 +286,12 @@ export async function getProduct(path: string) {
       },
     },
   });
-  return product;
 }
 
 export async function getProductPaths() {
-  const paths = await prisma.product.findMany({
+  return await prisma.product.findMany({
     select: {
       path: true,
     },
   });
-  return paths;
 }

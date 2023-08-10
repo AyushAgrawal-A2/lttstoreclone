@@ -1,6 +1,16 @@
 import API_ENDPOINT from '@/packages/config/api_endpoints';
+import { getBlogPaths } from '@/packages/prisma/blogs';
 
 // export const runtime = 'edge';
+
+export async function generateStaticParams() {
+  const blogPaths = await getBlogPaths();
+  return blogPaths.map(({ path }) => {
+    const temp = path.split('/');
+    path = temp[temp.length - 1];
+    return { path };
+  });
+}
 
 export default async function Page({
   params: { path },
@@ -11,7 +21,6 @@ export default async function Page({
   const blog = await fetch(blogPath)
     .then((res) => res.json())
     .catch(console.log);
-  if (!blog) return <div>Not found</div>;
   const {
     heading,
     date,

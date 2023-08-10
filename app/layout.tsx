@@ -23,10 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={'min-h-screen w-full flex flex-col'}>
+      <body className="min-h-screen w-full flex flex-col overflow-y-scroll">
         <Header />
         <Navbar />
-        <div className="grow w-full max-w-[1800px] mx-auto">{children}</div>
+        <div className="grow w-full max-w-[1800px] mx-auto  overflow-y-hidden">
+          {children}
+        </div>
         <Footer />
         <Analytics />
       </body>

@@ -81,6 +81,9 @@ async function scrapeBlog(blogCard: BlogCard): Promise<BlogContent[]> {
         if (imageSrc?.includes('?')) {
           imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
         }
+        if (imageSrc?.includes('googleusercontent.com')) {
+          imageSrc = imageSrc.slice(imageSrc.indexOf('#http') + 1);
+        }
         if (imageSrc) {
           blogContent.push({
             isImage: true,

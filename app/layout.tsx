@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 import { Poppins } from 'next/font/google';
 import Header from '@/packages/ui/common/Header';
 import Navbar from '@/packages/ui/navbar/Navbar';
@@ -24,6 +25,7 @@ export default function RootLayout({
         <Navbar />
         <div className="grow w-full max-w-[1800px] mx-auto">{children}</div>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

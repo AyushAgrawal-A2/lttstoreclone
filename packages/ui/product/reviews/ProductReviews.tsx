@@ -6,6 +6,7 @@ import ProductReview from './ProductReview';
 import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
 import { useEffect, useState, useTransition } from 'react';
+import { load } from 'cheerio';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;
@@ -46,7 +47,7 @@ export default function ProductReviews({
     setReviewStarsFilter(stars);
   }
 
-  if (!reviewsResponse) return <Loading />;
+  if (!reviewsResponse) return <Loading loading={true} />;
   if (reviewsResponse.reviews.length === 0) return <></>;
 
   return (
@@ -70,9 +71,7 @@ export default function ProductReviews({
           setPage={setPage}
         />
       </div>
-      <div className={`${!loading && 'hidden'}`}>
-        <Loading />
-      </div>
+      <Loading loading={loading} />
     </div>
   );
 }

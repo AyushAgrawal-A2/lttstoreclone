@@ -1,5 +1,6 @@
 import API_ENDPOINT from '@/packages/config/api_endpoints';
 import { getBlogPaths } from '@/packages/prisma/blogs';
+import Image from 'next/image';
 
 // export const runtime = 'edge';
 
@@ -37,11 +38,14 @@ export default async function Page({
         <div className="py-4 md:p-4">
           {content.map(({ isImage, data }) =>
             isImage ? (
-              <img
+              <Image
+                alt={''}
                 key={data}
                 className="mx-auto"
                 src={data}
                 loading="eager"
+                width={1000}
+                height={1000}
               />
             ) : (
               <p

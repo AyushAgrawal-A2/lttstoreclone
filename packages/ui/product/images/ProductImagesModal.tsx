@@ -2,6 +2,7 @@
 
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import { useEffect } from 'react';
 
 type ProductImagesModalProps = {
@@ -47,11 +48,14 @@ export default function ProductImagesModal({
         <div
           key={idx}
           className="w-min mx-auto text-fgTertiary font-bold tracking-wide">
-          <img
+          <Image
             src={image.src}
             id={`imageModal${idx}`}
             className="w-screen max-w-5xl cursor-zoom-out"
             loading="eager"
+            width={1500}
+            height={1500}
+            alt={image.overlay || title}
           />
           {image.overlay || title}
         </div>

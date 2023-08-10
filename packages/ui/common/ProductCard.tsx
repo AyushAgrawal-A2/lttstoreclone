@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import ProductColorSwatch from './ProductColorSwatch';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type ProductCardProps = {
   productCard: ProductCard;
@@ -21,11 +22,13 @@ export default function ProductCard({ productCard }: ProductCardProps) {
     <div className="group">
       <div className="relative rounded-2xl overflow-hidden">
         <Link href={productCard.path}>
-          <img
+          <Image
             className="bg-bgTertiary aspect-square object-cover group-hover:animate-grow"
             src={productCard.images[imgPos].src}
             alt={productCard.title}
             loading="eager"
+            width={1000}
+            height={1000}
           />
         </Link>
         <div

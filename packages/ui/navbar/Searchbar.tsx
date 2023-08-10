@@ -3,6 +3,7 @@
 import API_ENDPOINT from '@/packages/config/api_endpoints';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -95,10 +96,13 @@ export default function Searchbar() {
                       key={productCard.path}
                       href={productCard.path}
                       className="flex items-center w-full hover:underline p-2">
-                      <img
+                      <Image
+                        alt={productCard.title}
                         src={productCard.images[0].src}
                         className="h-14"
                         loading="eager"
+                        width={1500}
+                        height={1500}
                       />
                       <div className="pl-4">{productCard.title}</div>
                     </Link>

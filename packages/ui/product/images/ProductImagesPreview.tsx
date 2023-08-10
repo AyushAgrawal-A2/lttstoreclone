@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 type ProductImagesPreviewProps = {
   images: Image[];
@@ -32,11 +33,14 @@ export default function ProductImagesPreview({
           <li
             key={image.src}
             className="shrink-0 grow-0">
-            <img
+            <Image
+              alt={image.overlay || 'product image'}
               src={image.src}
               className="object-contain h-14 w-14 lg:h-28 lg:w-28 rounded-lg bg-[#f2f2f2] hover:opacity-90 cursor-pointer"
               onClick={() => scrollProductImages(idx)}
               loading="eager"
+              width={1500}
+              height={1500}
             />
           </li>
         ))}

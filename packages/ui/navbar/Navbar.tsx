@@ -25,7 +25,8 @@ export default function Navbar() {
         setScrollUp(false);
       else if (
         !scrollUp &&
-        document.documentElement.scrollTop < scrollY.current
+        document.documentElement.scrollTop < scrollY.current &&
+        document.documentElement.scrollTop !== 0
       )
         setScrollUp(true);
       scrollY.current = document.documentElement.scrollTop;

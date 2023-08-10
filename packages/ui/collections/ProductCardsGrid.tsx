@@ -66,9 +66,7 @@ export default function ProductCardGrid({
           <ProductCard productCard={productCard} />
         </div>
       ))}
-      <div className={`${!loading && 'hidden'}`}>
-        <Loading />
-      </div>
+      <Loading loading={loading} />
     </div>
   );
 }

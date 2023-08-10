@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface LogoProps {
   size: number;
 }
@@ -5,7 +7,7 @@ interface LogoProps {
 export default function Logo({ size }: LogoProps) {
   return (
     <div className="w-full h-full py-[7.5px] hover:animate-grow relative -z-[10]">
-      <img
+      <Image
         src="/assets/images/LTT_Logo.png"
         alt="LTT Logo"
         width={size}

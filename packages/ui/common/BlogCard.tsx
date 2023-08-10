@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface BlogCardProps {
@@ -11,11 +12,13 @@ export default function BlogCard({ blogCard }: BlogCardProps) {
     <Link href={path}>
       <div className="group h-full flex flex-col">
         <div className="rounded-2xl overflow-hidden">
-          <img
+          <Image
             className="max-h-80 h-full w-full object-cover hover:animate-grow"
             src={imgURL}
             alt={'blog'}
             loading="eager"
+            width={1000}
+            height={1000}
           />
         </div>
         <div className="text-center tracking-wide text-xl font-black group-hover:underline">

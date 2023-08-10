@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface ImageBannerProps {
   banner: HomeBanner[];
@@ -26,11 +27,13 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
         onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
         {banner.map(({ imgURL }) => (
           <SwiperSlide key={imgURL}>
-            <img
+            <Image
               src={imgURL}
               className="rounded-2xl"
               alt={'banner'}
               loading="eager"
+              width={1500}
+              height={700}
             />
           </SwiperSlide>
         ))}

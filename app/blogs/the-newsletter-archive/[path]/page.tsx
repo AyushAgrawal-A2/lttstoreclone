@@ -3,14 +3,14 @@ import { getBlogPaths } from '@/packages/prisma/blogs';
 
 // export const runtime = 'edge';
 
-export async function generateStaticParams() {
-  const blogPaths = await getBlogPaths();
-  return blogPaths.map(({ path }) => {
-    const temp = path.split('/');
-    path = temp[temp.length - 1];
-    return { path };
-  });
-}
+// export async function generateStaticParams() {
+//   const blogPaths = await getBlogPaths();
+//   return blogPaths.map(({ path }) => {
+//     const temp = path.split('/');
+//     path = temp[temp.length - 1];
+//     return { path };
+//   });
+// }
 
 export default async function Page({
   params: { path },

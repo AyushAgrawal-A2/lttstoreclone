@@ -2,7 +2,6 @@ import API_ENDPOINT from '@/packages/config/api_endpoints';
 import BlogCardsGrid from '@/packages/ui/BlogCardsGrid';
 
 // export const runtime = 'edge';
-export const dynamic = 'force-static';
 
 export default async function Page() {
   // document.title = 'The Newsletter Archive - Linus Tech Tips Store';

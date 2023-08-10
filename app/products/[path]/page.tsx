@@ -12,14 +12,14 @@ import { getProductPaths } from '@/packages/prisma/products';
 
 // export const runtime = 'edge';
 
-export async function generateStaticParams() {
-  const productPaths = await getProductPaths();
-  return productPaths.map(({ path }) => {
-    const temp = path.split('/');
-    path = temp[temp.length - 1];
-    return { path };
-  });
-}
+// export async function generateStaticParams() {
+//   const productPaths = await getProductPaths();
+//   return productPaths.map(({ path }) => {
+//     const temp = path.split('/');
+//     path = temp[temp.length - 1];
+//     return { path };
+//   });
+// }
 
 export default async function Page({
   params: { path },

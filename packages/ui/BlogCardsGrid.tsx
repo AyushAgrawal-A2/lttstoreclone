@@ -1,9 +1,9 @@
 'use client';
 
-import fetchBlogCards from '../serverActions/fetchBlogCards';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import BlogCard from './common/BlogCard';
 import Loading from './common/Loading';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProductCardGridProps {
   perPage: number;
@@ -17,29 +17,36 @@ export default function ProductCardGrid({
   totalCards,
 }: ProductCardGridProps) {
   const [blogCards, setBlogCards] = useState<BlogCard[]>(initialBlogCards);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScrollEnd);
     function handleScrollEnd() {
       if (
-        !isPending &&
+        !loading &&
         blogCards.length < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
           document.documentElement.scrollHeight
       ) {
-        startTransition(
-          async () => await loadNextPage(blogCards.length / perPage + 1)
-        );
+        setLoading(true);
+        loadNextPage(blogCards.length / perPage + 1);
       }
     }
     async function loadNextPage(page: number) {
-      const { blogCards } = await fetchBlogCards(page, perPage);
+      const searchParams = new URLSearchParams({
+        page: page.toString(),
+        perPage: perPage.toString(),
+      });
+      const path = `${API_ENDPOINT}/blogs/the-newsletter-archive/?${searchParams.toString()}`;
+      const { blogCards } = await fetch(path)
+        .then((res) => res.json())
+        .catch(console.log);
       setBlogCards((prev) => [...prev, ...blogCards]);
+      setLoading(false);
     }
     return () => document.removeEventListener('scroll', handleScrollEnd);
-  }, [isPending, blogCards.length, perPage, totalCards]);
+  }, [loading, blogCards.length, perPage, totalCards]);
 
   return (
     <div className="flex flex-wrap">
@@ -50,7 +57,9 @@ export default function ProductCardGrid({
           <BlogCard blogCard={blogCard} />
         </div>
       ))}
-      {isPending && <Loading />}
+      <div className={`${!loading && 'hidden'}`}>
+        <Loading />
+      </div>
     </div>
   );
 }

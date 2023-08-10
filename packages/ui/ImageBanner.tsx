@@ -30,6 +30,7 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
               src={imgURL}
               className="rounded-2xl"
               alt={'banner'}
+              loading="eager"
             />
           </SwiperSlide>
         ))}

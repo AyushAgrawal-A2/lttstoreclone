@@ -1,11 +1,15 @@
-import SortBy from '@/packages/ui/collections/SortBy';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import ProductCardsGrid from '@/packages/ui/collections/ProductCardsGrid';
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import SortBy from '@/packages/ui/collections/SortBy';
 
 // export const runtime = 'edge';
-// export async function generateStaticParams() {
-//   return ['accessories', 'clothing', 'all-products-1'];
-// }
+export function generateStaticParams() {
+  return [
+    { collection: 'accessories' },
+    { collection: 'clothing' },
+    { collection: 'all-products-1' },
+  ];
+}
 
 export default async function Page({
   params,
@@ -19,12 +23,15 @@ export default async function Page({
   const perPage = 12;
   const sortBy =
     typeof searchParams.sortBy === 'string' ? searchParams.sortBy : undefined;
-  const { productCards, totalCards } = await fetchProductCards(
-    collection,
-    page,
-    perPage,
-    sortBy
-  );
+  const apiSearchParams = new URLSearchParams({
+    page: page.toString(),
+    perPage: perPage.toString(),
+    sortBy: sortBy ?? '',
+  });
+  const path = `${API_ENDPOINT}/collections/${collection}?${apiSearchParams.toString()}`;
+  const { productCards, totalCards } = await fetch(path)
+    .then((res) => res.json())
+    .catch(console.log);
 
   // if (category === 'all')
   //   document.title = 'All Products - Linus Tech Tips Store';

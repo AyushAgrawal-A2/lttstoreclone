@@ -287,3 +287,12 @@ export async function getProduct(path: string) {
   });
   return product;
 }
+
+export async function getProductPaths() {
+  const paths = await prisma.product.findMany({
+    select: {
+      path: true,
+    },
+  });
+  return paths;
+}

@@ -1,4 +1,4 @@
-import fetchHome from '@/packages/serverActions/fetchHome';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import BlogCard from '@/packages/ui/common/BlogCard';
 import Button from '@/packages/ui/common/Button';
 import ComponentSlides from '@/packages/ui/common/ComponentSlides';
@@ -9,7 +9,12 @@ import Link from 'next/link';
 // export const runtime = 'edge';
 
 export default async function Page() {
-  const home = await fetchHome();
+  const path = API_ENDPOINT + '/home';
+  const home: Home = await fetch(path)
+    .then((res) => {
+      if (res.ok) return res.json();
+    })
+    .catch(console.log);
   const { homeBanner, featured, bestseller, blogs } = home;
 
   return (

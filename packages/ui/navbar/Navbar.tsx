@@ -67,7 +67,7 @@ export default function Navbar() {
         <div className="flex flex-row w-24 md:w-32">
           <AppTheme />
           <Searchbar />
-          <div className="hidden md:block px-2">
+          {/* <div className="hidden md:block px-2">
             <NavbarIcon
               href="/account"
               faIcon={faUser}
@@ -78,7 +78,7 @@ export default function Navbar() {
               href="/cart"
               faIcon={faCartShopping}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

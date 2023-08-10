@@ -1,6 +1,6 @@
 'use client';
 
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -17,13 +17,22 @@ export default function Searchbar() {
   useEffect(() => {
     function getSearchResult() {
       if (!searchText) setSearchResultsAreShown(false);
-      else
-        fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
+      else {
+        const searchParams = new URLSearchParams({
+          page: '1',
+          perPage: '4',
+          sortBy: 'bestseller,asc',
+          searchText,
+        });
+        const path = `${API_ENDPOINT}/all-products-1/?${searchParams.toString()}`;
+        fetch(path)
+          .then((res) => res.json())
           .then(({ productCards }) => {
             setProductCards(productCards);
             setSearchResultsAreShown(true);
           })
-          .catch((error) => console.log(error));
+          .catch(console.log);
+      }
     }
     clearTimeout(timeoutId.current);
     timeoutId.current = setTimeout(getSearchResult, 250);
@@ -89,6 +98,7 @@ export default function Searchbar() {
                       <img
                         src={productCard.images[0].src}
                         className="h-14"
+                        loading="eager"
                       />
                       <div className="pl-4">{productCard.title}</div>
                     </Link>

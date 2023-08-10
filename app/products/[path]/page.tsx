@@ -1,7 +1,5 @@
-import fetchProduct from '@/packages/serverActions/fetchProduct';
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import Images from '@/packages/ui/product/images/Images';
-import Loading from '@/packages/ui/common/Loading';
 import ProductDetails from '@/packages/ui/product/details/ProductDetails';
 import ProductFeatureImages from '@/packages/ui/product/ProductFeatureImages';
 import ProductOptions from '@/packages/ui/product/options/ProductOptions';
@@ -10,16 +8,26 @@ import ProductRating from '@/packages/ui/product/reviews/ProductRating';
 import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
 import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
+import { getProductPaths } from '@/packages/prisma/products';
 
 // export const runtime = 'edge';
 
+export async function generateStaticParams() {
+  const productPaths = await getProductPaths();
+  return productPaths.map(({ path }) => {
+    const temp = path.split('/');
+    path = temp[temp.length - 1];
+    return { path };
+  });
+}
+
 export default async function Page({ params }: { params: { path: string } }) {
-  const path = '/products/' + params.path;
-  const product = await fetchProduct(path);
-  const recommendations = (
-    await fetchProductCards('all-products-1', 1, 8, 'bestseller,asc')
-  ).productCards;
-  if (!product) return <Loading />;
+  const productPath = API_ENDPOINT + '/products/' + params.path;
+  const { product, recommendations } = await fetch(productPath)
+    .then((res) => {
+      if (res.ok) return res.json();
+    })
+    .catch(console.log);
 
   // document.title = product.title + ' - Linus Tech Tips Store';
 

@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useState, useTransition } from 'react';
+
+import API_ENDPOINT from '@/packages/config/api_endpoints';
+import { useEffect, useState } from 'react';
 import ProductCard from '../common/ProductCard';
 import Loading from '../common/Loading';
-import fetchProductCards from '../../serverActions/fetchProductCards';
 
 interface ProductCardGridProps {
   collection: string;
@@ -20,7 +21,7 @@ export default function ProductCardGrid({
   totalCards,
 }: ProductCardGridProps) {
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setProductCards(initialProductCards);
@@ -30,28 +31,31 @@ export default function ProductCardGrid({
     document.addEventListener('scroll', handleScrollEnd);
     function handleScrollEnd() {
       if (
-        !isPending &&
+        !loading &&
         productCards.length < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
           document.documentElement.scrollHeight
       ) {
-        startTransition(async () =>
-          await loadNextPage(productCards.length / perPage + 1)
-        );
+        loadNextPage(productCards.length / perPage + 1);
+        setLoading(true);
       }
     }
     async function loadNextPage(page: number) {
-      const { productCards } = await fetchProductCards(
-        collection,
-        page,
-        perPage,
-        sortBy
-      );
+      const apiSearchParams = new URLSearchParams({
+        page: page.toString(),
+        perPage: perPage.toString(),
+        sortBy: sortBy ?? '',
+      });
+      const path = `${API_ENDPOINT}/collections/${collection}?${apiSearchParams.toString()}`;
+      const { productCards } = await fetch(path)
+        .then((res) => res.json())
+        .catch(console.log);
       setProductCards((prev) => [...prev, ...productCards]);
+      setLoading(false);
     }
     return () => document.removeEventListener('scroll', handleScrollEnd);
-  }, [isPending, productCards, totalCards, collection, perPage, sortBy]);
+  }, [loading, productCards, totalCards, collection, perPage, sortBy]);
 
   return (
     <div className="flex flex-wrap">
@@ -62,7 +66,9 @@ export default function ProductCardGrid({
           <ProductCard productCard={productCard} />
         </div>
       ))}
-      {isPending && <Loading />}
+      <div className={`${!loading && 'hidden'}`}>
+        <Loading />
+      </div>
     </div>
   );
 }

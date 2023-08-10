@@ -1,11 +1,11 @@
 'use client';
 
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
 import ProductReview from './ProductReview';
 import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
 import { useEffect, useState, useTransition } from 'react';
-import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;
@@ -16,29 +16,32 @@ export default function ProductReviews({
   reviewStats,
   lttProductId,
 }: ProductReviewsProps) {
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [reviewStarsFilter, setReviewStarsFilter] = useState('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
   const totalPages = Math.ceil((reviewsResponse?.total_count ?? 0) / 5);
 
   useEffect(() => {
-    startTransition(
-      async () =>
-        await fetchReviews({
-          lttProductId,
-          page: page.toString(),
-          reviewStarsFilter,
-        })
-          .then(setReviewsResponse)
-          .catch((error) => {
-            console.log(error);
-          })
-    );
+    setLoading(true);
+    const searchParams = new URLSearchParams({
+      lttProductId,
+      page: page.toString(),
+      reviewStarsFilter,
+    });
+    const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
+    fetch(path)
+      .then((res) => res.json())
+      .then((reviewsResponse) => {
+        setLoading(false);
+        setReviewsResponse(reviewsResponse);
+      })
+      .catch(console.log);
   }, [lttProductId, page, reviewStarsFilter]);
 
   function changeReviewStarsFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
+    setLoading(true);
     setPage(1);
     setReviewStarsFilter(stars);
   }
@@ -54,7 +57,7 @@ export default function ProductReviews({
         reviewStats={reviewStats}
         changeReviewStarsFilter={changeReviewStarsFilter}
       />
-      <div className={`${isPending && 'opacity-25'}`}>
+      <div className={`${loading && 'opacity-25'}`}>
         {reviewsResponse.reviews.map((review) => (
           <ProductReview
             key={review.time}
@@ -67,7 +70,7 @@ export default function ProductReviews({
           setPage={setPage}
         />
       </div>
-      <div className={`${!isPending && 'hidden'}`}>
+      <div className={`${!loading && 'hidden'}`}>
         <Loading />
       </div>
     </div>

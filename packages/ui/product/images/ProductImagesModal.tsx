@@ -51,7 +51,7 @@ export default function ProductImagesModal({
             src={image.src}
             id={`imageModal${idx}`}
             className="w-screen max-w-5xl cursor-zoom-out"
-            loading="lazy"
+            loading="eager"
           />
           {image.overlay || title}
         </div>

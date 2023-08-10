@@ -10,6 +10,7 @@ export default function Logo({ size }: LogoProps) {
         alt="LTT Logo"
         width={size}
         height={size}
+        loading="eager"
       />
       <div className="rotate-[-15deg] text-LTTOrange font-bold absolute top-[35%] left-[92%]">
         clone

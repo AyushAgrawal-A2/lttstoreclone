@@ -47,11 +47,12 @@ export async function getBlogCards({
 }
 
 export async function getBlog({ blogPath }: { blogPath: string }) {
-  const blog = await prisma.blogCard.findUnique({
+  const blogCards = await prisma.blogCard.findUnique({
     where: {
       path: blogPath,
     },
     include: { content: true },
   });
-  return blog;
+  const totalCards = await prisma.blogCard.count();
+  return { blogCards, totalCards };
 }

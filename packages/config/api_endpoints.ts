@@ -1,6 +1,6 @@
 let API_ENDPOINT = '';
 
-if (process.env.NODE_ENV === 'development')
+if (process.env.NODE_ENV !== 'production')
   API_ENDPOINT = 'http://localhost:3000/api';
 else API_ENDPOINT = 'https://lttstoreclone.vercel.app/api';
 

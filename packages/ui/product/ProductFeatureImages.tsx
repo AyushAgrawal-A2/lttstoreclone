@@ -18,8 +18,8 @@ export default function ProductFeatureImages({
             className="rounded-2xl"
             src={src}
             loading="eager"
-            width={1500}
-            height={1500}
+            width={1000}
+            height={1000}
           />
         </div>
       ))}

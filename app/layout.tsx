@@ -26,9 +26,7 @@ export default function RootLayout({
       <body className="min-h-screen w-full flex flex-col overflow-y-scroll">
         <Header />
         <Navbar />
-        <div className="grow w-full max-w-[1800px] mx-auto  overflow-y-hidden">
-          {children}
-        </div>
+        <div className="grow w-full max-w-[1800px] mx-auto">{children}</div>
         <Footer />
         <Analytics />
       </body>

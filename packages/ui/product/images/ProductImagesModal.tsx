@@ -22,13 +22,13 @@ export default function ProductImagesModal({
 }: ProductImagesModalProps) {
   useEffect(() => {
     if (displayModal) {
-      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
       document.getElementById(`imageModal${modalIdx}`)?.scrollIntoView({
         behavior: 'instant',
         block: 'nearest',
         inline: 'start',
       });
-    } else document.documentElement.style.overflow = 'auto';
+    } else document.body.style.overflow = 'auto';
   }, [displayModal, modalIdx]);
 
   return (

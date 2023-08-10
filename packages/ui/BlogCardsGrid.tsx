@@ -57,7 +57,7 @@ export default function ProductCardGrid({
           <BlogCard blogCard={blogCard} />
         </div>
       ))}
-        <Loading loading={loading} />
+      <Loading loading={loading} />
     </div>
   );
 }

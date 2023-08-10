@@ -52,10 +52,10 @@ export default function ProductImagesModal({
             src={image.src}
             id={`imageModal${idx}`}
             className="w-screen max-w-5xl cursor-zoom-out"
-            loading="eager"
             width={1500}
             height={1500}
             alt={image.overlay || title}
+            sizes="100vw"
           />
           {image.overlay || title}
         </div>

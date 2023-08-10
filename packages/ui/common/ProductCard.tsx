@@ -26,9 +26,9 @@ export default function ProductCard({ productCard }: ProductCardProps) {
             className="bg-bgTertiary aspect-square object-cover group-hover:animate-grow"
             src={productCard.images[imgPos].src}
             alt={productCard.title}
-            loading="eager"
             width={1000}
             height={1000}
+            sizes="(max-width: 1024px) 100vw, 33vw"
           />
         </Link>
         <div

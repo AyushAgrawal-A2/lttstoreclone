@@ -17,9 +17,9 @@ export default function ProductFeatureImages({
             alt={'product features images'}
             className="rounded-2xl"
             src={src}
-            loading="eager"
             width={1000}
             height={1000}
+            sizes="(max-width: 768px) 50vw, 33vw"
           />
         </div>
       ))}

@@ -16,9 +16,9 @@ export default function BlogCard({ blogCard }: BlogCardProps) {
             className="max-h-80 h-full w-full object-cover hover:animate-grow"
             src={imgURL}
             alt={'blog'}
-            loading="eager"
             width={1000}
             height={1000}
+            sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
         <div className="text-center tracking-wide text-xl font-black group-hover:underline">

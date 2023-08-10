@@ -38,9 +38,9 @@ export default function ProductImagesPreview({
               src={image.src}
               className="object-contain h-14 w-14 lg:h-28 lg:w-28 rounded-lg bg-[#f2f2f2] hover:opacity-90 cursor-pointer"
               onClick={() => scrollProductImages(idx)}
-              loading="eager"
               width={1500}
               height={1500}
+              sizes="5vw"
             />
           </li>
         ))}

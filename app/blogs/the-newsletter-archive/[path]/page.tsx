@@ -43,9 +43,9 @@ export default async function Page({
                 key={data}
                 className="mx-auto"
                 src={data}
-                loading="eager"
                 width={1000}
                 height={1000}
+                sizes="100vw"
               />
             ) : (
               <p

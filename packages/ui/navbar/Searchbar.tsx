@@ -100,9 +100,9 @@ export default function Searchbar() {
                         alt={productCard.title}
                         src={productCard.images[0].src}
                         className="h-14"
-                        loading="eager"
                         width={1500}
                         height={1500}
+                        sizes="75px"
                       />
                       <div className="pl-4">{productCard.title}</div>
                     </Link>

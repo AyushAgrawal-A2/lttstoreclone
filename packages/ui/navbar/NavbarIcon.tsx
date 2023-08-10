@@ -4,25 +4,17 @@ import Link from 'next/link';
 
 type NavbarIconProps = {
   href: string;
-  faIcon?: IconDefinition;
-  children?: React.ReactNode;
+  faIcon: IconDefinition;
 };
 
-export default function NavbarIcon({
-  href,
-  faIcon,
-  children,
-}: NavbarIconProps) {
+export default function NavbarIcon({ href, faIcon }: NavbarIconProps) {
   return (
     <Link href={href}>
-      {faIcon && (
-        <FontAwesomeIcon
-          icon={faIcon}
-          size={'lg'}
-          className="hover:scale-[1.15]"
-        />
-      )}
-      {children}
+      <FontAwesomeIcon
+        icon={faIcon}
+        size={'lg'}
+        className="hover:scale-[1.15]"
+      />
     </Link>
   );
 }

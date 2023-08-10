@@ -9,6 +9,7 @@ import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import AppTheme from './AppTheme';
 import Logo from '../common/Logo';
+import Link from 'next/link';
 
 export default function Navbar() {
   const scrollY = useRef(0);
@@ -44,9 +45,9 @@ export default function Navbar() {
         <div className="md:hidden w-24">
           <Sidebar />
         </div>
-        <NavbarIcon href="/">
+        <Link href="/">
           <Logo size={50} />
-        </NavbarIcon>
+        </Link>
         <div className="hidden md:flex flex-row gap-[10px] lg:gap-[50px] text-xl font-semibold">
           <NavbarTitle
             href="/"

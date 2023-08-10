@@ -25,7 +25,7 @@ export default function Searchbar() {
           sortBy: 'bestseller,asc',
           searchText,
         });
-        const path = `${API_ENDPOINT}/all-products-1/?${searchParams.toString()}`;
+        const path = `${API_ENDPOINT}/collections/all-products-1/?${searchParams.toString()}`;
         fetch(path)
           .then((res) => res.json())
           .then(({ productCards }) => {

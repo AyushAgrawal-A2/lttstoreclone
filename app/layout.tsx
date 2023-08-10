@@ -2,11 +2,14 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 import { Poppins } from 'next/font/google';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import Header from '@/packages/ui/common/Header';
 import Navbar from '@/packages/ui/navbar/Navbar';
 import Footer from '@/packages/ui/common/Footer';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] });
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: 'Linus Tech Tips Store',

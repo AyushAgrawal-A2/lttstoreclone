@@ -19,7 +19,7 @@ interface ImageBannerProps {
 export default function ImageBanner({ banner }: ImageBannerProps) {
   const [curSlide, setCurSlide] = useState<number>(0);
   return (
-    <div className="relative -z-10">
+    <div className="relative z-10">
       <Swiper
         centeredSlides={true}
         slidesPerView={1}

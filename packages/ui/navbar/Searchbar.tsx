@@ -1,6 +1,6 @@
 'use client';
 
-import API_ENDPOINT from '@/packages/config/api_endpoints';
+import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -19,15 +19,7 @@ export default function Searchbar() {
     function getSearchResult() {
       if (!searchText) setSearchResultsAreShown(false);
       else {
-        const searchParams = new URLSearchParams({
-          page: '1',
-          perPage: '4',
-          sortBy: 'bestseller,asc',
-          searchText,
-        });
-        const path = `${API_ENDPOINT}/collections/all-products-1/?${searchParams.toString()}`;
-        fetch(path)
-          .then((res) => res.json())
+        fetchProductCards('all-product-1', 1, 4, 'bestseller,asc', searchText)
           .then(({ productCards }) => {
             setProductCards(productCards);
             setSearchResultsAreShown(true);

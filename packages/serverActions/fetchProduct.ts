@@ -1,8 +1,7 @@
 'use server';
 
-import { cache } from 'react';
 import { getProduct } from '../prisma/products';
 
-const fetchProduct = cache(async (path: string) => await getProduct(path));
-
-export default fetchProduct;
+export default async function fetchProduct(path: string) {
+  return await getProduct(path);
+}

@@ -2,7 +2,7 @@ import API_ENDPOINT from '@/packages/config/api_endpoints';
 import BlogCard from '@/packages/ui/common/BlogCard';
 import Button from '@/packages/ui/common/Button';
 import ComponentSlides from '@/packages/ui/common/ComponentSlides';
-import ImageBanner from '@/packages/ui/ImageBanner';
+import ImageBanner from '@/packages/ui/home/ImageBanner';
 import ProductCard from '@/packages/ui/common/ProductCard';
 import Link from 'next/link';
 

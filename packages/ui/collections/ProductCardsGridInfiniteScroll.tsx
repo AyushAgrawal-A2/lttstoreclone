@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
-import loadMoreProductCards from '@/packages/utils/loadMoreProductCards';
+import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 interface ProductCardsGridInfiniteScrollProps {
   collection: string;
@@ -30,12 +30,12 @@ export default function ProductCardsGridInfiniteScroll({
 
   useEffect(() => {
     if (page < 2) return;
-    loadMoreProductCards(collection, page, perPage, sortBy)
-      .then(({ productCards }) => {
+    fetchProductCards(collection, page, perPage, sortBy).then(
+      ({ productCards }) => {
         setProductCard((prev) => [...prev, ...productCards]);
         setLoading(false);
-      })
-      .catch(console.log);
+      }
+    );
   }, [collection, page, perPage, sortBy]);
 
   useEffect(() => {

@@ -6,7 +6,6 @@ import ProductReview from './ProductReview';
 import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
 import { useEffect, useState, useTransition } from 'react';
-import { load } from 'cheerio';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;

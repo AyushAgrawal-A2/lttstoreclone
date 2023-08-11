@@ -115,7 +115,6 @@ export async function getProductCards({
   searchText = '',
   filter = [],
 }) {
-  console.log('called');
   const [sortRank, sortDirection] = sortBy.split(',');
   const rank = [
     'featured',
@@ -190,7 +189,6 @@ export async function getProductCards({
     productCardsPromise,
     totalCardsPromise,
   ]);
-  console.log('query over');
   return { productCards, totalCards };
 
   // if (sortBy) {

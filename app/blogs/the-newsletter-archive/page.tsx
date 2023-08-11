@@ -1,6 +1,6 @@
+import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 import BlogCardsGrid from '@/packages/ui/blogs/BlogCardsGrid';
 import BlogCardsGridInfiniteScroll from '@/packages/ui/blogs/BlogCardsGridInfiniteScroll';
-import loadMoreBlogCards from '@/packages/utils/loadMoreBlogCards';
 import { Suspense } from 'react';
 
 // export const runtime = 'edge';
@@ -9,7 +9,7 @@ export default async function Page() {
   // document.title = 'The Newsletter Archive - Linus Tech Tips Store';
   const page = 1;
   const perPage = 12;
-  const { blogCards, totalCards } = await loadMoreBlogCards(page, perPage);
+  const { blogCards, totalCards } = await fetchBlogCards(page, perPage);
 
   return (
     <main className="md:m-8">

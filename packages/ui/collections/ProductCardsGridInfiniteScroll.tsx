@@ -39,8 +39,8 @@ export default function ProductCardsGridInfiniteScroll({
   }, [collection, page, perPage, sortBy]);
 
   useEffect(() => {
-    document.addEventListener('scroll', handleScrollEnd);
-    function handleScrollEnd() {
+    document.addEventListener('scroll', handleScroll);
+    function handleScroll() {
       if (
         !loading &&
         page * perPage < totalCards &&
@@ -52,7 +52,7 @@ export default function ProductCardsGridInfiniteScroll({
         setPage(page + 1);
       }
     }
-    return () => document.removeEventListener('scroll', handleScrollEnd);
+    return () => document.removeEventListener('scroll', handleScroll);
   }, [collection, page, perPage, sortBy, totalCards, loading, productCards]);
 
   return (

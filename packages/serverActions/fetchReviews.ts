@@ -1,21 +1,17 @@
-'use server';
+import API_ENDPOINT from '../config/api_endpoints';
 
-import getProductReviews from '../cheerio/reviews';
-
-interface FetchReviewsParams {
-  lttProductId: string;
-  page: string;
-  reviewStarsFilter: string;
-}
-
-export default async function fetchReviews({
-  lttProductId,
-  page,
-  reviewStarsFilter,
-}: FetchReviewsParams) {
-  return await getProductReviews({
+export default async function fetchReviews(
+  lttProductId: string,
+  page: number,
+  reviewStarsFilter: string
+) {
+  const searchParams = new URLSearchParams({
     lttProductId,
-    page,
+    page: page.toString(),
     reviewStarsFilter,
   });
+  const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
+  return await fetch(path)
+    .then((res) => res.json())
+    .catch(console.log);
 }

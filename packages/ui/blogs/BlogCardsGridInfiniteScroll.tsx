@@ -3,7 +3,7 @@
 import BlogCardsGrid from './BlogCardsGrid';
 import Loading from '../common/Loading';
 import { useEffect, useState } from 'react';
-import loadMoreBlogCards from '@/packages/utils/loadMoreBlogCards';
+import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 
 interface BlogCardsGridInfiniteScrollProps {
   perPage: number;
@@ -20,7 +20,7 @@ export default function BlogCardsGridInfiniteScroll({
 
   useEffect(() => {
     if (page < 2) return;
-    loadMoreBlogCards(page, perPage).then(({ blogCards }) => {
+    fetchBlogCards(page, perPage).then(({ blogCards }) => {
       setBlogCards((prev) => [...prev, ...blogCards]);
       setLoading(false);
     });

@@ -1,11 +1,12 @@
 'use client';
 
-import API_ENDPOINT from '@/packages/config/api_endpoints';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
 import ProductReview from './ProductReview';
 import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useState } from 'react';
+import fetchReviews from '@/packages/serverActions/fetchReviews';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;
@@ -24,19 +25,12 @@ export default function ProductReviews({
 
   useEffect(() => {
     setLoading(true);
-    const searchParams = new URLSearchParams({
-      lttProductId,
-      page: page.toString(),
-      reviewStarsFilter,
-    });
-    const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
-    fetch(path)
-      .then((res) => res.json())
-      .then((reviewsResponse) => {
+    fetchReviews(lttProductId, page, reviewStarsFilter).then(
+      (reviewsResponse) => {
         setLoading(false);
         setReviewsResponse(reviewsResponse);
-      })
-      .catch(console.log);
+      }
+    );
   }, [lttProductId, page, reviewStarsFilter]);
 
   function changeReviewStarsFilter(stars: string) {

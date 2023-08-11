@@ -1,21 +1,15 @@
-import API_ENDPOINT from '@/packages/config/api_endpoints';
 import BlogCard from '@/packages/ui/common/BlogCard';
 import Button from '@/packages/ui/common/Button';
 import ComponentSlides from '@/packages/ui/common/ComponentSlides';
 import ImageBanner from '@/packages/ui/home/ImageBanner';
 import ProductCard from '@/packages/ui/common/ProductCard';
 import Link from 'next/link';
+import fetchHome from '@/packages/serverActions/fetchHome';
 
 // export const runtime = 'edge';
 
 export default async function Page() {
-  const path = API_ENDPOINT + '/home';
-  const home: Home = await fetch(path)
-    .then((res) => {
-      if (res.ok) return res.json();
-    })
-    .catch(console.log);
-  const { homeBanner, featured, bestseller, blogs } = home;
+  const { homeBanner, featured, bestseller, blogs }: Home = await fetchHome();
 
   return (
     <main className="mx-8">

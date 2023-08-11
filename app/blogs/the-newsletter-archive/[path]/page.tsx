@@ -1,5 +1,5 @@
-import API_ENDPOINT from '@/packages/config/api_endpoints';
 import { getBlogPaths } from '@/packages/prisma/blogs';
+import fetchBlog from '@/packages/serverActions/fetchBlog';
 import Image from 'next/image';
 
 // export const runtime = 'edge';
@@ -18,10 +18,7 @@ export default async function Page({
 }: {
   params: { path: string };
 }) {
-  const blogPath = `${API_ENDPOINT}/blogs/the-newsletter-archive/${path}`;
-  const blog = await fetch(blogPath)
-    .then((res) => res.json())
-    .catch(console.log);
+  const blog = await fetchBlog(path);
   const {
     heading,
     date,

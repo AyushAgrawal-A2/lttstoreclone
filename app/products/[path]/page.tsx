@@ -1,4 +1,3 @@
-import API_ENDPOINT from '@/packages/config/api_endpoints';
 import Images from '@/packages/ui/product/images/Images';
 import ProductDetails from '@/packages/ui/product/details/ProductDetails';
 import ProductFeatureImages from '@/packages/ui/product/ProductFeatureImages';
@@ -9,6 +8,8 @@ import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
 import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
 import { getProductPaths } from '@/packages/prisma/products';
+import fetchProduct from '@/packages/serverActions/fetchProduct';
+import { Suspense } from 'react';
 
 // export const runtime = 'edge';
 
@@ -26,12 +27,7 @@ export default async function Page({
 }: {
   params: { path: string };
 }) {
-  const productPath = `${API_ENDPOINT}/products/${path}`;
-  const { product, recommendations } = await fetch(productPath)
-    .then((res) => {
-      if (res.ok) return res.json();
-    })
-    .catch(console.log);
+  const { product, recommendations } = await fetchProduct(path);
 
   // document.title = product.title + ' - Linus Tech Tips Store';
 
@@ -59,12 +55,12 @@ export default async function Page({
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
-      {product.reviewStats && (
+      <Suspense>
         <ProductReviews
           reviewStats={product.reviewStats}
           lttProductId={product.lttProductId}
         />
-      )}
+      </Suspense>
       <ProductRecommendation productCards={recommendations} />
     </main>
   );

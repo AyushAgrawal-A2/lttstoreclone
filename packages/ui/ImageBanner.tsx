@@ -31,8 +31,8 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
               src={imgURL}
               className="rounded-2xl"
               alt={'banner'}
-              width={1500}
-              height={700}
+              width={2560}
+              height={1200}
               sizes="100vw"
             />
           </SwiperSlide>

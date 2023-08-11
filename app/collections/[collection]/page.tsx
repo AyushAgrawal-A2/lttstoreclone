@@ -1,6 +1,8 @@
 import API_ENDPOINT from '@/packages/config/api_endpoints';
-import ProductCardsGrid from '@/packages/ui/collections/ProductCardsGrid';
+import ProductCardsGridInfiniteScroll from '@/packages/ui/collections/ProductCardsGridInfiniteScroll';
+import ProductCardGrid from '@/packages/ui/collections/ProductCardsGrid';
 import SortBy from '@/packages/ui/collections/SortBy';
+import loadMoreProductCards from '@/packages/utils/loadMoreProductCards';
 
 // export const runtime = 'edge';
 export function generateStaticParams() {
@@ -23,15 +25,12 @@ export default async function Page({
   const perPage = 12;
   const sortBy =
     typeof searchParams.sortBy === 'string' ? searchParams.sortBy : undefined;
-  const apiSearchParams = new URLSearchParams({
-    page: page.toString(),
-    perPage: perPage.toString(),
-    sortBy: sortBy ?? '',
-  });
-  const path = `${API_ENDPOINT}/collections/${collection}?${apiSearchParams.toString()}`;
-  const { productCards, totalCards } = await fetch(path)
-    .then((res) => res.json())
-    .catch(console.log);
+  const { productCards, totalCards } = await loadMoreProductCards(
+    collection,
+    page,
+    perPage,
+    sortBy
+  ).catch(console.log);
 
   // if (category === 'all')
   //   document.title = 'All Products - Linus Tech Tips Store';
@@ -45,11 +44,11 @@ export default async function Page({
     <main className="md:mx-8">
       <div className="max-w-[1800px] mx-auto py-9 px-8 md:px-12">
         <SortBy totalCards={totalCards} />
-        <ProductCardsGrid
+        <ProductCardGrid productCards={productCards} />
+        <ProductCardsGridInfiniteScroll
           collection={collection}
           perPage={perPage}
           sortBy={sortBy}
-          initialProductCards={productCards}
           totalCards={totalCards}
         />
       </div>

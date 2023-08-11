@@ -5,17 +5,17 @@ import BlogCard from './common/BlogCard';
 import Loading from './common/Loading';
 import { useEffect, useState } from 'react';
 
-interface ProductCardGridProps {
+interface BlogCardsGridProps {
   perPage: number;
   initialBlogCards: BlogCard[];
   totalCards: number;
 }
 
-export default function ProductCardGrid({
+export default function BlogCardsGrid({
   perPage,
   initialBlogCards,
   totalCards,
-}: ProductCardGridProps) {
+}: BlogCardsGridProps) {
   const [blogCards, setBlogCards] = useState<BlogCard[]>(initialBlogCards);
   const [loading, setLoading] = useState(false);
 

@@ -20,22 +20,26 @@ export default function AppTheme() {
   }
 
   useEffect(() => {
-    const checkDarkTheme = () => {
-      const storedTheme = window.localStorage.getItem('prefered-theme');
-      const operatingSystemTheme = window.matchMedia(
-        '(prefers-color-scheme: dark)'
-      );
-      if (storedTheme) {
-        storedTheme === 'light' ? setLightTheme() : setDarkTheme();
-      } else if (operatingSystemTheme.matches) {
-        setDarkTheme();
-      }
-      operatingSystemTheme.addEventListener(
+    const operatingSystemTheme = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    );
+    function handleSystemThemeChange(e: MediaQueryListEvent) {
+      e.matches ? setDarkTheme() : setLightTheme();
+    }
+    operatingSystemTheme.addEventListener('change', handleSystemThemeChange);
+
+    const storedTheme = window.localStorage.getItem('prefered-theme');
+    if (storedTheme) {
+      storedTheme === 'light' ? setLightTheme() : setDarkTheme();
+    } else if (operatingSystemTheme.matches) {
+      setDarkTheme();
+    }
+
+    return () =>
+      operatingSystemTheme.removeEventListener(
         'change',
-        (e) => e.matches && setDarkTheme()
+        handleSystemThemeChange
       );
-    };
-    checkDarkTheme();
   }, []);
 
   return (

@@ -4,7 +4,7 @@ import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Searchbar() {
@@ -14,12 +14,20 @@ export default function Searchbar() {
   const [searchText, setSearchText] = useState<string>('');
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const timeoutId = useRef<NodeJS.Timeout>();
+  const router = useRouter();
+
+  function resetSearchBar() {
+    setSearchbarIsShown(false);
+    setSearchResultsAreShown(false);
+    setSearchText('');
+    setProductCards([]);
+  }
 
   useEffect(() => {
     function getSearchResult() {
       if (!searchText) setSearchResultsAreShown(false);
       else {
-        fetchProductCards('all-product-1', 1, 4, 'bestseller,asc', searchText)
+        fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
           .then(({ productCards }) => {
             setProductCards(productCards);
             setSearchResultsAreShown(true);
@@ -39,11 +47,17 @@ export default function Searchbar() {
 
   function hideSearchbar() {
     document.body.style.overflow = 'auto';
+    resetSearchBar();
+  }
+
+  function handleResultClick(path: string) {
     setSearchbarIsShown(false);
+    resetSearchBar();
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    resetSearchBar();
     gotoSearchPage();
   }
 
@@ -60,7 +74,7 @@ export default function Searchbar() {
         onClick={displaySearchbar}
       />
       <div
-        className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center ${
+        className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center z-40  ${
           searchbarIsShown ? 'flex' : 'hidden'
         }`}>
         <form
@@ -84,20 +98,20 @@ export default function Searchbar() {
                 <div>
                   <div className="p-1">Products</div>
                   {productCards.map((productCard) => (
-                    <Link
+                    <div
                       key={productCard.path}
-                      href={productCard.path}
-                      className="flex items-center w-full hover:underline p-2">
+                      className="flex items-center w-full hover:underline p-2"
+                      onClick={() => handleResultClick(productCard.path)}>
                       <Image
                         alt={productCard.title}
                         src={productCard.images[0].src}
-                        className="h-14"
+                        className="h-14 w-fit"
                         width={1500}
                         height={1500}
                         sizes="75px"
                       />
                       <div className="pl-4">{productCard.title}</div>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               )}

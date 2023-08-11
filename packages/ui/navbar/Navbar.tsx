@@ -16,7 +16,7 @@ export default function Navbar() {
   const [scrollUp, setScrollUp] = useState(false);
 
   useEffect(() => {
-    document.addEventListener('scroll', onScroll);
+    document.addEventListener('scrollend', onScroll);
     function onScroll() {
       if (
         scrollUp &&
@@ -32,14 +32,14 @@ export default function Navbar() {
         setScrollUp(true);
       scrollY.current = document.documentElement.scrollTop;
     }
-    return () => document.removeEventListener('scroll', onScroll);
+    return () => document.removeEventListener('scrollend', onScroll);
   }, [scrollUp]);
 
   return (
     <div
       id="navbar"
-      className={`${
-        scrollUp && 'top-0 border-b animate-slideInY bg-black z-20'
+      className={`z-20 ${
+        scrollUp && 'top-0 border-b animate-slideInY bg-black'
       } sticky bg-bgPrimary`}>
       <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
         <div className="md:hidden w-24">

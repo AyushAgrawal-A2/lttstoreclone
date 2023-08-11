@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface ImageBannerProps {
   banner: HomeBanner[];
@@ -25,16 +26,20 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
         slidesPerView={1}
         spaceBetween={10}
         onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
-        {banner.map(({ imgURL }) => (
+        {banner.map(({ link, imgURL }) => (
           <SwiperSlide key={imgURL}>
-            <Image
-              src={imgURL}
-              className="rounded-2xl"
-              alt={'banner'}
-              width={2560}
-              height={1200}
-              sizes="100vw"
-            />
+            <Link
+              href={link}
+              prefetch={true}>
+              <Image
+                src={imgURL}
+                className="rounded-2xl"
+                alt={'banner'}
+                width={2560}
+                height={1200}
+                sizes="100vw"
+              />
+            </Link>
           </SwiperSlide>
         ))}
         <ImageBannerButtons

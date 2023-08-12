@@ -9,7 +9,6 @@ import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
 import { getProductPaths } from '@/packages/prisma/products';
 import fetchProduct from '@/packages/serverActions/fetchProduct';
-import { Suspense } from 'react';
 
 // export const runtime = 'edge';
 
@@ -55,12 +54,10 @@ export default async function Page({
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
-      <Suspense>
-        <ProductReviews
-          reviewStats={product.reviewStats}
-          lttProductId={product.lttProductId}
-        />
-      </Suspense>
+      <ProductReviews
+        reviewStats={product.reviewStats}
+        lttProductId={product.lttProductId}
+      />
       <ProductRecommendation productCards={recommendations} />
     </main>
   );

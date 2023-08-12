@@ -1,4 +1,8 @@
-import API_ENDPOINT from '../config/api_endpoints';
+'use server';
+
+import { getProductCards } from '../prisma/products';
+
+// import API_ENDPOINT from '../config/api_endpoints';
 
 export default async function fetchProductCards(
   collection: string,
@@ -8,14 +12,12 @@ export default async function fetchProductCards(
   searchText?: string,
   filter = []
 ) {
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    perPage: perPage.toString(),
-    sortBy: sortBy ?? '',
-    searchText: searchText ?? '',
+  return await getProductCards({
+    collection,
+    page,
+    perPage,
+    sortBy,
+    searchText,
+    filter,
   });
-  const path = `${API_ENDPOINT}/collections/${collection}?${searchParams.toString()}`;
-  return await fetch(path)
-    .then((res) => res.json())
-    .catch(console.log);
 }

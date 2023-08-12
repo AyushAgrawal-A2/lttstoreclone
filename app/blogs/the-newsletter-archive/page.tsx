@@ -1,7 +1,6 @@
 import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 import BlogCardsGrid from '@/packages/ui/blogs/BlogCardsGrid';
 import BlogCardsGridInfiniteScroll from '@/packages/ui/blogs/BlogCardsGridInfiniteScroll';
-import { Suspense } from 'react';
 
 // export const runtime = 'edge';
 
@@ -18,12 +17,10 @@ export default async function Page() {
       </div>
       <div className="py-4 px-12">
         <BlogCardsGrid blogCards={blogCards} />
-        <Suspense>
-          <BlogCardsGridInfiniteScroll
-            perPage={perPage}
-            totalCards={totalCards}
-          />
-        </Suspense>
+        <BlogCardsGridInfiniteScroll
+          perPage={perPage}
+          totalCards={totalCards}
+        />
       </div>
     </main>
   );

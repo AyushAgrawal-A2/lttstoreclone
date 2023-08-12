@@ -1,7 +1,6 @@
 import ProductCardsGridInfiniteScroll from '@/packages/ui/collections/ProductCardsGridInfiniteScroll';
 import ProductCardGrid from '@/packages/ui/collections/ProductCardsGrid';
 import SortBy from '@/packages/ui/collections/SortBy';
-import { Suspense } from 'react';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import { getProductCollections } from '@/packages/prisma/products';
 
@@ -51,14 +50,12 @@ export default async function Page({
       <div className="mx-auto py-9 px-8 md:px-12">
         <SortBy totalCards={totalCards} />
         <ProductCardGrid productCards={productCards} />
-        <Suspense>
-          <ProductCardsGridInfiniteScroll
-            collection={collection}
-            perPage={perPage}
-            sortBy={sortBy}
-            totalCards={totalCards}
-          />
-        </Suspense>
+        <ProductCardsGridInfiniteScroll
+          collection={collection}
+          perPage={perPage}
+          sortBy={sortBy}
+          totalCards={totalCards}
+        />
       </div>
     </main>
   );

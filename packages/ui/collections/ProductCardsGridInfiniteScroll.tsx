@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
@@ -18,47 +18,42 @@ export default function ProductCardsGridInfiniteScroll({
   sortBy,
   totalCards,
 }: ProductCardsGridInfiniteScrollProps) {
-  const [productCards, setProductCard] = useState<ProductCard[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [productCards, setProductCards] = useState<ProductCard[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setProductCard([]);
-    setPage(1);
-    setLoading(false);
+    setProductCards([]);
   }, [sortBy]);
-
-  useEffect(() => {
-    if (page < 2) return;
-    fetchProductCards(collection, page, perPage, sortBy).then(
-      ({ productCards }) => {
-        setProductCard((prev) => [...prev, ...productCards]);
-        setLoading(false);
-      }
-    );
-  }, [collection, page, perPage, sortBy]);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);
     function handleScroll() {
       if (
-        !loading &&
-        page * perPage < totalCards &&
+        !isPending &&
+        productCards.length + perPage < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
           0.85 * document.documentElement.scrollHeight
       ) {
-        setLoading(true);
-        setPage(page + 1);
+        startTransition(() => loadNextPage(productCards.length / perPage + 2));
       }
     }
+    async function loadNextPage(page: number) {
+      const { productCards: nextProductCards } = await fetchProductCards(
+        collection,
+        page,
+        perPage,
+        sortBy
+      );
+      setProductCards([...productCards, ...nextProductCards]);
+    }
     return () => document.removeEventListener('scroll', handleScroll);
-  }, [collection, page, perPage, sortBy, totalCards, loading, productCards]);
+  }, [collection, perPage, sortBy, totalCards, productCards, isPending]);
 
   return (
     <>
       <ProductCardGrid productCards={productCards} />
-      <Loading loading={loading} />
+      <Loading loading={isPending} />
     </>
   );
 }

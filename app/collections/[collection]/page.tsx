@@ -3,14 +3,20 @@ import ProductCardGrid from '@/packages/ui/collections/ProductCardsGrid';
 import SortBy from '@/packages/ui/collections/SortBy';
 import { Suspense } from 'react';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import { getProductCollections } from '@/packages/prisma/products';
 
 // export const runtime = 'edge';
-export function generateStaticParams() {
-  return [
-    { collection: 'accessories' },
-    { collection: 'clothing' },
-    { collection: 'all-products-1' },
-  ];
+
+export async function generateStaticParams() {
+  const collectionsArray = await getProductCollections();
+  const uniqueCollections: string[] = [];
+  collectionsArray.forEach(({ collections }) => {
+    collections.forEach((collection) => {
+      if (!uniqueCollections.includes(collection))
+        uniqueCollections.push(collection);
+    });
+  }, []);
+  return uniqueCollections.map((collection) => ({ collection }));
 }
 
 export default async function Page({

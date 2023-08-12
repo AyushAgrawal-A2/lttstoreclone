@@ -2,9 +2,9 @@ export default function Header() {
   return (
     <div
       id="header"
-      className="bg-gradient text-white text-center leading-5 tracking-wider px-5 py-2.5">
-      DUE TO THE INCREDIBLE SUPPORT DURING LIME DAY, SHIPMENTS MAY BE DELAYED BY
-      A FEW DAYS. WE EXPECT TO RETURN TO NORMAL PROCESSING TIMES BY JULY 24
+      className="text-sm md:text-base font-bold bg-gradient text-white text-center leading-5 tracking-wide px-5 py-2.5">
+      THIS WEBSITE A CLONE OF LTTSTORE.COM, DEVELOPED AS A HOBBY PROJECT TO
+      LEARN FULLSTACK DEVELOPMENT.
     </div>
   );
 }

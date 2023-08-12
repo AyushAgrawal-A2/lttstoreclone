@@ -51,7 +51,7 @@ export default function Searchbar() {
   }
 
   function handleResultClick(path: string) {
-    setSearchbarIsShown(false);
+    router.replace(path);
     resetSearchBar();
   }
 
@@ -100,7 +100,7 @@ export default function Searchbar() {
                   {productCards.map((productCard) => (
                     <div
                       key={productCard.path}
-                      className="flex items-center w-full hover:underline p-2"
+                      className="flex items-center w-full hover:underline p-2 cursor-pointer"
                       onClick={() => handleResultClick(productCard.path)}>
                       <Image
                         alt={productCard.title}

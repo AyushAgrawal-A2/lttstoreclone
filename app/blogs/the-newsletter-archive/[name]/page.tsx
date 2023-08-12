@@ -8,22 +8,23 @@ export async function generateStaticParams() {
   const blogPaths = await getBlogPaths();
   return blogPaths.map(({ path }) => {
     const temp = path.split('/');
-    path = temp[temp.length - 1];
-    return { path };
+    const name = temp[temp.length - 1];
+    return { name };
   });
 }
 
 export default async function Page({
-  params: { path },
+  params: { name },
 }: {
-  params: { path: string };
+  params: { name: string };
 }) {
-  const blog = await fetchBlog(path);
+  const blog = await fetchBlog(name);
+  if (!blog) return <></>;
   const {
     heading,
     date,
     content,
-  }: { heading: string; date: string; content: BlogContent[] } = blog;
+  }: { heading: string; date: Date; content: BlogContent[] } = blog;
 
   // document.title = blog.heading + ' - Linus Tech Tips Store';
 

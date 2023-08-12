@@ -4,44 +4,53 @@ import ProductReviewsHistogram from './ProductReviewsHistogram';
 import ProductReview from './ProductReview';
 import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
-  reviewStats: ReviewStats;
+  reviewStats?: ReviewStats;
   lttProductId: string;
+  InitialReviewsResponse: ReviewResponse;
 };
 
 export default function ProductReviews({
   reviewStats,
   lttProductId,
+  InitialReviewsResponse,
 }: ProductReviewsProps) {
   const [page, setPage] = useState(1);
   const [reviewStarsFilter, setReviewStarsFilter] = useState('');
-  const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
+  const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>(
+    InitialReviewsResponse
+  );
   const [isPending, startTransition] = useTransition();
 
-  const totalPages = Math.ceil((reviewsResponse?.total_count ?? 0) / 5);
-
-  useEffect(() => {
-    startTransition(() => loadNextPage(page));
-    async function loadNextPage(page: number) {
+  function changePage(nextPage: number) {
+    if (page === nextPage) return;
+    startTransition(() => pageTransition(nextPage));
+    async function pageTransition(nextPage: number) {
       const reviewsResponse = await fetchReviews(
         lttProductId,
-        page,
+        nextPage,
         reviewStarsFilter
       );
+      setPage(nextPage);
       setReviewsResponse(reviewsResponse);
     }
-  }, [lttProductId, page, reviewStarsFilter]);
+  }
 
   function changeReviewStarsFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
-    setPage(1);
-    setReviewStarsFilter(stars);
+    startTransition(() => filterTransition(stars));
+    async function filterTransition(stars: string) {
+      const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
+      setPage(1);
+      setReviewStarsFilter(stars);
+      setReviewsResponse(reviewsResponse);
+    }
   }
 
-  if (!reviewsResponse) return <Loading loading={true} />;
+  if (!reviewStats || !reviewsResponse) return <></>;
   if (reviewsResponse.reviews.length === 0) return <></>;
 
   return (
@@ -61,8 +70,8 @@ export default function ProductReviews({
         ))}
         <PageChanger
           page={page}
-          totalPages={totalPages}
-          setPage={setPage}
+          totalPages={Math.ceil(reviewsResponse.total_count / 5)}
+          changePage={changePage}
         />
       </div>
       <Loading loading={isPending} />

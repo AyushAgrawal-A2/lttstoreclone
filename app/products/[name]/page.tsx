@@ -9,6 +9,7 @@ import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
 import { getProductPaths } from '@/packages/prisma/products';
 import fetchProduct from '@/packages/serverActions/fetchProduct';
+import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 // export const runtime = 'edge';
 
@@ -16,17 +17,19 @@ export async function generateStaticParams() {
   const productPaths = await getProductPaths();
   return productPaths.map(({ path }) => {
     const temp = path.split('/');
-    path = temp[temp.length - 1];
-    return { path };
+    const name = temp[temp.length - 1];
+    return { name };
   });
 }
 
 export default async function Page({
-  params: { path },
+  params: { name },
 }: {
-  params: { path: string };
+  params: { name: string };
 }) {
-  const { product, recommendations } = await fetchProduct(path);
+  const { product, recommendations } = await fetchProduct(name);
+  if (!product) return <></>;
+  const reviewsResponse = await fetchReviews(product.lttProductId, 1, '');
   // document.title = product.title + ' - Linus Tech Tips Store';
 
   return (
@@ -54,8 +57,9 @@ export default async function Page({
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
       <ProductReviews
-        reviewStats={product.reviewStats}
+        reviewStats={product.reviewStats ?? undefined}
         lttProductId={product.lttProductId}
+        InitialReviewsResponse={reviewsResponse}
       />
       <ProductRecommendation productCards={recommendations} />
     </main>

@@ -1,10 +1,8 @@
 'use server';
 
-import API_ENDPOINT from '../config/api_endpoints';
+import { getBlog } from '../prisma/blogs';
 
-export default async function fetchBlog(path: string) {
-  const blogPath = `${API_ENDPOINT}/blogs/the-newsletter-archive/${path}`;
-  return await fetch(blogPath)
-    .then((res) => res.json())
-    .catch(console.log);
+export default async function fetchBlog(name: string) {
+  const blogPath = '/blogs/the-newsletter-archive/' + name;
+  return await getBlog({ blogPath });
 }

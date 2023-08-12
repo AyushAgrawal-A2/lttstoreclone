@@ -6,9 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: Request,
-  { params }: { params: { path: string } }
+  { params }: { params: { name: string } }
 ) {
-  const name = params.path;
+  const name = params.name;
   const path = '/products/' + name;
   const productPromise = getProduct(path);
   const recommendationsPromise = getProductCards({

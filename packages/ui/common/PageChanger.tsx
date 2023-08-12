@@ -1,3 +1,5 @@
+'use client';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAngleLeft,
@@ -9,24 +11,28 @@ import {
 interface PageChangerProps {
   page: number;
   totalPages: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  changePage: (nextPage: number) => void;
 }
 
-export default function PageChanger({ page, totalPages, setPage }: PageChangerProps) {
+export default function PageChanger({
+  page,
+  totalPages,
+  changePage,
+}: PageChangerProps) {
   return (
     <div className="flex justify-center items-center">
       {page > 1 && (
         <FontAwesomeIcon
           icon={faAnglesLeft}
           className="px-2 cursor-pointer"
-          onClick={() => setPage(1)}
+          onClick={() => changePage(1)}
         />
       )}
       {page > 1 && (
         <FontAwesomeIcon
           icon={faAngleLeft}
           className="px-2 cursor-pointer"
-          onClick={() => setPage(page - 1)}
+          onClick={() => changePage(page - 1)}
         />
       )}
       {Array(5)
@@ -40,7 +46,7 @@ export default function PageChanger({ page, totalPages, setPage }: PageChangerPr
               className={`p-2 cursor-pointer ${
                 page === num && 'text-2xl font-bold'
               }`}
-              onClick={() => setPage(num)}>
+              onClick={() => changePage(num)}>
               {num}
             </span>
           );
@@ -49,14 +55,14 @@ export default function PageChanger({ page, totalPages, setPage }: PageChangerPr
         <FontAwesomeIcon
           icon={faAngleRight}
           className="px-2 cursor-pointer"
-          onClick={() => setPage(page + 1)}
+          onClick={() => changePage(page + 1)}
         />
       )}
       {page < totalPages && (
         <FontAwesomeIcon
           icon={faAnglesRight}
           className="px-2 cursor-pointer"
-          onClick={() => setPage(totalPages)}
+          onClick={() => changePage(totalPages)}
         />
       )}
     </div>

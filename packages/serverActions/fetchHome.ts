@@ -1,12 +1,7 @@
 'use server';
 
-import API_ENDPOINT from '../config/api_endpoints';
+import { getHome } from '../prisma/home';
 
 export default async function fetchHome() {
-  const path = API_ENDPOINT + '/home';
-  return await fetch(path)
-    .then((res) => {
-      if (res.ok) return res.json();
-    })
-    .catch(console.log);
+  return await getHome();
 }

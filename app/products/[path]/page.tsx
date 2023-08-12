@@ -27,7 +27,6 @@ export default async function Page({
   params: { path: string };
 }) {
   const { product, recommendations } = await fetchProduct(path);
-
   // document.title = product.title + ' - Linus Tech Tips Store';
 
   return (

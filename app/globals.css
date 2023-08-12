@@ -45,7 +45,6 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
   color: var(--foreground-primary-rgb);
   background-color: var(--background-primary-rgb);
   box-sizing: border-box;

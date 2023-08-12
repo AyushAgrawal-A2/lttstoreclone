@@ -23,7 +23,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen w-full flex flex-col overflow-y-scroll">
+      <body
+        className={
+          'min-h-screen w-full flex flex-col overflow-y-scroll ' +
+          poppins.className
+        }>
         <Header />
         <Navbar />
         <div className="grow w-full max-w-[1800px] mx-auto">{children}</div>

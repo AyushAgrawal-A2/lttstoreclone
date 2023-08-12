@@ -1,4 +1,4 @@
-'use server';
+// 'use server';
 
 import API_ENDPOINT from '../config/api_endpoints';
 

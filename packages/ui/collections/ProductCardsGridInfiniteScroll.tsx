@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
 import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
+import { useEffect, useState, useTransition } from 'react';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 interface ProductCardsGridInfiniteScrollProps {
@@ -37,15 +37,15 @@ export default function ProductCardsGridInfiniteScroll({
       ) {
         startTransition(() => loadNextPage(productCards.length / perPage + 2));
       }
-    }
-    async function loadNextPage(page: number) {
-      const { productCards: nextProductCards } = await fetchProductCards(
-        collection,
-        page,
-        perPage,
-        sortBy
-      );
-      setProductCards([...productCards, ...nextProductCards]);
+      async function loadNextPage(page: number) {
+        const { productCards: nextProductCards } = await fetchProductCards(
+          collection,
+          page,
+          perPage,
+          sortBy
+        );
+        setProductCards([...productCards, ...nextProductCards]);
+      }
     }
     return () => document.removeEventListener('scroll', handleScroll);
   }, [collection, perPage, sortBy, totalCards, productCards, isPending]);

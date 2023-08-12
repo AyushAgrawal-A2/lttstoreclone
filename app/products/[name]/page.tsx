@@ -7,9 +7,9 @@ import ProductRating from '@/packages/ui/product/reviews/ProductRating';
 import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
 import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
-import { getProductPaths } from '@/packages/prisma/products';
 import fetchProduct from '@/packages/serverActions/fetchProduct';
 import fetchReviews from '@/packages/serverActions/fetchReviews';
+import { getProductPaths } from '@/packages/prisma/products';
 
 // export const runtime = 'edge';
 
@@ -59,7 +59,7 @@ export default async function Page({
       <ProductReviews
         reviewStats={product.reviewStats ?? undefined}
         lttProductId={product.lttProductId}
-        InitialReviewsResponse={reviewsResponse}
+        initialReviewsResponse={reviewsResponse}
       />
       <ProductRecommendation productCards={recommendations} />
     </main>

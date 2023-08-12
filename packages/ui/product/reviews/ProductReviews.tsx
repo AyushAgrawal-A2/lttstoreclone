@@ -10,24 +10,23 @@ import fetchReviews from '@/packages/serverActions/fetchReviews';
 type ProductReviewsProps = {
   reviewStats?: ReviewStats;
   lttProductId: string;
-  InitialReviewsResponse: ReviewResponse;
+  initialReviewsResponse: ReviewResponse;
 };
 
 export default function ProductReviews({
   reviewStats,
   lttProductId,
-  InitialReviewsResponse,
+  initialReviewsResponse,
 }: ProductReviewsProps) {
   const [page, setPage] = useState(1);
   const [reviewStarsFilter, setReviewStarsFilter] = useState('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>(
-    InitialReviewsResponse
+    initialReviewsResponse
   );
   const [isPending, startTransition] = useTransition();
 
   function changePage(nextPage: number) {
     if (page === nextPage) return;
-    startTransition(() => pageTransition(nextPage));
     async function pageTransition(nextPage: number) {
       const reviewsResponse = await fetchReviews(
         lttProductId,
@@ -37,17 +36,18 @@ export default function ProductReviews({
       setPage(nextPage);
       setReviewsResponse(reviewsResponse);
     }
+    startTransition(() => pageTransition(nextPage));
   }
 
   function changeReviewStarsFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
-    startTransition(() => filterTransition(stars));
     async function filterTransition(stars: string) {
       const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
       setPage(1);
       setReviewStarsFilter(stars);
       setReviewsResponse(reviewsResponse);
     }
+    startTransition(() => filterTransition(stars));
   }
 
   if (!reviewStats || !reviewsResponse) return <></>;

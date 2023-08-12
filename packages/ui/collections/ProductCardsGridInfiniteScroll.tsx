@@ -4,6 +4,7 @@ import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
 import { useEffect, useState, useTransition } from 'react';
 import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 interface ProductCardsGridInfiniteScrollProps {
   collection: string;
@@ -44,6 +45,7 @@ export default function ProductCardsGridInfiniteScroll({
           perPage,
           sortBy
         );
+        const reviewsResponse = await fetchReviews('6649895256167', 1, '');
         setProductCards([...productCards, ...nextProductCards]);
       }
     }

@@ -3,12 +3,12 @@ import ProductRating from './ProductRating';
 
 interface ProductReviewsHistogramProps {
   reviewStats: ReviewStats;
-  changeReviewStarsFilter: (stars: string) => void;
+  changeFilter: (stars: string) => void;
 }
 
 export default function ProductReviewsHistogram({
   reviewStats,
-  changeReviewStarsFilter,
+  changeFilter,
 }: ProductReviewsHistogramProps) {
   const totalReviews = Object.keys(reviewStats).reduce(
     (sum, star_x) => sum + reviewStats[star_x as keyof ReviewStats],
@@ -33,7 +33,7 @@ export default function ProductReviewsHistogram({
               return (
                 <div
                   key={stars}
-                  onClick={() => changeReviewStarsFilter(stars.toString())}
+                  onClick={() => changeFilter(stars.toString())}
                   className="flex items-center text-sm hover:cursor-pointer hover:opacity-50">
                   <RatingStars stars={stars} />
                   <div className="h-[18px] w-[100px] m-1 border border-neutral-700">

@@ -1,11 +1,12 @@
 'use client';
 
-import ProductReviewsHistogram from './ProductReviewsHistogram';
-import ProductReview from './ProductReview';
-import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
+import PageChanger from '../../common/PageChanger';
+import ProductReview from './ProductReview';
+import ProductReviewsHistogram from './ProductReviewsHistogram';
 import { useState, useTransition } from 'react';
-import fetchReviews from '@/packages/serverActions/fetchReviews';
+// import fetchReviews from '@/packages/serverActions/fetchReviews';
+import API_ENDPOINT from '@/packages/config/api_endpoints';
 
 type ProductReviewsProps = {
   reviewStats?: ReviewStats;
@@ -28,21 +29,39 @@ export default function ProductReviews({
   function changePage(nextPage: number) {
     if (page === nextPage) return;
     async function pageTransition(nextPage: number) {
-      const reviewsResponse = await fetchReviews(
+      const searchParams = new URLSearchParams({
         lttProductId,
-        nextPage,
-        reviewStarsFilter
-      );
+        page: nextPage.toString(),
+        reviewStarsFilter,
+      });
+      const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
+      const reviewsResponse = await fetch(path)
+        .then((res) => res.json())
+        .catch(console.log);
+      // const reviewsResponse = await fetchReviews(
+      //   lttProductId,
+      //   nextPage,
+      //   reviewStarsFilter
+      // );
       setPage(nextPage);
       setReviewsResponse(reviewsResponse);
     }
     startTransition(() => pageTransition(nextPage));
   }
 
-  function changeReviewStarsFilter(stars: string) {
+  function changeFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
     async function filterTransition(stars: string) {
-      const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
+      const searchParams = new URLSearchParams({
+        lttProductId,
+        page: '1',
+        stars,
+      });
+      const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
+      const reviewsResponse = await fetch(path)
+        .then((res) => res.json())
+        .catch(console.log);
+      // const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
       setPage(1);
       setReviewStarsFilter(stars);
       setReviewsResponse(reviewsResponse);
@@ -50,7 +69,7 @@ export default function ProductReviews({
     startTransition(() => filterTransition(stars));
   }
 
-  if (!reviewStats || !reviewsResponse) return <></>;
+  if (!reviewStats) return <></>;
   if (reviewsResponse.reviews.length === 0) return <></>;
 
   return (
@@ -59,7 +78,7 @@ export default function ProductReviews({
       className="m-10">
       <ProductReviewsHistogram
         reviewStats={reviewStats}
-        changeReviewStarsFilter={changeReviewStarsFilter}
+        changeFilter={changeFilter}
       />
       <div className={`${isPending && 'opacity-25'}`}>
         {reviewsResponse.reviews.map((review) => (

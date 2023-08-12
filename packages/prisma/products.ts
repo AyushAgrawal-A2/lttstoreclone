@@ -115,81 +115,89 @@ export async function getProductCards({
   searchText = '',
   filter = [],
 }) {
-  const [sortRank, sortDirection] = sortBy.split(',');
-  const rank = [
-    'featured',
-    'bestseller',
-    'date',
-    'alphabetically',
-    'price',
-  ].includes(sortRank)
-    ? sortRank
-    : 'featured';
-  const direction: 'asc' | 'desc' = sortDirection === 'asc' ? 'asc' : 'desc';
-  let orderBy: OrderBy = {};
-  if (rank === 'alphabetically') {
-    orderBy.title = direction;
-  } else if (rank === 'price') {
-    orderBy.price = direction;
-  } else {
-    orderBy.ranks = {
-      [rank]: direction,
-    };
-  }
-  const productCardsPromise = prisma.product.findMany({
-    where: {
-      collections: {
-        has: collection,
-      },
-      title: {
-        contains: searchText,
-        mode: 'insensitive',
-      },
-    },
-    select: {
-      path: true,
-      title: true,
-      inStock: true,
-      price: true,
-      images: {
-        select: {
-          src: true,
-          overlay: true,
+  try {
+    const [sortRank, sortDirection] = sortBy.split(',');
+    const rank = [
+      'featured',
+      'bestseller',
+      'date',
+      'alphabetically',
+      'price',
+    ].includes(sortRank)
+      ? sortRank
+      : 'featured';
+    const direction: 'asc' | 'desc' = sortDirection === 'asc' ? 'asc' : 'desc';
+    let orderBy: OrderBy = {};
+    if (rank === 'alphabetically') {
+      orderBy.title = direction;
+    } else if (rank === 'price') {
+      orderBy.price = direction;
+    } else {
+      orderBy.ranks = {
+        [rank]: direction,
+      };
+    }
+    const productCardsPromise = prisma.product.findMany({
+      where: {
+        collections: {
+          has: collection,
+        },
+        title: {
+          contains: searchText,
+          mode: 'insensitive',
         },
       },
-      colorSwatch: {
-        select: {
-          imgPosition: true,
-          color: {
-            select: {
-              name: true,
-              backgroundColor: true,
-              backgroundImage: true,
+      select: {
+        path: true,
+        title: true,
+        inStock: true,
+        price: true,
+        images: {
+          select: {
+            src: true,
+            overlay: true,
+          },
+        },
+        colorSwatch: {
+          select: {
+            imgPosition: true,
+            color: {
+              select: {
+                name: true,
+                backgroundColor: true,
+                backgroundImage: true,
+              },
             },
           },
         },
       },
-    },
-    skip: (page - 1) * perPage,
-    take: perPage,
-    orderBy,
-  });
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy,
+    });
 
-  const totalCardsPromise = prisma.product.count({
-    where: {
-      collections: {
-        has: collection,
+    const totalCardsPromise = prisma.product.count({
+      where: {
+        collections: {
+          has: collection,
+        },
+        title: {
+          contains: searchText,
+        },
       },
-      title: {
-        contains: searchText,
-      },
-    },
-  });
-  const [productCards, totalCards] = await Promise.all([
-    productCardsPromise,
-    totalCardsPromise,
-  ]);
-  return { productCards, totalCards };
+    });
+
+    const [productCards, totalCards] = await Promise.all([
+      productCardsPromise,
+      totalCardsPromise,
+    ]);
+
+    return { productCards, totalCards };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return { productCards: [], totalCards: 0 };
 
   // if (sortBy) {
   //   const desc: boolean = sortBy.includes(',')

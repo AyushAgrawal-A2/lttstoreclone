@@ -1,3 +1,5 @@
+'use server';
+
 import API_ENDPOINT from '../config/api_endpoints';
 
 export default async function fetchReviews(

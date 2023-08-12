@@ -6,7 +6,6 @@ import PageChanger from '../../common/PageChanger';
 import Loading from '../../common/Loading';
 import { useEffect, useState } from 'react';
 import fetchReviews from '@/packages/serverActions/fetchReviews';
-import API_ENDPOINT from '@/packages/config/api_endpoints';
 
 type ProductReviewsProps = {
   reviewStats: ReviewStats;

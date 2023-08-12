@@ -31,7 +31,7 @@ export default async function Page({
     <main className="m-8">
       <div className="max-w-4xl mx-auto leading-8 p-8 md:p-20 rounded-xl bg-fgSecondary">
         <div className="text-2xl md:text-4xl font-bold">{heading}</div>
-        <div className="text-xs font-semibold py-2">{date}</div>
+        <div className="text-xs font-semibold py-2">{date.toString()}</div>
         <div className="py-4 md:p-4">
           {content.map(({ isImage, data }) =>
             isImage ? (

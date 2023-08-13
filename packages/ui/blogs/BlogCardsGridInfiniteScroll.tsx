@@ -2,7 +2,7 @@
 
 import BlogCardsGrid from './BlogCardsGrid';
 import Loading from '../common/Loading';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 
 interface BlogCardsGridInfiniteScrollProps {
@@ -15,38 +15,32 @@ export default function BlogCardsGridInfiniteScroll({
   totalCards,
 }: BlogCardsGridInfiniteScrollProps) {
   const [blogCards, setBlogCards] = useState<BlogCard[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (page < 2) return;
-    fetchBlogCards(page, perPage).then(({ blogCards }) => {
-      setBlogCards((prev) => [...prev, ...blogCards]);
-      setLoading(false);
-    });
-  }, [page, perPage]);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     document.addEventListener('scroll', handleScrollEnd);
     function handleScrollEnd() {
       if (
-        !loading &&
-        page * perPage < totalCards &&
+        !isPending &&
+        blogCards.length + perPage < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
           0.85 * document.documentElement.scrollHeight
       ) {
-        setLoading(true);
-        setPage(page + 1);
+        startTransition(() => loadNextPage(blogCards.length / perPage + 2));
       }
     }
+    async function loadNextPage(page: number) {
+      const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
+      setBlogCards([...blogCards, ...nextBlogCards]);
+    }
     return () => document.removeEventListener('scroll', handleScrollEnd);
-  }, [page, perPage, totalCards, loading, blogCards]);
+  }, [perPage, totalCards, blogCards, isPending]);
 
   return (
     <>
       <BlogCardsGrid blogCards={blogCards} />
-      <Loading loading={loading} />
+      <Loading loading={isPending} />
     </>
   );
 }

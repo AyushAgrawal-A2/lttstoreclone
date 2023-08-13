@@ -1,8 +1,10 @@
 import ProductCardsGridInfiniteScroll from '@/packages/ui/collections/ProductCardsGridInfiniteScroll';
 import ProductCardGrid from '@/packages/ui/collections/ProductCardsGrid';
 import SortBy from '@/packages/ui/collections/SortBy';
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
-import { getProductCollections } from '@/packages/prisma/products';
+import {
+  getProductCards,
+  getProductCollections,
+} from '@/packages/prisma/products';
 
 // export const runtime = 'edge';
 
@@ -30,12 +32,12 @@ export default async function Page({
   const perPage = 12;
   const sortBy =
     typeof searchParams.sortBy === 'string' ? searchParams.sortBy : undefined;
-  const { productCards, totalCards } = await fetchProductCards(
+  const { productCards, totalCards } = await getProductCards({
     collection,
     page,
     perPage,
-    sortBy
-  );
+    sortBy,
+  });
 
   // if (category === 'all')
   //   document.title = 'All Products - Linus Tech Tips Store';

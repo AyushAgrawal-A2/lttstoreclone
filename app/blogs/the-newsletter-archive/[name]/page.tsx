@@ -1,5 +1,4 @@
-import { getBlogPaths } from '@/packages/prisma/blogs';
-import fetchBlog from '@/packages/serverActions/fetchBlog';
+import { getBlog, getBlogPaths } from '@/packages/prisma/blogs';
 import Image from 'next/image';
 
 // export const runtime = 'edge';
@@ -18,7 +17,8 @@ export default async function Page({
 }: {
   params: { name: string };
 }) {
-  const blog = await fetchBlog(name);
+  const blogPath = '/blogs/the-newsletter-archive/' + name;
+  const blog = await getBlog({ blogPath });
   if (!blog) return <></>;
   const {
     heading,

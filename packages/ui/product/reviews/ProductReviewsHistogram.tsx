@@ -1,5 +1,4 @@
 import RatingStars from '../../common/RatingStars';
-import ProductRating from './ProductRating';
 
 interface ProductReviewsHistogramProps {
   reviewStats: ReviewStats;

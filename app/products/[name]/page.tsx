@@ -7,9 +7,12 @@ import ProductRating from '@/packages/ui/product/reviews/ProductRating';
 import ProductRecommendation from '@/packages/ui/product/ProductRecommendation';
 import ProductReviews from '@/packages/ui/product/reviews/ProductReviews';
 import ProductTitle from '@/packages/ui/product/ProductTitle';
-import fetchProduct from '@/packages/serverActions/fetchProduct';
-import fetchReviews from '@/packages/serverActions/fetchReviews';
-import { getProductPaths } from '@/packages/prisma/products';
+import {
+  getProduct,
+  getProductCards,
+  getProductPaths,
+} from '@/packages/prisma/products';
+import getProductReviews from '@/packages/cheerio/reviews';
 
 // export const runtime = 'edge';
 
@@ -27,9 +30,20 @@ export default async function Page({
 }: {
   params: { name: string };
 }) {
-  const { product, recommendations } = await fetchProduct(name);
+  const path = '/products/' + name;
+  const product = await getProduct(path);
   if (!product) return <></>;
-  const reviewsResponse = await fetchReviews(product.lttProductId, 1, '');
+  const { productCards: recommendations } = await getProductCards({
+    collection: 'all-products-1',
+    page: 1,
+    perPage: 8,
+    sortBy: 'bestseller,asc',
+  });
+  const reviewsResponse = await getProductReviews({
+    lttProductId: product.lttProductId,
+    page: '1',
+    reviewStarsFilter: '',
+  });
   // document.title = product.title + ' - Linus Tech Tips Store';
 
   return (

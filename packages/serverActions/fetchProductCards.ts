@@ -1,23 +1,34 @@
 'use server';
 
-import API_ENDPOINT from '../config/api_endpoints';
+import { unstable_cache } from 'next/cache';
+import { getProductCards } from '../prisma/products';
 
 export default async function fetchProductCards(
   collection: string,
   page: number,
   perPage: number,
-  sortBy?: string,
-  searchText?: string,
+  sortBy = '',
+  searchText = '',
   filter = []
 ) {
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    perPage: perPage.toString(),
-    sortBy: sortBy ?? '',
-    searchText: searchText ?? '',
-  });
-  const path = `${API_ENDPOINT}/collections/${collection}?${searchParams.toString()}`;
-  return await fetch(path)
-    .then((res) => res.json())
-    .catch(console.log);
+  return await unstable_cache(
+    () =>
+      getProductCards({
+        collection,
+        page,
+        perPage,
+        sortBy,
+        searchText,
+        filter,
+      }),
+    [
+      'collections',
+      collection,
+      page.toString(),
+      perPage.toString(),
+      sortBy,
+      searchText,
+      JSON.stringify(filter),
+    ]
+  )();
 }

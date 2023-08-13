@@ -1,14 +1,15 @@
 'use server';
 
-import API_ENDPOINT from '../config/api_endpoints';
+import { unstable_cache } from 'next/cache';
+import { getBlogCards } from '../prisma/blogs';
 
 export default async function fetchBlogCards(page: number, perPage: number) {
-  const searchParams = new URLSearchParams({
-    page: page.toString(),
-    perPage: perPage.toString(),
-  });
-  const path = `${API_ENDPOINT}/blogs/the-newsletter-archive/?${searchParams.toString()}`;
-  return await fetch(path)
-    .then((res) => res.json())
-    .catch(console.log);
+  return await unstable_cache(
+    () =>
+      getBlogCards({
+        page,
+        perPage,
+      }),
+    ['blogs', 'the-newsletter-archive', page.toString(), perPage.toString()]
+  )();
 }

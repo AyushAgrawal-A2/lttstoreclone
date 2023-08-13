@@ -5,8 +5,7 @@ import PageChanger from '../../common/PageChanger';
 import ProductReview from './ProductReview';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
 import { useState, useTransition } from 'react';
-// import fetchReviews from '@/packages/serverActions/fetchReviews';
-import API_ENDPOINT from '@/packages/config/api_endpoints';
+import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
   reviewStats?: ReviewStats;
@@ -29,20 +28,20 @@ export default function ProductReviews({
   function changePage(nextPage: number) {
     if (page === nextPage) return;
     async function pageTransition(nextPage: number) {
-      const searchParams = new URLSearchParams({
-        lttProductId,
-        page: nextPage.toString(),
-        reviewStarsFilter,
-      });
-      const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
-      const reviewsResponse = await fetch(path)
-        .then((res) => res.json())
-        .catch(console.log);
-      // const reviewsResponse = await fetchReviews(
+      // const searchParams = new URLSearchParams({
       //   lttProductId,
-      //   nextPage,
-      //   reviewStarsFilter
-      // );
+      //   page: nextPage.toString(),
+      //   reviewStarsFilter,
+      // });
+      // const path = `../api/reviews?${searchParams.toString()}`;
+      // const reviewsResponse = await fetch(path)
+      //   .then((res) => res.json())
+      //   .catch(console.log);
+      const reviewsResponse = await fetchReviews(
+        lttProductId,
+        nextPage,
+        reviewStarsFilter
+      );
       setPage(nextPage);
       setReviewsResponse(reviewsResponse);
     }
@@ -52,16 +51,16 @@ export default function ProductReviews({
   function changeFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
     async function filterTransition(stars: string) {
-      const searchParams = new URLSearchParams({
-        lttProductId,
-        page: '1',
-        stars,
-      });
-      const path = `${API_ENDPOINT}/reviews?${searchParams.toString()}`;
-      const reviewsResponse = await fetch(path)
-        .then((res) => res.json())
-        .catch(console.log);
-      // const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
+      // const searchParams = new URLSearchParams({
+      //   lttProductId,
+      //   page: '1',
+      //   stars,
+      // });
+      // const path = `api/reviews?${searchParams.toString()}`;
+      // const reviewsResponse = await fetch(path)
+      //   .then((res) => res.json())
+      //   .catch(console.log);
+      const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
       setPage(1);
       setReviewStarsFilter(stars);
       setReviewsResponse(reviewsResponse);

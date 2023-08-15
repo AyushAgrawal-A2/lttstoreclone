@@ -28,9 +28,7 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
         onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
         {banner.map(({ link, imgURL }) => (
           <SwiperSlide key={imgURL}>
-            <Link
-              href={link}
-              prefetch={true}>
+            <Link href={link}>
               <Image
                 src={imgURL}
                 className="rounded-2xl"

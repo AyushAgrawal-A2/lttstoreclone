@@ -9,9 +9,7 @@ type NavbarIconProps = {
 
 export default function NavbarIcon({ href, faIcon }: NavbarIconProps) {
   return (
-    <Link
-      href={href}
-      prefetch={true}>
+    <Link href={href}>
       <FontAwesomeIcon
         icon={faIcon}
         size={'lg'}

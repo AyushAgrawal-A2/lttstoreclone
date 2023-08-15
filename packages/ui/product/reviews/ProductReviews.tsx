@@ -4,74 +4,57 @@ import Loading from '../../common/Loading';
 import PageChanger from '../../common/PageChanger';
 import ProductReview from './ProductReview';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 // import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
   reviewStats?: ReviewStats;
   lttProductId: string;
-  initialReviewsResponse: ReviewResponse;
 };
 
 export default function ProductReviews({
   reviewStats,
   lttProductId,
-  initialReviewsResponse,
 }: ProductReviewsProps) {
   const [page, setPage] = useState(1);
   const [reviewStarsFilter, setReviewStarsFilter] = useState('');
-  const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>(
-    initialReviewsResponse
-  );
+  const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
   const [isPending, startTransition] = useTransition();
 
   function changePage(nextPage: number) {
     if (page === nextPage) return;
-    startTransition(() => pageTransition(nextPage));
-  }
-
-  async function pageTransition(nextPage: number) {
-    const searchParams = new URLSearchParams({
-      lttProductId,
-      page: nextPage.toString(),
-      reviewStarsFilter,
-    });
-    const path = `../api/reviews?${searchParams.toString()}`;
-    const reviewsResponse = await fetch(path)
-      .then((res) => res.json())
-      .catch(console.log);
-    // const reviewsResponse = await fetchReviews(
-    //   lttProductId,
-    //   nextPage,
-    //   reviewStarsFilter
-    // );
     setPage(nextPage);
-    setReviewsResponse(reviewsResponse);
   }
 
   function changeFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
-    startTransition(() => filterTransition(stars));
+    setPage(1);
+    setReviewStarsFilter;
   }
 
-  async function filterTransition(stars: string) {
-    const searchParams = new URLSearchParams({
-      lttProductId,
-      page: '1',
-      stars,
-    });
-    const path = `../api/reviews?${searchParams.toString()}`;
-    const reviewsResponse = await fetch(path)
-      .then((res) => res.json())
-      .catch(console.log);
-    // const reviewsResponse = await fetchReviews(lttProductId, 1, stars);
-    setPage(1);
-    setReviewStarsFilter(stars);
-    setReviewsResponse(reviewsResponse);
-  }
+  useEffect(() => {
+    async function loadReviews() {
+      const searchParams = new URLSearchParams({
+        lttProductId,
+        page: page.toString(),
+        reviewStarsFilter,
+      });
+      const path = `/api/reviews?${searchParams.toString()}`;
+      const reviewsResponse = await fetch(path)
+        .then((res) => res.json())
+        .catch(console.log);
+      // const reviewsResponse = await fetchReviews(
+      //   lttProductId,
+      //   nextPage,
+      //   reviewStarsFilter
+      // );
+      setReviewsResponse(reviewsResponse);
+    }
+    startTransition(() => loadReviews());
+  }, [lttProductId, page, reviewStarsFilter]);
 
   if (!reviewStats) return <></>;
-  if (reviewsResponse.reviews.length === 0) return <></>;
+  if (!reviewsResponse || reviewsResponse.reviews.length === 0) return <></>;
 
   return (
     <div

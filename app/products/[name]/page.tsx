@@ -12,7 +12,6 @@ import {
   getProductCards,
   getProductPaths,
 } from '@/packages/prisma/products';
-import getProductReviews from '@/packages/cheerio/reviews';
 
 // export const runtime = 'edge';
 
@@ -38,11 +37,6 @@ export default async function Page({
     page: 1,
     perPage: 8,
     sortBy: 'bestseller,asc',
-  });
-  const reviewsResponse = await getProductReviews({
-    lttProductId: product.lttProductId,
-    page: '1',
-    reviewStarsFilter: '',
   });
   // document.title = product.title + ' - Linus Tech Tips Store';
 
@@ -73,7 +67,6 @@ export default async function Page({
       <ProductReviews
         reviewStats={product.reviewStats ?? undefined}
         lttProductId={product.lttProductId}
-        initialReviewsResponse={reviewsResponse}
       />
       <ProductRecommendation productCards={recommendations} />
     </main>

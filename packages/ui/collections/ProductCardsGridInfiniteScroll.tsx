@@ -53,7 +53,7 @@ export default function ProductCardsGridInfiniteScroll({
   return (
     <>
       <ProductCardGrid productCards={productCards} />
-      <Loading loading={isPending} />
+      <Loading isLoading={isPending} />
     </>
   );
 }

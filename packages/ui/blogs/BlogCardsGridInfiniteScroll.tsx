@@ -40,7 +40,7 @@ export default function BlogCardsGridInfiniteScroll({
   return (
     <>
       <BlogCardsGrid blogCards={blogCards} />
-      <Loading loading={isPending} />
+      <Loading isLoading={isPending} />
     </>
   );
 }

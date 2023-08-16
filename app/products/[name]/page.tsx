@@ -12,6 +12,8 @@ import {
   getProductCards,
   getProductPaths,
 } from '@/packages/prisma/products';
+import { Suspense } from 'react';
+import Loading from '@/packages/ui/common/Loading';
 
 // export const runtime = 'edge';
 
@@ -64,10 +66,12 @@ export default async function Page({
         </div>
       </div>
       <ProductFeatureImages featureImages={product.featureImages} />
-      <ProductReviews
-        reviewStats={product.reviewStats ?? undefined}
-        lttProductId={product.lttProductId}
-      />
+      <Suspense fallback={<Loading isLoading={true} />}>
+        <ProductReviews
+          reviewStats={product.reviewStats ?? undefined}
+          lttProductId={product.lttProductId}
+        />
+      </Suspense>
       <ProductRecommendation productCards={recommendations} />
     </main>
   );

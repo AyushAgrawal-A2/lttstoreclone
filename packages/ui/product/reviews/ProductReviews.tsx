@@ -29,7 +29,7 @@ export default function ProductReviews({
   function changeFilter(stars: string) {
     if (reviewStarsFilter === stars) return;
     setPage(1);
-    setReviewStarsFilter;
+    setReviewStarsFilter(stars);
   }
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function ProductReviews({
         .catch(console.log);
       // const reviewsResponse = await fetchReviews(
       //   lttProductId,
-      //   nextPage,
+      //   page,
       //   reviewStarsFilter
       // );
       setReviewsResponse(reviewsResponse);
@@ -77,7 +77,7 @@ export default function ProductReviews({
           changePage={changePage}
         />
       </div>
-      <Loading loading={isPending} />
+      <Loading isLoading={isPending} />
     </div>
   );
 }

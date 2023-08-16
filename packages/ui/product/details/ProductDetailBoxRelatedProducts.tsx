@@ -1,5 +1,3 @@
-'use client';
-
 import ProductDetailBox from './ProductDetailBox';
 import ProductCard from '../../common/ProductCard';
 

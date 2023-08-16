@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 type ProductColorSwatchProps = {
   colorSwatch: ColorSwatch[];
   colorIdx: number;

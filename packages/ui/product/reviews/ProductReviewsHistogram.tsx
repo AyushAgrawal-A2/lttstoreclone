@@ -1,3 +1,5 @@
+'use client';
+
 import RatingStars from '../../common/RatingStars';
 
 interface ProductReviewsHistogramProps {

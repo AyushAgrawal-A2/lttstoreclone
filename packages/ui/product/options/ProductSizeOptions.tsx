@@ -1,3 +1,5 @@
+'use client';
+
 type ProductSizeOptionsProps = {
   sizeOptions: SizeOption[];
   sizeIdx: number;
@@ -9,7 +11,6 @@ export default function ProductSizeOptions({
   sizeIdx,
   setSizeIdx,
 }: ProductSizeOptionsProps) {
-  
   if (sizeOptions.length === 0) return <></>;
 
   return (

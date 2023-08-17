@@ -1,6 +1,3 @@
-'use client';
-
-import { useState, useEffect, useRef } from 'react';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import NavbarTitle from './NavbarTitle';
@@ -10,37 +7,14 @@ import Searchbar from './Searchbar';
 import AppTheme from './AppTheme';
 import Logo from '../common/Logo';
 import Link from 'next/link';
+import { ScrollUp } from './ScrollUp';
 
-export default function Navbar() {
-  const scrollY = useRef(0);
-  const [scrollUp, setScrollUp] = useState(false);
-
-  useEffect(() => {
-    document.addEventListener('scrollend', onScroll);
-    function onScroll() {
-      if (
-        scrollUp &&
-        (document.documentElement.scrollTop >= scrollY.current ||
-          document.documentElement.scrollTop === 0)
-      )
-        setScrollUp(false);
-      else if (
-        !scrollUp &&
-        document.documentElement.scrollTop < scrollY.current &&
-        document.documentElement.scrollTop !== 0
-      )
-        setScrollUp(true);
-      scrollY.current = document.documentElement.scrollTop;
-    }
-    return () => document.removeEventListener('scrollend', onScroll);
-  }, [scrollUp]);
-
+export default async function Navbar() {
   return (
     <div
       id="navbar"
-      className={`z-20 ${
-        scrollUp && 'top-0 border-b animate-slideInY bg-black'
-      } sticky bg-bgPrimary`}>
+      className={`z-20 sticky bg-bgPrimary`}>
+      <ScrollUp />
       <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
         <div className="md:hidden w-24">
           <Sidebar />

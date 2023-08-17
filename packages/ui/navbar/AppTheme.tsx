@@ -3,53 +3,37 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 export default function AppTheme() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<string>();
 
-  function setLightTheme() {
-    document.documentElement.setAttribute('data-theme', 'light');
-    window.localStorage.setItem('prefered-theme', 'light');
-    setTheme('light');
-  }
-
-  function setDarkTheme() {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    window.localStorage.setItem('prefered-theme', 'dark');
-    setTheme('dark');
+  function changeTheme(theme: string) {
+    setTheme(theme);
+    Cookies.set('theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }
 
   useEffect(() => {
-    const operatingSystemTheme = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    );
-    function handleSystemThemeChange(e: MediaQueryListEvent) {
-      e.matches ? setDarkTheme() : setLightTheme();
-    }
-    operatingSystemTheme.addEventListener('change', handleSystemThemeChange);
-
-    const storedTheme = window.localStorage.getItem('prefered-theme');
-    if (storedTheme) {
-      storedTheme === 'light' ? setLightTheme() : setDarkTheme();
-    } else if (operatingSystemTheme.matches) {
-      setDarkTheme();
-    }
-
-    return () =>
-      operatingSystemTheme.removeEventListener(
-        'change',
-        handleSystemThemeChange
+    if (theme) return;
+    const cookieTheme = Cookies.get('theme');
+    if (cookieTheme) setTheme(cookieTheme);
+    else {
+      const operatingSystemTheme = window.matchMedia(
+        '(prefers-color-scheme: dark)'
       );
-  }, []);
+      const systemTheme = operatingSystemTheme.matches ? 'dark' : 'light';
+      changeTheme(systemTheme);
+    }
+  }, [theme]);
 
   return (
-    <FontAwesomeIcon
-      icon={theme === 'dark' ? faSun : faMoon}
-      size={'lg'}
-      className="hover:scale-[1.15] pr-2"
-      onClick={() => {
-        theme === 'light' ? setDarkTheme() : setLightTheme();
-      }}
-    />
+    <button onClick={() => changeTheme(theme === 'dark' ? 'light' : 'dark')}>
+      <FontAwesomeIcon
+        icon={theme === 'dark' ? faMoon : faSun}
+        size={'lg'}
+        className="hover:scale-[1.15] pr-2"
+      />
+    </button>
   );
 }

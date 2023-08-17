@@ -30,14 +30,19 @@ export default async function Page({
   params: { name: string };
 }) {
   const path = '/products/' + name;
-  const product = await getProduct(path);
-  if (!product) return <></>;
-  const { productCards: recommendations } = await getProductCards({
+  const productPromise = getProduct(path);
+  const recommendationsPromise = getProductCards({
     collection: 'all-products-1',
     page: 1,
     perPage: 8,
     sortBy: 'bestseller,asc',
   });
+  const [product, { productCards: recommendations }] = await Promise.all([
+    productPromise,
+    recommendationsPromise,
+  ]);
+  if (!product) return <></>;
+
   // document.title = product.title + ' - Linus Tech Tips Store';
 
   return (

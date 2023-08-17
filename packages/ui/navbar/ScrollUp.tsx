@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-export function ScrollUp() {
+export default function ScrollUp() {
   const scrollUpRef = useRef<HTMLDivElement>(null);
   const scrollYRef = useRef(0);
   const throttleRef = useRef<boolean>(false);

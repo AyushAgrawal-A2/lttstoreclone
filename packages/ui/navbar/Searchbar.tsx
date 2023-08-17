@@ -66,13 +66,14 @@ export default function Searchbar() {
   }
 
   return (
-    <div>
-      <FontAwesomeIcon
-        icon={faMagnifyingGlass}
-        size={'lg'}
-        className="hover:scale-[1.15] px-2"
-        onClick={displaySearchbar}
-      />
+    <>
+      <button onClick={displaySearchbar}>
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          size={'lg'}
+          className="hover:scale-[1.15] px-2"
+        />
+      </button>
       <div
         className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center z-40  ${
           searchbarIsShown ? 'flex' : 'hidden'
@@ -143,6 +144,6 @@ export default function Searchbar() {
         }
         onClick={hideSearchbar}
       />
-    </div>
+    </>
   );
 }

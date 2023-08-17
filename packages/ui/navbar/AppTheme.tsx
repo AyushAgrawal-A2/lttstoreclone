@@ -17,7 +17,7 @@ export default function AppTheme() {
   useEffect(() => {
     if (theme) return;
     const cookieTheme = Cookies.get('theme');
-    if (cookieTheme) setTheme(cookieTheme);
+    if (cookieTheme) changeTheme(cookieTheme);
     else {
       const operatingSystemTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'

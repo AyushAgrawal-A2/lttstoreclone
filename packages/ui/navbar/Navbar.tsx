@@ -2,12 +2,12 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import NavbarTitle from './NavbarTitle';
 import NavbarIcon from './NavbarIcon';
+import ScrollUp from './ScrollUp';
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import AppTheme from './AppTheme';
 import Logo from '../common/Logo';
 import Link from 'next/link';
-import { ScrollUp } from './ScrollUp';
 
 export default async function Navbar() {
   return (

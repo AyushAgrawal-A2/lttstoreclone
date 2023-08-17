@@ -7,7 +7,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import Header from '@/packages/ui/common/Header';
 import Navbar from '@/packages/ui/navbar/Navbar';
 import Footer from '@/packages/ui/common/Footer';
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] });
 config.autoAddCss = false;
@@ -22,12 +22,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const theme = cookies().get('theme')?.value;
+  // const theme = cookies().get('theme')?.value;
 
   return (
     <html
       lang="en"
-      data-theme={theme === 'dark' ? 'dark' : 'light'}>
+      // data-theme={theme === 'dark' ? 'dark' : 'light'}
+    >
       <body
         className={
           'min-h-screen w-full flex flex-col overflow-y-scroll ' +

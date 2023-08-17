@@ -4,12 +4,12 @@ import ComponentSlides from '@/packages/ui/common/ComponentSlides';
 import ImageBanner from '@/packages/ui/home/ImageBanner';
 import ProductCard from '@/packages/ui/common/ProductCard';
 import Link from 'next/link';
-import { getHome } from '@/packages/prisma/home';
+import fetchHome from '@/packages/serverActions/fetchHome';
 
 // export const runtime = 'edge';
 
 export default async function Page() {
-  const { homeBanner, featured, bestseller, blogs }: Home = await getHome();
+  const { homeBanner, featured, bestseller, blogs }: Home = await fetchHome();
 
   return (
     <main className="mx-8">

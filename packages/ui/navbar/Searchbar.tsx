@@ -1,11 +1,11 @@
 'use client';
 
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+// import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 export default function Searchbar() {
   const [searchbarIsShown, setSearchbarIsShown] = useState<boolean>(false);
@@ -13,57 +13,76 @@ export default function Searchbar() {
     useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
-  const timeoutId = useRef<NodeJS.Timeout>();
+  const debounceTimoutRef = useRef<NodeJS.Timeout>();
   const router = useRouter();
 
-  function resetSearchBar() {
+  const resetSearchBar = useCallback(() => {
     setSearchbarIsShown(false);
     setSearchResultsAreShown(false);
     setSearchText('');
     setProductCards([]);
-  }
+  }, []);
+
+  const displaySearchbar = useCallback(() => {
+    document.body.style.overflow = 'hidden';
+    setSearchbarIsShown(true);
+  }, []);
+
+  const hideSearchbar = useCallback(() => {
+    document.body.style.overflow = 'auto';
+    resetSearchBar();
+  }, [resetSearchBar]);
+
+  const handleResultClick = useCallback(
+    (path: string) => {
+      router.replace(path);
+      resetSearchBar();
+    },
+    [router, resetSearchBar]
+  );
+
+  const gotoSearchPage = useCallback(() => {
+    console.log(searchText);
+  }, [searchText]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      resetSearchBar();
+      gotoSearchPage();
+    },
+    [resetSearchBar, gotoSearchPage]
+  );
+
+  const loadProductCards = useCallback(async (searchText: string) => {
+    const searchParams = new URLSearchParams({
+      page: '1',
+      perPage: '4',
+      sortBy: 'bestseller,asc',
+      searchText,
+    });
+    const path = `/api/collections/all-products-1?${searchParams.toString()}`;
+    const { productCards } = await fetch(path).then((res) => res.json());
+    // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
+    setProductCards(productCards);
+    setSearchResultsAreShown(true);
+  }, []);
 
   useEffect(() => {
     function getSearchResult() {
       if (!searchText) setSearchResultsAreShown(false);
-      else {
-        fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
-          .then(({ productCards }) => {
-            setProductCards(productCards);
-            setSearchResultsAreShown(true);
-          })
-          .catch(console.log);
-      }
+      else loadProductCards(searchText);
+      // fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
+      //   .then(({ productCards }) => {
+      //     setProductCards(productCards);
+      //     setSearchResultsAreShown(true);
+      //   })
+      //   .catch(console.log);
     }
-    clearTimeout(timeoutId.current);
-    timeoutId.current = setTimeout(getSearchResult, 250);
-    return () => clearTimeout(timeoutId.current);
-  }, [searchText]);
-
-  function displaySearchbar() {
-    document.body.style.overflow = 'hidden';
-    setSearchbarIsShown(true);
-  }
-
-  function hideSearchbar() {
-    document.body.style.overflow = 'auto';
-    resetSearchBar();
-  }
-
-  function handleResultClick(path: string) {
-    router.replace(path);
-    resetSearchBar();
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    resetSearchBar();
-    gotoSearchPage();
-  }
-
-  function gotoSearchPage() {
-    console.log(searchText);
-  }
+    clearTimeout(debounceTimoutRef.current);
+    debounceTimoutRef.current = setTimeout(getSearchResult, 250);
+    return () => clearTimeout(debounceTimoutRef.current);
+  }, [searchText, loadProductCards]);
 
   return (
     <>

@@ -2,8 +2,8 @@
 
 import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
-import { useEffect, useState, useTransition } from 'react';
-import fetchProductCards from '@/packages/serverActions/fetchProductCards';
+import { useCallback, useEffect, useState, useTransition } from 'react';
+// import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 interface ProductCardsGridInfiniteScrollProps {
   collection: string;
@@ -21,34 +21,59 @@ export default function ProductCardsGridInfiniteScroll({
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    setProductCards([]);
-  }, [sortBy]);
+  const loadProductCards = useCallback(
+    async (
+      collection: string,
+      page: number,
+      perPage: number,
+      sortBy = '',
+      productCards: ProductCard[]
+    ) => {
+      const searchParams = new URLSearchParams({
+        page: page.toString(),
+        perPage: perPage.toString(),
+        sortBy,
+      });
+      const path = `/api/collections/${collection}?${searchParams.toString()}`;
+      const { productCards: nextProductCards } = await fetch(path).then((res) =>
+        res.json()
+      );
+      // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
+      setProductCards([...productCards, ...nextProductCards]);
+    },
+    []
+  );
 
   useEffect(() => {
-    document.addEventListener('scroll', handleScroll);
-    function handleScroll() {
+    function handleScrollEnd() {
+      if (isPending) return;
+      if (productCards.length + perPage >= totalCards) return;
       if (
-        !isPending &&
-        productCards.length + perPage < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
-          0.85 * document.documentElement.scrollHeight
-      ) {
-        startTransition(() => loadNextPage(productCards.length / perPage + 2));
-      }
+        0.75 * document.documentElement.scrollHeight
+      )
+        startTransition(() =>
+          loadProductCards(
+            collection,
+            productCards.length / perPage + 2,
+            perPage,
+            sortBy,
+            productCards
+          )
+        );
     }
-    async function loadNextPage(page: number) {
-      const { productCards: nextProductCards } = await fetchProductCards(
-        collection,
-        page,
-        perPage,
-        sortBy
-      );
-      setProductCards([...productCards, ...nextProductCards]);
-    }
-    return () => document.removeEventListener('scroll', handleScroll);
-  }, [collection, perPage, sortBy, totalCards, productCards, isPending]);
+    document.addEventListener('scrollend', handleScrollEnd);
+    return () => document.removeEventListener('scrollend', handleScrollEnd);
+  }, [
+    collection,
+    perPage,
+    sortBy,
+    totalCards,
+    productCards,
+    isPending,
+    loadProductCards,
+  ]);
 
   return (
     <>

@@ -2,8 +2,8 @@
 
 import BlogCardsGrid from './BlogCardsGrid';
 import Loading from '../common/Loading';
-import { useEffect, useState, useTransition } from 'react';
-import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
+import { useCallback, useEffect, useState, useTransition } from 'react';
+// import fetchBlogCards from '@/packages/serverActions/fetchBlogCards';
 
 interface BlogCardsGridInfiniteScrollProps {
   perPage: number;
@@ -17,25 +17,38 @@ export default function BlogCardsGridInfiniteScroll({
   const [blogCards, setBlogCards] = useState<BlogCard[]>([]);
   const [isPending, startTransition] = useTransition();
 
+  const loadBlogCards = useCallback(
+    async (perPage: number, page: number, blogCards: BlogCard[]) => {
+      const searchParams = new URLSearchParams({
+        page: page.toString(),
+        perPage: perPage.toString(),
+      });
+      const path = `/api/blogs/the-newsletter-archive?${searchParams.toString()}`;
+      const { blogCards: nextBlogCards } = await fetch(path).then((res) =>
+        res.json()
+      );
+      // const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
+      setBlogCards([...blogCards, ...nextBlogCards]);
+    },
+    []
+  );
+
   useEffect(() => {
-    document.addEventListener('scroll', handleScrollEnd);
     function handleScrollEnd() {
+      if (isPending) return;
+      if (blogCards.length + perPage >= totalCards) return;
       if (
-        !isPending &&
-        blogCards.length + perPage < totalCards &&
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
-          0.85 * document.documentElement.scrollHeight
-      ) {
-        startTransition(() => loadNextPage(blogCards.length / perPage + 2));
-      }
+        0.75 * document.documentElement.scrollHeight
+      )
+        startTransition(() =>
+          loadBlogCards(perPage, blogCards.length / perPage + 2, blogCards)
+        );
     }
-    async function loadNextPage(page: number) {
-      const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
-      setBlogCards([...blogCards, ...nextBlogCards]);
-    }
-    return () => document.removeEventListener('scroll', handleScrollEnd);
-  }, [perPage, totalCards, blogCards, isPending]);
+    document.addEventListener('scrollend', handleScrollEnd);
+    return () => document.removeEventListener('scrollend', handleScrollEnd);
+  }, [perPage, totalCards, blogCards, isPending, loadBlogCards]);
 
   return (
     <>

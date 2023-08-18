@@ -53,6 +53,7 @@ export default async function Page({
         <SortBy totalCards={totalCards} />
         <ProductCardGrid productCards={productCards} />
         <ProductCardsGridInfiniteScroll
+          key={`sortBy=${sortBy}`}
           collection={collection}
           perPage={perPage}
           sortBy={sortBy}

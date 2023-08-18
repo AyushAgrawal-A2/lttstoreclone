@@ -1,11 +1,11 @@
 import { getBlogCards } from '@/packages/prisma/blogs';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 // export const runtime = 'edge';
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') ?? '1');
   const perPage = parseInt(searchParams.get('perPage') ?? '12');
   const respone = await getBlogCards({

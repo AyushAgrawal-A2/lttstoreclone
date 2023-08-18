@@ -22,26 +22,22 @@ export default function ProductCardsGridInfiniteScroll({
   const [isPending, startTransition] = useTransition();
 
   const loadProductCards = useCallback(
-    async (
-      collection: string,
-      page: number,
-      perPage: number,
-      sortBy = '',
-      productCards: ProductCard[]
-    ) => {
+    async (page: number, productCards: ProductCard[]) => {
       const searchParams = new URLSearchParams({
         page: page.toString(),
         perPage: perPage.toString(),
-        sortBy,
+        sortBy: sortBy ?? '',
       });
       const path = `/api/collections/${collection}?${searchParams.toString()}`;
-      const { productCards: nextProductCards } = await fetch(path).then((res) =>
-        res.json()
-      );
+      const { productCards: nextProductCards } = await fetch(path, {
+        next: {
+          tags: ['collections', collection],
+        },
+      }).then((res) => res.json());
       // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
       setProductCards([...productCards, ...nextProductCards]);
     },
-    []
+    [collection, perPage, sortBy]
   );
 
   useEffect(() => {
@@ -54,26 +50,12 @@ export default function ProductCardsGridInfiniteScroll({
         0.75 * document.documentElement.scrollHeight
       )
         startTransition(() =>
-          loadProductCards(
-            collection,
-            productCards.length / perPage + 2,
-            perPage,
-            sortBy,
-            productCards
-          )
+          loadProductCards(productCards.length / perPage + 2, productCards)
         );
     }
     document.addEventListener('scrollend', handleScrollEnd);
     return () => document.removeEventListener('scrollend', handleScrollEnd);
-  }, [
-    collection,
-    perPage,
-    sortBy,
-    totalCards,
-    productCards,
-    isPending,
-    loadProductCards,
-  ]);
+  }, [perPage, totalCards, productCards, isPending, loadProductCards]);
 
   return (
     <>

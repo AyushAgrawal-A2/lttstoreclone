@@ -40,7 +40,7 @@ export default function ProductReviews({
         reviewStarsFilter,
       });
       const path = `/api/reviews?${searchParams.toString()}`;
-      const reviewsResponse = await fetch(path)
+      const reviewsResponse = await fetch(path, { cache: 'no-store' })
         .then((res) => res.json())
         .catch(console.log);
       // const reviewsResponse = await fetchReviews(

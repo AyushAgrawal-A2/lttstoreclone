@@ -24,9 +24,11 @@ export default function BlogCardsGridInfiniteScroll({
         perPage: perPage.toString(),
       });
       const path = `/api/blogs/the-newsletter-archive?${searchParams.toString()}`;
-      const { blogCards: nextBlogCards } = await fetch(path).then((res) =>
-        res.json()
-      );
+      const { blogCards: nextBlogCards } = await fetch(path, {
+        next: {
+          tags: ['blogs'],
+        },
+      }).then((res) => res.json());
       // const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
       setBlogCards([...blogCards, ...nextBlogCards]);
     },

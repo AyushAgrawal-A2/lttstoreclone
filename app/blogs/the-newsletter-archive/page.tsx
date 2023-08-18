@@ -5,7 +5,6 @@ import BlogCardsGridInfiniteScroll from '@/packages/ui/blogs/BlogCardsGridInfini
 // export const runtime = 'edge';
 
 export default async function Page() {
-  // document.title = 'The Newsletter Archive - Linus Tech Tips Store';
   const page = 1;
   const perPage = 12;
   const { blogCards, totalCards } = await getBlogCards({

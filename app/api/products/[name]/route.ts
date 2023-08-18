@@ -1,11 +1,11 @@
 import { getProduct, getProductCards } from '@/packages/prisma/products';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 // export const runtime = 'edge';
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { name: string } }
 ) {
   const name = params.name;

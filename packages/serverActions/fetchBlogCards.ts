@@ -10,6 +10,6 @@ export default async function fetchBlogCards(page: number, perPage: number) {
         page,
         perPage,
       }),
-    ['blogs', 'the-newsletter-archive', page.toString(), perPage.toString()]
+    ['blogs', 'the-newsletter-archive']
   )();
 }

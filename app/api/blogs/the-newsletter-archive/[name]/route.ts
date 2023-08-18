@@ -1,11 +1,11 @@
 import { getBlog } from '@/packages/prisma/blogs';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 // export const runtime = 'edge';
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { name: string } }
 ) {
   const blogPath = '/blogs/the-newsletter-archive/' + params.name;

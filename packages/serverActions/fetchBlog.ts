@@ -7,5 +7,5 @@ export default async function fetchBlog(name: string) {
   return await unstable_cache(() => {
     const blogPath = '/blogs/the-newsletter-archive/' + name;
     return getBlog({ blogPath });
-  }, ['blog', 'the-newsletter-archive', name])();
+  }, ['blogs', 'the-newsletter-archive', name])();
 }

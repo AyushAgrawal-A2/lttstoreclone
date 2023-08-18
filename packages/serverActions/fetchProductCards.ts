@@ -24,11 +24,6 @@ export default async function fetchProductCards(
     [
       'collections',
       collection,
-      page.toString(),
-      perPage.toString(),
-      sortBy,
-      searchText,
-      JSON.stringify(filter),
     ]
   )();
 }

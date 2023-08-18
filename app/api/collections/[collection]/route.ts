@@ -1,11 +1,11 @@
 import { getProductCards } from '@/packages/prisma/products';
-import { NextResponse } from 'next/server';
+import { NextRequest,NextResponse } from 'next/server';
 
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
 // export const runtime = 'edge';
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { collection: string } }
 ): Promise<
   NextResponse<{
@@ -14,7 +14,7 @@ export async function GET(
   }>
 > {
   const collection = params.collection;
-  const { searchParams } = new URL(request.url);
+  const searchParams = request.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') ?? '1');
   const perPage = parseInt(searchParams.get('perPage') ?? '12');
   const sortBy = searchParams.get('sortBy') ?? undefined;

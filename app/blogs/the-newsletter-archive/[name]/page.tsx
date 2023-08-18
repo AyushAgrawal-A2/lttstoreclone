@@ -12,6 +12,25 @@ export async function generateStaticParams() {
   });
 }
 
+export async function generateMetadata({
+  params: { name },
+}: {
+  params: { name: string };
+}) {
+  const blogPath = '/blogs/the-newsletter-archive/' + name;
+  const blog = await getBlog({ blogPath });
+  if (!blog)
+    return {
+      title: 'Linus Tech Tips Store Clone',
+      description:
+        'This website a clone of lttstore.com, developed as a hobby project to learn fullstack development',
+    };
+  return {
+    title: blog.heading + ' - Linus Tech Tips Store',
+    description: blog.content[0].data,
+  };
+}
+
 export default async function Page({
   params: { name },
 }: {
@@ -25,8 +44,6 @@ export default async function Page({
     date,
     content,
   }: { heading: string; date: Date; content: BlogContent[] } = blog;
-
-  // document.title = blog.heading + ' - Linus Tech Tips Store';
 
   return (
     <main className="m-8">

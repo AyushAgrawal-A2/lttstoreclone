@@ -62,7 +62,9 @@ export default function Searchbar() {
       searchText,
     });
     const path = `/api/collections/all-products-1?${searchParams.toString()}`;
-    const { productCards } = await fetch(path).then((res) => res.json());
+    const { productCards } = await fetch(path, {
+      next: { tags: ['collections', 'all-products-1', 'products'] },
+    }).then((res) => res.json());
     // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
     setProductCards(productCards);
     setSearchResultsAreShown(true);

@@ -8,24 +8,27 @@ import Cookies from 'js-cookie';
 export default function AppTheme() {
   const [theme, setTheme] = useState<string>();
 
-  function changeTheme(theme: string) {
+  function applyTheme(theme: string) {
     setTheme(theme);
-    Cookies.set('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
   }
 
+  function changeTheme(theme: string) {
+    Cookies.set('theme', theme);
+    applyTheme(theme);
+  }
+
   useEffect(() => {
-    if (theme) return;
     const cookieTheme = Cookies.get('theme');
-    if (cookieTheme) changeTheme(cookieTheme);
+    if (cookieTheme) applyTheme(cookieTheme);
     else {
       const operatingSystemTheme = window.matchMedia(
         '(prefers-color-scheme: dark)'
       );
       const systemTheme = operatingSystemTheme.matches ? 'dark' : 'light';
-      changeTheme(systemTheme);
+      applyTheme(systemTheme);
     }
-  }, [theme]);
+  }, []);
 
   return (
     <button onClick={() => changeTheme(theme === 'dark' ? 'light' : 'dark')}>

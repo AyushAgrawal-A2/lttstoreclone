@@ -4,7 +4,7 @@ import Loading from '../../common/Loading';
 import PageChanger from '../../common/PageChanger';
 import ProductReview from './ProductReview';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
-import { useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
@@ -16,24 +16,18 @@ export default function ProductReviews({
   reviewStats,
   lttProductId,
 }: ProductReviewsProps) {
-  const [page, setPage] = useState(1);
-  const [reviewStarsFilter, setReviewStarsFilter] = useState('');
+  const [page, setPage] = useState<number>(1);
+  const [reviewStarsFilter, setReviewStarsFilter] = useState<string>('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  function changePage(nextPage: number) {
-    if (page === nextPage) return;
-    setPage(nextPage);
-  }
-
-  function changeFilter(stars: string) {
-    if (reviewStarsFilter === stars) return;
+  const changeFilter = useCallback((stars: string) => {
     setPage(1);
     setReviewStarsFilter(stars);
-  }
+  }, []);
 
-  useEffect(() => {
-    async function loadReviews() {
+  const loadReviews = useCallback(
+    async (page: number, reviewStarsFilter: string) => {
       const searchParams = new URLSearchParams({
         lttProductId,
         page: page.toString(),
@@ -49,9 +43,15 @@ export default function ProductReviews({
       //   reviewStarsFilter
       // );
       setReviewsResponse(reviewsResponse);
-    }
-    startTransition(() => loadReviews());
-  }, [lttProductId, page, reviewStarsFilter]);
+      setIsLoading(false);
+    },
+    [lttProductId]
+  );
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadReviews(page, reviewStarsFilter);
+  }, [page, reviewStarsFilter, loadReviews]);
 
   if (!reviewStats) return <></>;
   if (!reviewsResponse || reviewsResponse.reviews.length === 0) return <></>;
@@ -64,7 +64,7 @@ export default function ProductReviews({
         reviewStats={reviewStats}
         changeFilter={changeFilter}
       />
-      <div className={`${isPending && 'opacity-25'}`}>
+      <div className={`${isLoading && 'opacity-25'}`}>
         {reviewsResponse.reviews.map((review) => (
           <ProductReview
             key={review.time}
@@ -74,10 +74,10 @@ export default function ProductReviews({
         <PageChanger
           page={page}
           totalPages={Math.ceil(reviewsResponse.total_count / 5)}
-          changePage={changePage}
+          changePage={setPage}
         />
       </div>
-      <Loading isLoading={isPending} />
+      <Loading isLoading={isLoading} />
     </div>
   );
 }

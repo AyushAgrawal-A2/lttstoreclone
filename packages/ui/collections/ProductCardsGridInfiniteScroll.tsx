@@ -2,7 +2,7 @@
 
 import Loading from '../common/Loading';
 import ProductCardGrid from './ProductCardsGrid';
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 interface ProductCardsGridInfiniteScrollProps {
@@ -19,7 +19,7 @@ export default function ProductCardsGridInfiniteScroll({
   totalCards,
 }: ProductCardsGridInfiniteScrollProps) {
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const loadProductCards = useCallback(
     async (page: number, productCards: ProductCard[]) => {
@@ -34,33 +34,34 @@ export default function ProductCardsGridInfiniteScroll({
           tags: ['collections', collection],
         },
       }).then((res) => res.json());
-      // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
+      // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy)
       setProductCards([...productCards, ...nextProductCards]);
+      setIsLoading(false);
     },
     [collection, perPage, sortBy]
   );
 
   useEffect(() => {
     function handleScrollEnd() {
-      if (isPending) return;
+      if (isLoading) return;
       if (productCards.length + perPage >= totalCards) return;
       if (
         document.documentElement.clientHeight +
           document.documentElement.scrollTop >=
         0.75 * document.documentElement.scrollHeight
-      )
-        startTransition(() =>
-          loadProductCards(productCards.length / perPage + 2, productCards)
-        );
+      ) {
+        setIsLoading(true);
+        loadProductCards(productCards.length / perPage + 2, productCards);
+      }
     }
     document.addEventListener('scrollend', handleScrollEnd);
     return () => document.removeEventListener('scrollend', handleScrollEnd);
-  }, [perPage, totalCards, productCards, isPending, loadProductCards]);
+  }, [perPage, totalCards, productCards, isLoading, loadProductCards]);
 
   return (
     <>
       <ProductCardGrid productCards={productCards} />
-      <Loading isLoading={isPending} />
+      <Loading isLoading={isLoading} />
     </>
   );
 }

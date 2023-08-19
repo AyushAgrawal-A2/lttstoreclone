@@ -28,10 +28,7 @@ export default function ComponentSlides({
   useEffect(() => {
     if (responsive) {
       const handleResize = () => {
-        if (
-          respSlidesPerView !== (window.innerWidth >= 750 ? slidesPerView : 1)
-        )
-          setRespSlidesPerView(window.innerWidth >= 750 ? slidesPerView : 1);
+        setRespSlidesPerView(window.innerWidth >= 750 ? slidesPerView : 1);
       };
       handleResize();
       window.addEventListener('resize', handleResize);

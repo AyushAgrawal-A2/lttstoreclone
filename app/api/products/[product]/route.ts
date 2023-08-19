@@ -6,10 +6,9 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { name: string } }
+  { params }: { params: { product: string } }
 ) {
-  const name = params.name;
-  const path = '/products/' + name;
+  const path = '/products/' + params.product;
   const productPromise = getProduct(path);
   const recommendationsPromise = getProductCards({
     collection: 'all-products-1',

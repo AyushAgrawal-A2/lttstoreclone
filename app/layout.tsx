@@ -5,9 +5,19 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import Header from '@/packages/ui/common/Header';
 import Navbar from '@/packages/ui/navbar/Navbar';
 import Footer from '@/packages/ui/common/Footer';
+import { Metadata } from 'next';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600', '700'] });
 config.autoAddCss = false;
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s - Linus Tech Tips Store Clone',
+    default: 'Linus Tech Tips Store Clone',
+  },
+  description:
+    'This website a clone of lttstore.com, developed as a hobby project to learn fullstack development',
+};
 
 export default function RootLayout({
   children,

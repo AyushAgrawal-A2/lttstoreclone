@@ -3,9 +3,9 @@
 import { unstable_cache } from 'next/cache';
 import { getBlog } from '../prisma/blogs';
 
-export default async function fetchBlog(name: string) {
+export default async function fetchBlog(blog: string) {
   return await unstable_cache(() => {
-    const blogPath = '/blogs/the-newsletter-archive/' + name;
+    const blogPath = '/blogs/the-newsletter-archive/' + blog;
     return getBlog({ blogPath });
-  }, ['blogs', 'the-newsletter-archive', name])();
+  }, ['blogs', 'the-newsletter-archive', blog])();
 }

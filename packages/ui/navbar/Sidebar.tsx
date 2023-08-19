@@ -4,10 +4,20 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function Sidebar() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+
+  const displaySideBar = useCallback(() => {
+    document.body.style.overflow = 'hidden';
+    setSidebarIsOpen(true);
+  }, []);
+
+  const hideSideBar = useCallback(() => {
+    document.body.style.overflow = 'auto';
+    setSidebarIsOpen(false);
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -19,30 +29,24 @@ export default function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, [sidebarIsOpen]);
 
-  function displaySideBar() {
-    document.body.style.overflow = 'hidden';
-    setSidebarIsOpen(true);
-  }
-
-  function hideSideBar() {
-    document.body.style.overflow = 'auto';
-    setSidebarIsOpen(false);
-  }
-
   return (
     <>
-      <FontAwesomeIcon
-        icon={faBars}
-        size={'lg'}
-        className={'hover:scale-[1.15] px-2' + (sidebarIsOpen && ' hidden')}
-        onClick={displaySideBar}
-      />
-      <FontAwesomeIcon
-        icon={faXmark}
-        size={'lg'}
-        className={'hover:scale-[1.15] px-2' + (!sidebarIsOpen && ' hidden')}
-        onClick={hideSideBar}
-      />
+      {!sidebarIsOpen && (
+        <FontAwesomeIcon
+          icon={faBars}
+          size={'lg'}
+          className={'hover:scale-[1.15] px-2'}
+          onClick={displaySideBar}
+        />
+      )}
+      {sidebarIsOpen && (
+        <FontAwesomeIcon
+          icon={faXmark}
+          size={'lg'}
+          className={'hover:scale-[1.15] px-2'}
+          onClick={hideSideBar}
+        />
+      )}
       <div
         className={
           'absolute top-0 left-0 bg-bgPrimary h-screen w-full flex flex-col justify-between pt-24 px-7 text-lg font-semibold text-fgTertiary -z-10' +

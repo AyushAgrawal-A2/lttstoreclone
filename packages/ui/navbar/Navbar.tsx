@@ -13,7 +13,7 @@ export default async function Navbar() {
   return (
     <div
       id="navbar"
-      className={`z-20 sticky bg-bgPrimary`}>
+      className={`bg-bgPrimary sticky`}>
       <ScrollUp />
       <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
         <div className="md:hidden w-24">

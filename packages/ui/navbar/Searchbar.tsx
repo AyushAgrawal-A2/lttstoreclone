@@ -96,7 +96,7 @@ export default function Searchbar() {
         />
       </button>
       <div
-        className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center z-40  ${
+        className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center ${
           searchbarIsShown ? 'flex' : 'hidden'
         }`}>
         <form

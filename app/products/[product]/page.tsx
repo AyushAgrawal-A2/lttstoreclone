@@ -19,41 +19,39 @@ export async function generateStaticParams() {
   const productPaths = await getProductPaths();
   return productPaths.map(({ path }) => {
     const temp = path.split('/');
-    const name = temp[temp.length - 1];
-    return { name };
+    const product = temp[temp.length - 1];
+    return { product };
   });
 }
 
 export async function generateMetadata({
-  params: { name },
+  params,
 }: {
-  params: { name: string };
+  params: { product: string };
 }) {
-  const path = '/products/' + name;
+  const path = '/products/' + params.product;
   const product = await getProduct(path);
   if (!product)
     return {
-      title: 'Linus Tech Tips Store Clone',
-      description:
-        'This website a clone of lttstore.com, developed as a hobby project to learn fullstack development',
+      title: params.product.toUpperCase(),
     };
   const productDetails = product.details as Detail[];
   const descriptionBox = productDetails.find(
     (detail) => detail.title === 'Description'
   );
   return {
-    title: product.title + ' - Linus Tech Tips Store',
+    title: product.title,
     description:
       descriptionBox?.data ?? product.title + ' - Linus Tech Tips Store',
   };
 }
 
 export default async function Page({
-  params: { name },
+  params,
 }: {
-  params: { name: string };
+  params: { product: string };
 }) {
-  const path = '/products/' + name;
+  const path = '/products/' + params.product;
   const productPromise = getProduct(path);
   const recommendationsPromise = getProductCards({
     collection: 'all-products-1',
@@ -68,9 +66,9 @@ export default async function Page({
   if (!product) return <></>;
 
   return (
-    <main className="md:mx-8 py-9 px-12 relative">
+    <main className="md:mx-8 py-9 px-12">
       <div className="flex flex-col md:flex-row">
-        <div className="w-full md:w-[50%] lg:w-[55%] self-start md:sticky top-0 md:pr-4">
+        <div className="w-full md:w-[50%] lg:w-[55%] self-start md:sticky top-0 md:pr-4 z-10">
           <Images
             title={product.title}
             images={product.images}

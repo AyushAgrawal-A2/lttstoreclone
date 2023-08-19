@@ -20,6 +20,7 @@ export default function ScrollUp() {
       (document.documentElement.scrollTop >= scrollYValRef.current ||
         document.documentElement.scrollTop === 0)
     ) {
+      parentEl.classList.remove('z-30');
       parentEl.classList.remove('top-0');
       parentEl.classList.remove('border-b');
       parentEl.classList.remove('animate-slideInY');
@@ -30,6 +31,7 @@ export default function ScrollUp() {
       document.documentElement.scrollTop < scrollYValRef.current &&
       document.documentElement.scrollTop !== 0
     ) {
+      parentEl.classList.add('z-30');
       parentEl.classList.add('top-0');
       parentEl.classList.add('border-b');
       parentEl.classList.add('animate-slideInY');

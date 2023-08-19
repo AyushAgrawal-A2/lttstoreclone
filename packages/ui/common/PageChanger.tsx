@@ -11,7 +11,7 @@ import {
 interface PageChangerProps {
   page: number;
   totalPages: number;
-  changePage: (nextPage: number) => void;
+  changePage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function PageChanger({

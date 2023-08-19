@@ -33,10 +33,9 @@ export default function ProductImagesModal({
 
   return (
     <div
-      className={
-        'fixed top-0 left-0 z-50 h-screen w-screen overflow-auto overscroll-contain p-3 bg-[#000000] ' +
-        (!displayModal && 'hidden')
-      }
+      className={`relative h-screen w-screen overflow-auto overscroll-contain p-3 bg-fgSecondary${
+        displayModal ? '' : ' hidden'
+      }`}
       onClick={() => setDisplayModal(false)}>
       <button className="fixed top-5 right-10 text-black bg-[#FFFFFF] h-10 w-10 rounded-full flex justify-center items-center">
         <FontAwesomeIcon
@@ -47,7 +46,7 @@ export default function ProductImagesModal({
       {images.map((image, idx) => (
         <div
           key={idx}
-          className="w-min mx-auto text-fgTertiary font-bold tracking-wide">
+          className="max-w-min mx-auto text-fgTertiary font-bold tracking-wide">
           <Image
             src={image.src}
             id={`imageModal${idx}`}

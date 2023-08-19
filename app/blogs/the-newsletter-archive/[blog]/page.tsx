@@ -7,36 +7,30 @@ export async function generateStaticParams() {
   const blogPaths = await getBlogPaths();
   return blogPaths.map(({ path }) => {
     const temp = path.split('/');
-    const name = temp[temp.length - 1];
-    return { name };
+    const blog = temp[temp.length - 1];
+    return { blog };
   });
 }
 
 export async function generateMetadata({
-  params: { name },
+  params,
 }: {
-  params: { name: string };
+  params: { blog: string };
 }) {
-  const blogPath = '/blogs/the-newsletter-archive/' + name;
+  const blogPath = '/blogs/the-newsletter-archive/' + params.blog;
   const blog = await getBlog({ blogPath });
   if (!blog)
     return {
-      title: 'Linus Tech Tips Store Clone',
-      description:
-        'This website a clone of lttstore.com, developed as a hobby project to learn fullstack development',
+      title: params.blog.toUpperCase(),
     };
   return {
-    title: blog.heading + ' - Linus Tech Tips Store',
+    title: blog.heading,
     description: blog.content[0].data,
   };
 }
 
-export default async function Page({
-  params: { name },
-}: {
-  params: { name: string };
-}) {
-  const blogPath = '/blogs/the-newsletter-archive/' + name;
+export default async function Page({ params }: { params: { blog: string } }) {
+  const blogPath = '/blogs/the-newsletter-archive/' + params.blog;
   const blog = await getBlog({ blogPath });
   if (!blog) return <></>;
   const {

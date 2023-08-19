@@ -5,15 +5,8 @@ import ImageBanner from '@/packages/ui/home/ImageBanner';
 import ProductCard from '@/packages/ui/common/ProductCard';
 import { getHome } from '@/packages/prisma/home';
 import Link from 'next/link';
-import { Metadata } from 'next';
 
 // export const runtime = 'edge';
-
-export const metadata: Metadata = {
-  title: 'Linus Tech Tips Store Clone',
-  description:
-    'This website a clone of lttstore.com, developed as a hobby project to learn fullstack development',
-};
 
 export default async function Page() {
   const { homeBanner, featured, bestseller, blogs }: Home = await getHome();

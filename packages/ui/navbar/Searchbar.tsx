@@ -4,7 +4,7 @@ import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 // import fetchProductCards from '@/packages/serverActions/fetchProductCards';
 
 export default function Searchbar() {
@@ -65,26 +65,30 @@ export default function Searchbar() {
     const { productCards } = await fetch(path, {
       next: { tags: ['collections', 'all-products-1', 'products'] },
     }).then((res) => res.json());
-    // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy);
+    // const { productCards } = await fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText);
     setProductCards(productCards);
     setSearchResultsAreShown(true);
   }, []);
 
-  useEffect(() => {
-    function getSearchResult() {
+  const getSearchResult = useCallback(
+    (searchText: string) => {
       if (!searchText) setSearchResultsAreShown(false);
       else loadProductCards(searchText);
-      // fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText)
-      //   .then(({ productCards }) => {
-      //     setProductCards(productCards);
-      //     setSearchResultsAreShown(true);
-      //   })
-      //   .catch(console.log);
-    }
-    clearTimeout(debounceTimoutRef.current);
-    debounceTimoutRef.current = setTimeout(getSearchResult, 250);
-    return () => clearTimeout(debounceTimoutRef.current);
-  }, [searchText, loadProductCards]);
+    },
+    [loadProductCards]
+  );
+
+  const handleSearchInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchText(e.target.value);
+      clearTimeout(debounceTimoutRef.current);
+      debounceTimoutRef.current = setTimeout(
+        () => getSearchResult(e.target.value),
+        250
+      );
+    },
+    [getSearchResult]
+  );
 
   return (
     <>
@@ -107,7 +111,7 @@ export default function Searchbar() {
             placeholder=" "
             className="peer bg-bgSecondary pt-3 pl-3 rounded-md outline-0 text-fgSecondary w-[95%] font-semibold"
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleSearchInput}
           />
           <label
             htmlFor="search-items"

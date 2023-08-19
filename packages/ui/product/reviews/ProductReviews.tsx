@@ -4,7 +4,7 @@ import Loading from '../../common/Loading';
 import PageChanger from '../../common/PageChanger';
 import ProductReview from './ProductReview';
 import ProductReviewsHistogram from './ProductReviewsHistogram';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 // import fetchReviews from '@/packages/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
@@ -20,14 +20,11 @@ export default function ProductReviews({
   const [reviewStarsFilter, setReviewStarsFilter] = useState<string>('');
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const changeFilter = useCallback((stars: string) => {
-    setPage(1);
-    setReviewStarsFilter(stars);
-  }, []);
+  const firstLoadRef = useRef<boolean>(true);
 
   const loadReviews = useCallback(
     async (page: number, reviewStarsFilter: string) => {
+      setIsLoading(true);
       const searchParams = new URLSearchParams({
         lttProductId,
         page: page.toString(),
@@ -48,10 +45,30 @@ export default function ProductReviews({
     [lttProductId]
   );
 
+  const changePage = useCallback(
+    (page: number) => {
+      setPage(page);
+      loadReviews(page, reviewStarsFilter);
+    },
+    [loadReviews, reviewStarsFilter]
+  );
+
+  const changeFilter = useCallback(
+    (stars: string) => {
+      setPage(1);
+      setReviewStarsFilter(stars);
+      loadReviews(1, stars);
+    },
+    [loadReviews]
+  );
+
   useEffect(() => {
-    setIsLoading(true);
-    loadReviews(page, reviewStarsFilter);
-  }, [page, reviewStarsFilter, loadReviews]);
+    if (firstLoadRef.current) {
+      firstLoadRef.current = false;
+      loadReviews(1, '');
+    }
+  }, [loadReviews]);
+  
 
   if (!reviewStats) return <></>;
   if (!reviewsResponse || reviewsResponse.reviews.length === 0) return <></>;
@@ -74,7 +91,7 @@ export default function ProductReviews({
         <PageChanger
           page={page}
           totalPages={Math.ceil(reviewsResponse.total_count / 5)}
-          changePage={setPage}
+          changePage={changePage}
         />
       </div>
       <Loading isLoading={isLoading} />

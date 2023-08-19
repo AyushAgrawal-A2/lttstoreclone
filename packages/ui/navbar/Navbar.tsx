@@ -42,7 +42,7 @@ export default async function Navbar() {
         </div>
         <div className="flex flex-row w-24 md:w-32">
           <AppTheme />
-          {/* <Searchbar /> */}
+          <Searchbar />
           {/* <div className="hidden md:block px-2">
             <NavbarIcon
               href="/account"

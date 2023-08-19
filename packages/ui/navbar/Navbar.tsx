@@ -13,7 +13,7 @@ export default async function Navbar() {
   return (
     <div
       id="navbar"
-      className={`bg-bgPrimary sticky`}>
+      className={`bg-bgPrimary sticky z-20`}>
       <ScrollUp />
       <div className="flex flex-row items-center justify-between px-5 md:px-12 py-2 md:py-5">
         <div className="md:hidden w-24">
@@ -42,7 +42,7 @@ export default async function Navbar() {
         </div>
         <div className="flex flex-row w-24 md:w-32">
           <AppTheme />
-          <Searchbar />
+          {/* <Searchbar /> */}
           {/* <div className="hidden md:block px-2">
             <NavbarIcon
               href="/account"

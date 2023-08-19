@@ -20,7 +20,7 @@ export default function ProductDetailBox({
     <div
       className={`my-2.5 border rounded py-3 px-7 hover:shadow-[inset_0_0_0_3px_rgb(227,227,227)] ${
         displayDetails && 'shadow-[inset_0_0_0_2px_rgb(227,227,227)]'
-      } transition duration-300 bg-fgSecondary font-bold`}>
+      } transition duration-300 bg-fgSecondary font-bold relative`}>
       <div
         className="flex justify-between cursor-pointer py-2 bg-fgSecondary sticky top-0 z-10"
         onClick={() => setDisplayDetails((prev) => !prev)}>
@@ -32,7 +32,7 @@ export default function ProductDetailBox({
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>
-      <div className={`${!displayDetails && 'hidden'} overflow-auto`}>
+      <div className={`${!displayDetails && 'hidden'} overflow-auto z-0`}>
         {children}
       </div>
     </div>

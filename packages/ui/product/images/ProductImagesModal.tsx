@@ -23,21 +23,25 @@ export default function ProductImagesModal({
   useEffect(() => {
     if (displayModal) {
       document.body.style.overflow = 'hidden';
+      document.getElementById('navbar')?.classList.add('hidden');
       document.getElementById(`imageModal${modalIdx}`)?.scrollIntoView({
         behavior: 'instant',
         block: 'nearest',
         inline: 'start',
       });
-    } else document.body.style.overflow = 'auto';
+    } else {
+      document.body.style.overflow = 'auto';
+      document.getElementById('navbar')?.classList.remove('hidden');
+    }
   }, [displayModal, modalIdx]);
 
   return (
     <div
-      className={`relative h-screen w-screen overflow-auto overscroll-contain p-3 bg-fgSecondary${
-        displayModal ? '' : ' hidden'
+      className={`fixed top-0 left-0 z-50 h-screen w-screen overflow-auto overscroll-contain bg-fgSecondary ${
+        displayModal ? '' : 'hidden'
       }`}
       onClick={() => setDisplayModal(false)}>
-      <button className="fixed top-5 right-10 text-black bg-[#FFFFFF] h-10 w-10 rounded-full flex justify-center items-center">
+      <button className="fixed top-5 right-10 text-black bg-white border h-10 w-10 rounded-full flex justify-center items-center">
         <FontAwesomeIcon
           icon={faXmark}
           size={'lg'}
@@ -46,7 +50,7 @@ export default function ProductImagesModal({
       {images.map((image, idx) => (
         <div
           key={idx}
-          className="max-w-min mx-auto text-fgTertiary font-bold tracking-wide">
+          className="max-w-min mx-auto text-fgTertiary font-bold tracking-wide p-3">
           <Image
             src={image.src}
             id={`imageModal${idx}`}

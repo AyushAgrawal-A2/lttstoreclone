@@ -5,7 +5,6 @@ type ProductDetailTextProps = {
 export default function ProductDetailText({ data }: ProductDetailTextProps) {
   return (
     <>
-      {' '}
       {data.split('\n').map((line, idx) => (
         <p
           key={idx}

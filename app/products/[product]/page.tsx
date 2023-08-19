@@ -74,7 +74,7 @@ export default async function Page({
             images={product.images}
           />
         </div>
-        <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4">
+        <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4 z-0">
           <ProductTitle title={product.title} />
           {product.rating && <ProductRating rating={product.rating} />}
           <ProductPrice price={product.price} />

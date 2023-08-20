@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import 'swiper/css';
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import "swiper/css";
 import {
   faChevronLeft,
   faChevronRight,
   faCircle,
   faCircleDot,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 interface ImageBannerProps {
   banner: HomeBanner[];
@@ -25,14 +25,15 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
         centeredSlides={true}
         slidesPerView={1}
         spaceBetween={10}
-        onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
+        onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}
+      >
         {banner.map(({ link, imgURL }) => (
           <SwiperSlide key={imgURL}>
             <Link href={link}>
               <Image
                 src={imgURL}
                 className="rounded-2xl"
-                alt={'banner'}
+                alt={"banner"}
                 width={2560}
                 height={1200}
                 sizes="100vw"
@@ -40,10 +41,7 @@ export default function ImageBanner({ banner }: ImageBannerProps) {
             </Link>
           </SwiperSlide>
         ))}
-        <ImageBannerButtons
-          length={banner.length}
-          curSlide={curSlide}
-        />
+        <ImageBannerButtons length={banner.length} curSlide={curSlide} />
       </Swiper>
     </div>
   );

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface SortByProps {
   totalCards: number;
@@ -15,10 +15,10 @@ export default function SortBy({ totalCards }: SortByProps) {
   const handleSortBy = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set('sortBy', e.target.value);
-      router.push(pathname + '?' + params.toString());
+      params.set("sortBy", e.target.value);
+      router.push(pathname + "?" + params.toString());
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams],
   );
 
   return (
@@ -27,50 +27,56 @@ export default function SortBy({ totalCards }: SortByProps) {
       <select
         name="sortBy"
         className="mx-2 bg-bgPrimary focus-visible:outline-none"
-        onChange={(e) => handleSortBy(e)}>
+        onChange={(e) => handleSortBy(e)}
+      >
         <option
           value="featured,desc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           FEATURED
         </option>
         <option
           value="bestseller,asc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           BEST SELLING
         </option>
         <option
           value="alphabetically,asc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           ALPHABETICALLY, A-Z
         </option>
         <option
           value="alphabetically,desc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           ALPHABETICALLY, Z-A
         </option>
         <option
           value="price,asc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           PRICE, LOW TO HIGH
         </option>
         <option
           value="price,desc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           PRICE, HIGH TO LOW
         </option>
         <option
           value="date,desc"
-          className="text-sm font-semibold text-fgTertiary">
+          className="text-sm font-semibold text-fgTertiary"
+        >
           DATE, OLD TO NEW
         </option>
-        <option
-          value="date,asc"
-          className="text-sm font-bold text-fgTertiary">
+        <option value="date,asc" className="text-sm font-bold text-fgTertiary">
           DATE, NEW TO OLD
         </option>
       </select>
       <div className="text-sm font-bold text-fgTertiary px-1">
-        {totalCards + ' PRODUCTS'}
+        {totalCards + " PRODUCTS"}
       </div>
     </div>
   );

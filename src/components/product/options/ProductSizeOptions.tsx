@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 type ProductSizeOptionsProps = {
   sizeOptions: SizeOption[];
@@ -23,13 +23,15 @@ export default function ProductSizeOptions({
           <li
             key={sizeOption.name}
             className={`h-[54px] min-w-[54px] border-2 border-fgPrimary rounded hover:animate-grow p-px cursor-pointer ${
-              sizeIdx === idx && 'scale-110 hover:scale-110'
+              sizeIdx === idx && "scale-110 hover:scale-110"
             }`}
-            onClick={() => setSizeIdx(idx)}>
+            onClick={() => setSizeIdx(idx)}
+          >
             <p
               className={`rounded-sm w-full h-full flex justify-center items-center text-lg font-semibold py-1 px-2 ${
-                sizeIdx === idx && 'bg-bgSecondary text-fgSecondary'
-              }`}>
+                sizeIdx === idx && "bg-bgSecondary text-fgSecondary"
+              }`}
+            >
               {sizeOption.symbol}
             </p>
           </li>

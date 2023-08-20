@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 interface ProductImageWithOverlayProps {
   image: Image;
@@ -16,7 +16,7 @@ export default function ProductImageWithOverlay({
   return (
     <>
       <Image
-        alt={image.overlay || 'product image'}
+        alt={image.overlay || "product image"}
         src={image.src}
         id={`image${idx}`}
         className="rounded-2xl bg-[#f2f2f2]"

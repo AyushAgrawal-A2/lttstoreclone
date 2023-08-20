@@ -1,8 +1,8 @@
-import scrapeBlogs from '@/src/cheerio/blogs';
-import { saveBlogs } from '@/src/prisma/blogs';
-import { NextResponse } from 'next/server';
+import scrapeBlogs from "@/src/cheerio/blogs";
+import { saveBlogs } from "@/src/prisma/blogs";
+import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 // export const runtime = 'edge';
 
 export async function GET() {

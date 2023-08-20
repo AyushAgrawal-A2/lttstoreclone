@@ -1,5 +1,5 @@
-import prisma from '.';
-import asyncSeq from '../utils/asyncSeq';
+import prisma from ".";
+import asyncSeq from "../utils/asyncSeq";
 
 export async function saveProducts({ products }: { products: Product[] }) {
   try {
@@ -8,23 +8,23 @@ export async function saveProducts({ products }: { products: Product[] }) {
     await prisma.sizeOption.deleteMany();
     const fnArray = products.map(
       ({
-          path,
-          title,
-          inStock,
-          price,
-          lttProductId,
-          type,
-          gender,
-          featureImages,
-          collections,
-          images,
-          details,
-          sizeOptions,
-          ranks,
-          rating,
-          reviewStats,
-          colorSwatch,
-        }) =>
+        path,
+        title,
+        inStock,
+        price,
+        lttProductId,
+        type,
+        gender,
+        featureImages,
+        collections,
+        images,
+        details,
+        sizeOptions,
+        ranks,
+        rating,
+        reviewStats,
+        colorSwatch,
+      }) =>
         async () =>
           await prisma.product.create({
             data: {
@@ -75,7 +75,7 @@ export async function saveProducts({ products }: { products: Product[] }) {
                 })),
               },
             },
-          })
+          }),
     );
     await asyncSeq(fnArray);
     await Promise.all(
@@ -89,8 +89,8 @@ export async function saveProducts({ products }: { products: Product[] }) {
               })),
             },
           },
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.log(error);
@@ -98,39 +98,39 @@ export async function saveProducts({ products }: { products: Product[] }) {
 }
 
 interface OrderBy {
-  title?: 'asc' | 'desc';
-  price?: 'asc' | 'desc';
+  title?: "asc" | "desc";
+  price?: "asc" | "desc";
   ranks?: {
-    date?: 'asc' | 'desc';
-    bestseller?: 'asc' | 'desc';
-    featured?: 'asc' | 'desc';
+    date?: "asc" | "desc";
+    bestseller?: "asc" | "desc";
+    featured?: "asc" | "desc";
   };
 }
 
 export async function getProductCards({
-  collection = 'all-products-1',
+  collection = "all-products-1",
   page = 1,
   perPage = 12,
-  sortBy = 'featured,desc',
-  searchText = '',
+  sortBy = "featured,desc",
+  searchText = "",
   filter = [],
 }) {
   try {
-    const [sortRank, sortDirection] = sortBy.split(',');
+    const [sortRank, sortDirection] = sortBy.split(",");
     const rank = [
-      'featured',
-      'bestseller',
-      'date',
-      'alphabetically',
-      'price',
+      "featured",
+      "bestseller",
+      "date",
+      "alphabetically",
+      "price",
     ].includes(sortRank)
       ? sortRank
-      : 'featured';
-    const direction: 'asc' | 'desc' = sortDirection === 'asc' ? 'asc' : 'desc';
+      : "featured";
+    const direction: "asc" | "desc" = sortDirection === "asc" ? "asc" : "desc";
     let orderBy: OrderBy = {};
-    if (rank === 'alphabetically') {
+    if (rank === "alphabetically") {
       orderBy.title = direction;
-    } else if (rank === 'price') {
+    } else if (rank === "price") {
       orderBy.price = direction;
     } else {
       orderBy.ranks = {
@@ -144,7 +144,7 @@ export async function getProductCards({
         },
         title: {
           contains: searchText,
-          mode: 'insensitive',
+          mode: "insensitive",
         },
       },
       select: {

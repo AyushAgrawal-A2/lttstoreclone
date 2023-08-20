@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useCallback, useState } from 'react';
-import ProductColorSwatch from './ProductColorSwatch';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useCallback, useState } from "react";
+import ProductColorSwatch from "./ProductColorSwatch";
+import Link from "next/link";
+import Image from "next/image";
 
 type ProductCardProps = {
   productCard: ProductCard;
@@ -18,7 +18,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
       setColorIdx(idx);
       setImgPos(productCard.colorSwatch[idx].imgPosition);
     },
-    [productCard.colorSwatch]
+    [productCard.colorSwatch],
   );
 
   return (
@@ -36,8 +36,9 @@ export default function ProductCard({ productCard }: ProductCardProps) {
         </Link>
         <div
           className={`absolute bottom-0 left-0 m-4 py-1 px-2 bg-white text-black text-xs font-semibold border border-black rounded-full ${
-            productCard.inStock && 'hidden'
-          }`}>
+            productCard.inStock && "hidden"
+          }`}
+        >
           Sold Out
         </div>
       </div>
@@ -46,7 +47,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
           colorSwatch={productCard.colorSwatch}
           colorIdx={colorIdx}
           changeColor={changeColor}
-          size={'sm'}
+          size={"sm"}
         />
       )}
       <Link href={productCard.path}>

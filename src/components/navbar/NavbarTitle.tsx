@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 type NavbarTitleProps = {
   href: string;
@@ -10,9 +10,10 @@ export default function NavbarTitle({ href, name }: NavbarTitleProps) {
     <Link
       href={href}
       className={
-        'tracking-wide p-1.5 underline-offset-[3px] hover:underline hover:animate-grow'
+        "tracking-wide p-1.5 underline-offset-[3px] hover:underline hover:animate-grow"
         //  + isActive ? ' underline' : ''
-      }>
+      }
+    >
       {name}
     </Link>
   );

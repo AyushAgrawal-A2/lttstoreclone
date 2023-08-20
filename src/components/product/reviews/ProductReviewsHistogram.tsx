@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import RatingStars from '../../common/RatingStars';
+import RatingStars from "../../common/RatingStars";
 
 interface ProductReviewsHistogramProps {
   reviewStats: ReviewStats;
@@ -13,7 +13,7 @@ export default function ProductReviewsHistogram({
 }: ProductReviewsHistogramProps) {
   const totalReviews = Object.keys(reviewStats).reduce(
     (sum, star_x) => sum + reviewStats[star_x as keyof ReviewStats],
-    0
+    0,
   );
   return (
     <div className="py-4">
@@ -29,18 +29,20 @@ export default function ProductReviewsHistogram({
             .map((star_x, idx) => {
               const stars = 5 - idx;
               const percent = Math.round(
-                (reviewStats[star_x as keyof ReviewStats] / totalReviews) * 100
+                (reviewStats[star_x as keyof ReviewStats] / totalReviews) * 100,
               );
               return (
                 <div
                   key={stars}
                   onClick={() => changeFilter(stars.toString())}
-                  className="flex items-center text-sm hover:cursor-pointer hover:opacity-50">
+                  className="flex items-center text-sm hover:cursor-pointer hover:opacity-50"
+                >
                   <RatingStars stars={stars} />
                   <div className="h-[18px] w-[100px] m-1 border border-neutral-700">
                     <div
                       className={`h-full bg-gradient`}
-                      style={{ width: `${percent}px` }}></div>
+                      style={{ width: `${percent}px` }}
+                    ></div>
                   </div>
                   <div className="w-10 px-1">{percent}%</div>
                   <div>({reviewStats[star_x as keyof ReviewStats]})</div>

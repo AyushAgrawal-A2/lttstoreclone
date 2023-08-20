@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import cheerio from "cheerio";
 
 async function scrapeBlogs(): Promise<{
   blogCards: BlogCard[];
@@ -7,39 +7,39 @@ async function scrapeBlogs(): Promise<{
   const blogCards: BlogCard[] = [];
   try {
     const url = new URL(
-      'https://www.lttstore.com/blogs/the-newsletter-archive'
+      "https://www.lttstore.com/blogs/the-newsletter-archive",
     );
     const html = await fetch(url).then((res) => res.text());
     const $ = cheerio.load(html);
     $(
-      'main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article'
+      "main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article",
     ).each((i, el) => {
-      const blogCardEl = $(el).find('div.card > div.card__inner');
+      const blogCardEl = $(el).find("div.card > div.card__inner");
       const path =
         $(blogCardEl)
-          .find('div.card__content div.card__information h3.card__heading.h2 a')
-          .prop('href') ?? '';
+          .find("div.card__content div.card__information h3.card__heading.h2 a")
+          .prop("href") ?? "";
       const heading = $(blogCardEl)
-        .find('div.card__content div.card__information h3.card__heading.h2 a')
+        .find("div.card__content div.card__information h3.card__heading.h2 a")
         .text()
         .trim();
       const cardText = $(blogCardEl)
-        .find('div.card__content div.card__information p.article-card__excerpt')
+        .find("div.card__content div.card__information p.article-card__excerpt")
         .text()
         .trim();
       const date = new Date(
         $(blogCardEl)
           .find(
-            'div.card__content div.card__information div.article-card__info time'
+            "div.card__content div.card__information div.article-card__info time",
           )
-          .prop('datetime')
+          .prop("datetime"),
       );
       const imgSrc = $(blogCardEl)
-        .find('div.article-card__image-wrapper img')
-        .prop('src');
+        .find("div.article-card__image-wrapper img")
+        .prop("src");
       const imgURL = imgSrc
-        ? 'https:' + imgSrc.slice(0, imgSrc.indexOf('?'))
-        : '';
+        ? "https:" + imgSrc.slice(0, imgSrc.indexOf("?"))
+        : "";
       blogCards.push({
         path,
         heading,
@@ -49,7 +49,7 @@ async function scrapeBlogs(): Promise<{
       });
     });
     const blogContents = await Promise.all(
-      blogCards.map((blogCard) => scrapeBlog(blogCard))
+      blogCards.map((blogCard) => scrapeBlog(blogCard)),
     );
     return { blogCards, blogContents };
   } catch (error) {
@@ -61,28 +61,28 @@ async function scrapeBlogs(): Promise<{
 async function scrapeBlog(blogCard: BlogCard): Promise<BlogContent[]> {
   const blogContent: BlogContent[] = [];
   try {
-    const url = new URL('https://www.lttstore.com' + blogCard.path);
+    const url = new URL("https://www.lttstore.com" + blogCard.path);
     const html = await fetch(url).then((res) => res.text());
     const $ = cheerio.load(html);
-    $('main#MainContent article.article-template div.article-template__content')
+    $("main#MainContent article.article-template div.article-template__content")
       .children()
       .each((i, el) => {
         const text =
           $(el)
-            .prop('innerHTML')
-            ?.replace(/<span[^>]*>/g, '')
-            .replace(/<[^\/][^>]*>/g, '\n')
-            .replace(/(<\/[^>]*>)/g, '')
-            .replace(/&nbsp;/g, ' ')
-            .replace(/&amp;/g, '&')
-            .replace(/\s{2,}/g, '\n')
-            .trim() ?? '';
-        let imageSrc = $(el).find('img').prop('src');
-        if (imageSrc?.includes('?')) {
-          imageSrc = imageSrc.slice(0, imageSrc.indexOf('?'));
+            .prop("innerHTML")
+            ?.replace(/<span[^>]*>/g, "")
+            .replace(/<[^\/][^>]*>/g, "\n")
+            .replace(/(<\/[^>]*>)/g, "")
+            .replace(/&nbsp;/g, " ")
+            .replace(/&amp;/g, "&")
+            .replace(/\s{2,}/g, "\n")
+            .trim() ?? "";
+        let imageSrc = $(el).find("img").prop("src");
+        if (imageSrc?.includes("?")) {
+          imageSrc = imageSrc.slice(0, imageSrc.indexOf("?"));
         }
-        if (imageSrc?.includes('googleusercontent.com')) {
-          imageSrc = imageSrc.slice(imageSrc.indexOf('#http') + 1);
+        if (imageSrc?.includes("googleusercontent.com")) {
+          imageSrc = imageSrc.slice(imageSrc.indexOf("#http") + 1);
         }
         if (imageSrc) {
           blogContent.push({

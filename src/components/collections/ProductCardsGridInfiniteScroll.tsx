@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Loading from '../common/Loading';
-import ProductCardGrid from './ProductCardsGrid';
-import { useCallback, useEffect, useState } from 'react';
+import Loading from "../common/Loading";
+import ProductCardGrid from "./ProductCardsGrid";
+import { useCallback, useEffect, useState } from "react";
 // import fetchProductCards from '@/src/serverActions/fetchProductCards';
 
 interface ProductCardsGridInfiniteScrollProps {
@@ -26,19 +26,19 @@ export default function ProductCardsGridInfiniteScroll({
       const searchParams = new URLSearchParams({
         page: page.toString(),
         perPage: perPage.toString(),
-        sortBy: sortBy ?? '',
+        sortBy: sortBy ?? "",
       });
       const path = `/api/collections/${collection}?${searchParams.toString()}`;
       const { productCards: nextProductCards } = await fetch(path, {
         next: {
-          tags: ['collections', collection],
+          tags: ["collections", collection],
         },
       }).then((res) => res.json());
       // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy)
       setProductCards([...productCards, ...nextProductCards]);
       setIsLoading(false);
     },
-    [collection, perPage, sortBy]
+    [collection, perPage, sortBy],
   );
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export default function ProductCardsGridInfiniteScroll({
         loadProductCards(productCards.length / perPage + 2, productCards);
       }
     }
-    document.addEventListener('scrollend', handleScrollEnd);
-    return () => document.removeEventListener('scrollend', handleScrollEnd);
+    document.addEventListener("scrollend", handleScrollEnd);
+    return () => document.removeEventListener("scrollend", handleScrollEnd);
   }, [perPage, totalCards, productCards, isLoading, loadProductCards]);
 
   return (

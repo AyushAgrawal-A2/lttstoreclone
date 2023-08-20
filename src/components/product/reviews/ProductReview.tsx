@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
-import RatingStars from '../../common/RatingStars';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+import RatingStars from "../../common/RatingStars";
 
 interface ProductReviewProps {
   review: Review;
@@ -23,7 +23,7 @@ export default function ProductReview({ review }: ProductReviewProps) {
           </div>
           <div className="flex items-center">
             <div className="text-xs mr-1 px-1 text-white bg-LTTOrange font-semibold">
-              {verified && 'Verified'}
+              {verified && "Verified"}
             </div>
             <div className="font-bold">{author}</div>
           </div>

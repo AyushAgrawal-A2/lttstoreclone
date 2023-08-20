@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import BlogCardsGrid from './BlogCardsGrid';
-import Loading from '../common/Loading';
-import { useCallback, useEffect, useState } from 'react';
+import BlogCardsGrid from "./BlogCardsGrid";
+import Loading from "../common/Loading";
+import { useCallback, useEffect, useState } from "react";
 // import fetchBlogCards from '@/src/serverActions/fetchBlogCards';
 
 interface BlogCardsGridInfiniteScrollProps {
@@ -26,14 +26,14 @@ export default function BlogCardsGridInfiniteScroll({
       const path = `/api/blogs/the-newsletter-archive?${searchParams.toString()}`;
       const { blogCards: nextBlogCards } = await fetch(path, {
         next: {
-          tags: ['blogs'],
+          tags: ["blogs"],
         },
       }).then((res) => res.json());
       // const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
       setBlogCards([...blogCards, ...nextBlogCards]);
       setIsLoading(false);
     },
-    [perPage]
+    [perPage],
   );
 
   useEffect(() => {
@@ -49,8 +49,8 @@ export default function BlogCardsGridInfiniteScroll({
         loadBlogCards(blogCards.length / perPage + 2, blogCards);
       }
     }
-    document.addEventListener('scrollend', handleScrollEnd);
-    return () => document.removeEventListener('scrollend', handleScrollEnd);
+    document.addEventListener("scrollend", handleScrollEnd);
+    return () => document.removeEventListener("scrollend", handleScrollEnd);
   }, [perPage, totalCards, blogCards, isLoading, loadBlogCards]);
 
   return (

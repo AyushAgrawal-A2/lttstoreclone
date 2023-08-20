@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faAngleRight,
   faAnglesLeft,
   faAnglesRight,
-} from '@fortawesome/free-solid-svg-icons';
+} from "@fortawesome/free-solid-svg-icons";
 
 interface PageChangerProps {
   page: number;
@@ -44,9 +44,10 @@ export default function PageChanger({
             <span
               key={num}
               className={`p-2 cursor-pointer ${
-                page === num && 'text-2xl font-bold'
+                page === num && "text-2xl font-bold"
               }`}
-              onClick={() => changePage(num)}>
+              onClick={() => changePage(num)}
+            >
               {num}
             </span>
           );

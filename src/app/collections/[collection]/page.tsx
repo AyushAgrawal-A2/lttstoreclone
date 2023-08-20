@@ -1,7 +1,7 @@
-import ProductCardsGridInfiniteScroll from '@/src/components/collections/ProductCardsGridInfiniteScroll';
-import ProductCardGrid from '@/src/components/collections/ProductCardsGrid';
-import SortBy from '@/src/components/collections/SortBy';
-import { getProductCards, getProductCollections } from '@/src/prisma/products';
+import ProductCardsGridInfiniteScroll from "@/src/components/collections/ProductCardsGridInfiniteScroll";
+import ProductCardGrid from "@/src/components/collections/ProductCardsGrid";
+import SortBy from "@/src/components/collections/SortBy";
+import { getProductCards, getProductCollections } from "@/src/prisma/products";
 
 // export const runtime = 'edge';
 
@@ -28,7 +28,7 @@ export default async function Page({
   const page = 1;
   const perPage = 12;
   const sortBy =
-    typeof searchParams.sortBy === 'string' ? searchParams.sortBy : undefined;
+    typeof searchParams.sortBy === "string" ? searchParams.sortBy : undefined;
   const { productCards, totalCards } = await getProductCards({
     collection,
     page,

@@ -1,7 +1,7 @@
-import ProductDetailBox from './ProductDetailBox';
-import ProductDetailBoxRelatedProducts from './ProductDetailBoxRelatedProducts';
-import ProductDetailBoxTable from './ProductDetailBoxTable';
-import ProductDetailText from './ProductDetailText';
+import ProductDetailBox from "./ProductDetailBox";
+import ProductDetailBoxRelatedProducts from "./ProductDetailBoxRelatedProducts";
+import ProductDetailBoxTable from "./ProductDetailBoxTable";
+import ProductDetailText from "./ProductDetailText";
 
 type ProductDetailsProps = {
   details: Detail[];
@@ -15,10 +15,8 @@ export default function ProductDetails({
   return (
     <>
       {details.map((detail) => (
-        <ProductDetailBox
-          key={detail.title}
-          title={detail.title}>
-          {detail.type === 'text' ? (
+        <ProductDetailBox key={detail.title} title={detail.title}>
+          {detail.type === "text" ? (
             <ProductDetailText data={detail.data} />
           ) : (
             <ProductDetailBoxTable data={detail.data} />

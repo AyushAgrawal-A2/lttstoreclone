@@ -1,15 +1,15 @@
-'use server';
+"use server";
 
-import { unstable_cache } from 'next/cache';
-import { getProductCards } from '../prisma/products';
+import { unstable_cache } from "next/cache";
+import { getProductCards } from "../prisma/products";
 
 export default async function fetchProductCards(
   collection: string,
   page: number,
   perPage: number,
-  sortBy = '',
-  searchText = '',
-  filter = []
+  sortBy = "",
+  searchText = "",
+  filter = [],
 ) {
   return await unstable_cache(
     () =>
@@ -21,9 +21,6 @@ export default async function fetchProductCards(
         searchText,
         filter,
       }),
-    [
-      'collections',
-      collection,
-    ]
+    ["collections", collection],
   )();
 }

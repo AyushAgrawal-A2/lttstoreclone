@@ -1,12 +1,12 @@
-import { getBlog, getBlogPaths } from '@/src/prisma/blogs';
-import Image from 'next/image';
+import { getBlog, getBlogPaths } from "@/src/prisma/blogs";
+import Image from "next/image";
 
 // export const runtime = 'edge';
 
 export async function generateStaticParams() {
   const blogPaths = await getBlogPaths();
   return blogPaths.map(({ path }) => {
-    const temp = path.split('/');
+    const temp = path.split("/");
     const blog = temp[temp.length - 1];
     return { blog };
   });
@@ -17,7 +17,7 @@ export async function generateMetadata({
 }: {
   params: { blog: string };
 }) {
-  const blogPath = '/blogs/the-newsletter-archive/' + params.blog;
+  const blogPath = "/blogs/the-newsletter-archive/" + params.blog;
   const blog = await getBlog({ blogPath });
   if (!blog)
     return {
@@ -30,7 +30,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { blog: string } }) {
-  const blogPath = '/blogs/the-newsletter-archive/' + params.blog;
+  const blogPath = "/blogs/the-newsletter-archive/" + params.blog;
   const blog = await getBlog({ blogPath });
   if (!blog) return <></>;
   const {
@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { blog: string } }) {
           {content.map(({ isImage, data }) =>
             isImage ? (
               <Image
-                alt={''}
+                alt={""}
                 key={data}
                 className="mx-auto"
                 src={data}
@@ -59,10 +59,11 @@ export default async function Page({ params }: { params: { blog: string } }) {
             ) : (
               <p
                 key={data}
-                className="whitespace-pre-line py-2 font-semibold text-sm md:text-base">
+                className="whitespace-pre-line py-2 font-semibold text-sm md:text-base"
+              >
                 {data}
               </p>
-            )
+            ),
           )}
         </div>
       </div>

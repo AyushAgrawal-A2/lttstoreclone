@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useCallback, useRef, useState } from 'react';
+import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
 // import fetchProductCards from '@/src/serverActions/fetchProductCards';
 
 export default function Searchbar() {
   const [searchbarIsShown, setSearchbarIsShown] = useState<boolean>(false);
   const [searchResultsAreShown, setSearchResultsAreShown] =
     useState<boolean>(false);
-  const [searchText, setSearchText] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>("");
   const [productCards, setProductCards] = useState<ProductCard[]>([]);
   const debounceTimoutRef = useRef<NodeJS.Timeout>();
   const router = useRouter();
@@ -19,17 +19,17 @@ export default function Searchbar() {
   const resetSearchBar = useCallback(() => {
     setSearchbarIsShown(false);
     setSearchResultsAreShown(false);
-    setSearchText('');
+    setSearchText("");
     setProductCards([]);
   }, []);
 
   const displaySearchbar = useCallback(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     setSearchbarIsShown(true);
   }, []);
 
   const hideSearchbar = useCallback(() => {
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
     resetSearchBar();
   }, [resetSearchBar]);
 
@@ -38,7 +38,7 @@ export default function Searchbar() {
       router.replace(path);
       resetSearchBar();
     },
-    [router, resetSearchBar]
+    [router, resetSearchBar],
   );
 
   const gotoSearchPage = useCallback(() => {
@@ -51,19 +51,19 @@ export default function Searchbar() {
       resetSearchBar();
       gotoSearchPage();
     },
-    [resetSearchBar, gotoSearchPage]
+    [resetSearchBar, gotoSearchPage],
   );
 
   const loadProductCards = useCallback(async (searchText: string) => {
     const searchParams = new URLSearchParams({
-      page: '1',
-      perPage: '4',
-      sortBy: 'bestseller,asc',
+      page: "1",
+      perPage: "4",
+      sortBy: "bestseller,asc",
       searchText,
     });
     const path = `/api/collections/all-products-1?${searchParams.toString()}`;
     const { productCards } = await fetch(path, {
-      next: { tags: ['collections', 'all-products-1', 'products'] },
+      next: { tags: ["collections", "all-products-1", "products"] },
     }).then((res) => res.json());
     // const { productCards } = await fetchProductCards('all-products-1', 1, 4, 'bestseller,asc', searchText);
     setProductCards(productCards);
@@ -75,7 +75,7 @@ export default function Searchbar() {
       if (!searchText) setSearchResultsAreShown(false);
       else loadProductCards(searchText);
     },
-    [loadProductCards]
+    [loadProductCards],
   );
 
   const handleSearchInput = useCallback(
@@ -84,10 +84,10 @@ export default function Searchbar() {
       clearTimeout(debounceTimoutRef.current);
       debounceTimoutRef.current = setTimeout(
         () => getSearchResult(e.target.value),
-        250
+        250,
       );
     },
-    [getSearchResult]
+    [getSearchResult],
   );
 
   return (
@@ -95,17 +95,19 @@ export default function Searchbar() {
       <button onClick={displaySearchbar}>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          size={'lg'}
+          size={"lg"}
           className="hover:scale-[1.15] px-2"
         />
       </button>
       <div
         className={`absolute top-0 left-0 h-full w-full bg-gradient justify-center items-center ${
-          searchbarIsShown ? 'flex' : 'hidden'
-        }`}>
+          searchbarIsShown ? "flex" : "hidden"
+        }`}
+      >
         <form
           onSubmit={handleSubmit}
-          className="relative bg-bgSecondary rounded-md flex items-center h-12 w-10/12 lg:w-3/5">
+          className="relative bg-bgSecondary rounded-md flex items-center h-12 w-10/12 lg:w-3/5"
+        >
           <input
             id="search-items"
             placeholder=" "
@@ -115,7 +117,8 @@ export default function Searchbar() {
           />
           <label
             htmlFor="search-items"
-            className="absolute top-0 left-3 text-fgSecondary text-xs peer-focus:text-xs peer-focus:top-0 peer-placeholder-shown:text-lg peer-placeholder-shown:top-2 font-semibold">
+            className="absolute top-0 left-3 text-fgSecondary text-xs peer-focus:text-xs peer-focus:top-0 peer-placeholder-shown:text-lg peer-placeholder-shown:top-2 font-semibold"
+          >
             Search
           </label>
           {searchResultsAreShown && (
@@ -127,7 +130,8 @@ export default function Searchbar() {
                     <div
                       key={productCard.path}
                       className="flex items-center w-full hover:underline p-2 cursor-pointer"
-                      onClick={() => handleResultClick(productCard.path)}>
+                      onClick={() => handleResultClick(productCard.path)}
+                    >
                       <Image
                         alt={productCard.title}
                         src={productCard.images[0].src}
@@ -141,22 +145,20 @@ export default function Searchbar() {
                   ))}
                 </div>
               )}
-              <div
-                className="p-2 cursor-pointer"
-                onClick={gotoSearchPage}>
+              <div className="p-2 cursor-pointer" onClick={gotoSearchPage}>
                 Search for &quot;{searchText}&quot;
               </div>
             </div>
           )}
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
-            size={'xl'}
+            size={"xl"}
             className="hover:scale-[1.15] text-fgSecondary p-2 cursor-pointer"
             onClick={gotoSearchPage}
           />
           <FontAwesomeIcon
             icon={faXmark}
-            size={'2xl'}
+            size={"2xl"}
             className="hover:scale-[1.15] absolute right-[-35px]"
             onClick={hideSearchbar}
           />
@@ -164,8 +166,8 @@ export default function Searchbar() {
       </div>
       <div
         className={
-          'w-full h-screen top-0 left-0 -z-10 bg-black opacity-30' +
-          (searchbarIsShown ? ' absolute' : ' hidden')
+          "w-full h-screen top-0 left-0 -z-10 bg-black opacity-30" +
+          (searchbarIsShown ? " absolute" : " hidden")
         }
         onClick={hideSearchbar}
       />

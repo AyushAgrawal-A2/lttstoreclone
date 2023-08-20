@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import ComponentSlides from '@/src/components/common/ComponentSlides';
-import ProductImages from '@/src/components/product/images/ProductImages';
-import ProductImagesModal from '@/src/components/product/images/ProductImagesModal';
-import ProductImagesPreview from '@/src/components/product/images/ProductImagesPreview';
-import ProductImageWithOverlay from './ProductImageWithOverlay';
-import { useCallback, useState } from 'react';
+import ComponentSlides from "@/src/components/common/ComponentSlides";
+import ProductImages from "@/src/components/product/images/ProductImages";
+import ProductImagesModal from "@/src/components/product/images/ProductImagesModal";
+import ProductImagesPreview from "@/src/components/product/images/ProductImagesPreview";
+import ProductImageWithOverlay from "./ProductImageWithOverlay";
+import { useCallback, useState } from "react";
 
 interface ImagesProps {
   title: string;
@@ -18,9 +18,9 @@ export default function Images({ title, images }: ImagesProps) {
 
   const scrollProductImages = useCallback((idx: number) => {
     document.getElementById(`image${idx}`)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
     });
   }, []);
 
@@ -43,7 +43,8 @@ export default function Images({ title, images }: ImagesProps) {
           components={images.map((image, idx) => (
             <li
               key={image.src}
-              className="snap-start relative group shrink-0 grow-0 w-[95%]">
+              className="snap-start relative group shrink-0 grow-0 w-[95%]"
+            >
               <ProductImageWithOverlay
                 image={image}
                 idx={-idx - 1}
@@ -56,10 +57,7 @@ export default function Images({ title, images }: ImagesProps) {
         />
       </div>
       <div className="hidden md:flex flex-col lg:flex-row-reverse gap-3.5 overscroll-contain">
-        <ProductImages
-          images={images}
-          displayImageModal={displayImageModal}
-        />
+        <ProductImages images={images} displayImageModal={displayImageModal} />
         <ProductImagesPreview
           images={images}
           scrollProductImages={scrollProductImages}

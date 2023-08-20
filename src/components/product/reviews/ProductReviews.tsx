@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Loading from '../../common/Loading';
-import PageChanger from '../../common/PageChanger';
-import ProductReview from './ProductReview';
-import ProductReviewsHistogram from './ProductReviewsHistogram';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import Loading from "../../common/Loading";
+import PageChanger from "../../common/PageChanger";
+import ProductReview from "./ProductReview";
+import ProductReviewsHistogram from "./ProductReviewsHistogram";
+import { useCallback, useEffect, useRef, useState } from "react";
 // import fetchReviews from '@/src/serverActions/fetchReviews';
 
 type ProductReviewsProps = {
@@ -17,7 +17,7 @@ export default function ProductReviews({
   lttProductId,
 }: ProductReviewsProps) {
   const [page, setPage] = useState<number>(1);
-  const [reviewStarsFilter, setReviewStarsFilter] = useState<string>('');
+  const [reviewStarsFilter, setReviewStarsFilter] = useState<string>("");
   const [reviewsResponse, setReviewsResponse] = useState<ReviewResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const firstLoadRef = useRef<boolean>(true);
@@ -31,7 +31,7 @@ export default function ProductReviews({
         reviewStarsFilter,
       });
       const path = `/api/reviews?${searchParams.toString()}`;
-      const reviewsResponse = await fetch(path, { cache: 'no-store' })
+      const reviewsResponse = await fetch(path, { cache: "no-store" })
         .then((res) => res.json())
         .catch(console.log);
       // const reviewsResponse = await fetchReviews(
@@ -42,7 +42,7 @@ export default function ProductReviews({
       setReviewsResponse(reviewsResponse);
       setIsLoading(false);
     },
-    [lttProductId]
+    [lttProductId],
   );
 
   const changePage = useCallback(
@@ -50,7 +50,7 @@ export default function ProductReviews({
       setPage(page);
       loadReviews(page, reviewStarsFilter);
     },
-    [loadReviews, reviewStarsFilter]
+    [loadReviews, reviewStarsFilter],
   );
 
   const changeFilter = useCallback(
@@ -59,13 +59,13 @@ export default function ProductReviews({
       setReviewStarsFilter(stars);
       loadReviews(1, stars);
     },
-    [loadReviews]
+    [loadReviews],
   );
 
   useEffect(() => {
     if (firstLoadRef.current) {
       firstLoadRef.current = false;
-      loadReviews(1, '');
+      loadReviews(1, "");
     }
   }, [loadReviews]);
 
@@ -73,20 +73,15 @@ export default function ProductReviews({
   if (!reviewsResponse.reviews.length) return <></>;
 
   return (
-    <div
-      id="customerReviews"
-      className="m-10">
+    <div id="customerReviews" className="m-10">
       <ProductReviewsHistogram
         reviewStats={reviewStats}
         changeFilter={changeFilter}
       />
       <div className="relative">
-        <div className={`${isLoading && 'opacity-25'}`}>
+        <div className={`${isLoading && "opacity-25"}`}>
           {reviewsResponse.reviews.map((review) => (
-            <ProductReview
-              key={review.time}
-              review={review}
-            />
+            <ProductReview key={review.time} review={review} />
           ))}
           <PageChanger
             page={page}

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import ImageWithOverlay from './ProductImageWithOverlay';
+import ImageWithOverlay from "./ProductImageWithOverlay";
 
 type ProductImagesProps = {
   images: Image[];
@@ -16,7 +16,8 @@ export default function ProductImages({
       {images.map((image, idx) => (
         <li
           key={idx}
-          className="snap-start relative group shrink-0 grow-0 w-[95%]">
+          className="snap-start relative group shrink-0 grow-0 w-[95%]"
+        >
           <ImageWithOverlay
             image={image}
             idx={idx}

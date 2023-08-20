@@ -1,5 +1,5 @@
-import ProductDetailBox from './ProductDetailBox';
-import ProductCard from '../../common/ProductCard';
+import ProductDetailBox from "./ProductDetailBox";
+import ProductCard from "../../common/ProductCard";
 
 type ProductDetailBoxRelatedProductsProps = {
   relatedProducts: ProductCard[];
@@ -13,9 +13,7 @@ export default function ProductDetailBoxRelatedProducts({
     <ProductDetailBox title="Related Products">
       <div className="pt-3 flex gap-5 overflow-auto justify-center">
         {relatedProducts.map((productCard) => (
-          <div
-            key={productCard.path}
-            className="flex-none w-[80%]">
+          <div key={productCard.path} className="flex-none w-[80%]">
             <ProductCard productCard={productCard} />
           </div>
         ))}

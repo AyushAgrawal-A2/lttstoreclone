@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import Link from 'next/link';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import Link from "next/link";
 
 type NavbarIconProps = {
   href: string;
@@ -12,7 +12,7 @@ export default function NavbarIcon({ href, faIcon }: NavbarIconProps) {
     <Link href={href}>
       <FontAwesomeIcon
         icon={faIcon}
-        size={'lg'}
+        size={"lg"}
         className="hover:scale-[1.15]"
       />
     </Link>

@@ -1,8 +1,8 @@
-import scrapeHomeBanner from '@/src/cheerio/homeBanner';
-import { saveHomeBanner } from '@/src/prisma/home';
-import { NextResponse } from 'next/server';
+import scrapeHomeBanner from "@/src/cheerio/homeBanner";
+import { saveHomeBanner } from "@/src/prisma/home";
+import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 // export const runtime = 'edge';
 
 export async function GET() {

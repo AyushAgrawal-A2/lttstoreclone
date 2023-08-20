@@ -15,32 +15,38 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Newsletter
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Shipping Policy
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Customs & Duty Fees
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Return Policy
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Terms and Conditions
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Privacy Policy
             </Link>
           </div>
@@ -52,12 +58,14 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               FAQ
             </Link>
             <Link
               href="/blogs/the-newsletter-archive"
-              className="text-sm font-semibold my-1 hover:underline">
+              className="text-sm font-semibold my-1 hover:underline"
+            >
               Contact Us
             </Link>
             <Link href="/">

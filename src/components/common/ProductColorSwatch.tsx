@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 type ProductColorSwatchProps = {
   colorSwatch: ColorSwatch[];
   colorIdx: number;
   changeColor: (imgPos: number) => void;
-  size: 'sm' | 'lg';
+  size: "sm" | "lg";
 };
 
 export default function ProductColorSwatch({
@@ -17,26 +17,28 @@ export default function ProductColorSwatch({
 
   return (
     <div className="my-5">
-      {size === 'lg' && (
+      {size === "lg" && (
         <div className="my-2 text-2xl font-bold uppercase text-center md:text-start">
           SELECT COLOR: {colorSwatch[colorIdx]?.color.name}
         </div>
       )}
       <ul
         className={`flex flex-row flex-wrap gap-1.5 justify-center ${
-          size === 'lg' && 'md:justify-start'
-        }`}>
+          size === "lg" && "md:justify-start"
+        }`}
+      >
         {colorSwatch.map(({ color }, idx) => (
           <li
             key={color.name}
             className={`rounded hover:scale-110 p-0.5 cursor-pointer ${
-              size === 'sm' ? 'h-[22px] w-[22px]' : 'h-[55px] w-[55px]'
+              size === "sm" ? "h-[22px] w-[22px]" : "h-[55px] w-[55px]"
             }  ${
               colorIdx === idx &&
-              'scale-110 border-2 border-fgPrimary cursor-pointer	'
+              "scale-110 border-2 border-fgPrimary cursor-pointer	"
             }`}
             onClick={() => changeColor(idx)}
-            title={color.name}>
+            title={color.name}
+          >
             <p
               className="w-full h-full border border-fgPrimary rounded-sm"
               style={{

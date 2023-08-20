@@ -1,6 +1,6 @@
-import prisma from '.';
-import { getBlogCards } from '../prisma/blogs';
-import { getProductCards } from '../prisma/products';
+import prisma from ".";
+import { getBlogCards } from "../prisma/blogs";
+import { getProductCards } from "../prisma/products";
 
 export async function saveHomeBanner({
   homeBanner,
@@ -13,8 +13,8 @@ export async function saveHomeBanner({
       homeBanner.map((data) =>
         prisma.homeBanner.create({
           data,
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.log(error);
@@ -24,7 +24,7 @@ export async function saveHomeBanner({
 async function getHomeBanner() {
   const homeBanner = await prisma.homeBanner.findMany({
     orderBy: {
-      position: 'asc',
+      position: "asc",
     },
   });
   return homeBanner;
@@ -33,15 +33,15 @@ async function getHomeBanner() {
 export async function getHome() {
   const homeBannerPromise = getHomeBanner();
   const featuredPromise = getProductCards({
-    collection: 'top-sellers',
+    collection: "top-sellers",
     page: 1,
     perPage: 3,
   });
   const bestsellerPromise = getProductCards({
-    collection: 'all-products-1',
+    collection: "all-products-1",
     page: 1,
     perPage: 6,
-    sortBy: 'bestseller,asc',
+    sortBy: "bestseller,asc",
   });
   const blogCardsPromise = getBlogCards({ page: 1, perPage: 3 });
   const [

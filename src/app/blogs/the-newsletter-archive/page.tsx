@@ -1,6 +1,6 @@
-import { getBlogCards } from '@/src/prisma/blogs';
-import BlogCardsGrid from '@/src/components/blogs/BlogCardsGrid';
-import BlogCardsGridInfiniteScroll from '@/src/components/blogs/BlogCardsGridInfiniteScroll';
+import { getBlogCards } from "@/src/prisma/blogs";
+import BlogCardsGrid from "@/src/components/blogs/BlogCardsGrid";
+import BlogCardsGridInfiniteScroll from "@/src/components/blogs/BlogCardsGridInfiniteScroll";
 
 // export const runtime = 'edge';
 

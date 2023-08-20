@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import ProductColorSwatch from '../../common/ProductColorSwatch';
-import ProductSizeOptions from './ProductSizeOptions';
-import { useCallback, useState } from 'react';
+import ProductColorSwatch from "../../common/ProductColorSwatch";
+import ProductSizeOptions from "./ProductSizeOptions";
+import { useCallback, useState } from "react";
 
 interface ProductOptionsProps {
   colorSwatch: ColorSwatch[];
@@ -18,9 +18,9 @@ export default function ProductOptions({
 
   const scrollProductImages = useCallback((idx: number) => {
     document.getElementById(`image${idx}`)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
     });
   }, []);
 
@@ -29,7 +29,7 @@ export default function ProductOptions({
       setColorIdx(idx);
       scrollProductImages(colorSwatch[idx].imgPosition);
     },
-    [colorSwatch, scrollProductImages]
+    [colorSwatch, scrollProductImages],
   );
 
   return (
@@ -38,7 +38,7 @@ export default function ProductOptions({
         colorSwatch={colorSwatch}
         colorIdx={colorIdx}
         changeColor={changeColor}
-        size={'lg'}
+        size={"lg"}
       />
       <ProductSizeOptions
         sizeOptions={sizeOptions}

@@ -34,11 +34,11 @@ interface Image {
 
 type Detail = { title: string } & (
   | {
-      type: 'text';
+      type: "text";
       data: string;
     }
   | {
-      type: 'table';
+      type: "table";
       data: string[][];
     }
 );

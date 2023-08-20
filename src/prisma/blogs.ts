@@ -1,4 +1,4 @@
-import prisma from '.';
+import prisma from ".";
 
 export async function saveBlogs({
   blogCards,
@@ -20,8 +20,8 @@ export async function saveBlogs({
               },
             },
           },
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.log(error);
@@ -37,7 +37,7 @@ export async function getBlogCards({
 }) {
   const blogCardsPromise = prisma.blogCard.findMany({
     orderBy: {
-      date: 'desc',
+      date: "desc",
     },
     skip: (page - 1) * perPage,
     take: perPage,

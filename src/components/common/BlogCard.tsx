@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 interface BlogCardProps {
   blogCard: BlogCard;
@@ -15,7 +15,7 @@ export default function BlogCard({ blogCard }: BlogCardProps) {
           <Image
             className="max-h-80 h-full w-full object-cover hover:animate-grow"
             src={imgURL}
-            alt={'blog'}
+            alt={"blog"}
             width={1000}
             height={1000}
             sizes="(max-width: 768px) 100vw, 33vw"

@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import 'swiper/css';
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import "swiper/css";
 import {
   faChevronLeft,
   faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 
 interface ComponentSlidesProps {
   components: JSX.Element[];
@@ -31,8 +31,8 @@ export default function ComponentSlides({
         setRespSlidesPerView(window.innerWidth >= 750 ? slidesPerView : 1);
       };
       handleResize();
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
     }
   }, [slidesPerView, responsive, respSlidesPerView]);
 
@@ -41,11 +41,10 @@ export default function ComponentSlides({
       centeredSlides={centeredSlides}
       slidesPerView={respSlidesPerView + 0.05}
       spaceBetween={10}
-      onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}>
+      onSlideChange={(swiper) => setCurSlide(swiper.realIndex)}
+    >
       {components.map((component, idx) => (
-        <SwiperSlide
-          key={idx}
-          className="self-center">
+        <SwiperSlide key={idx} className="self-center">
           {component}
         </SwiperSlide>
       ))}

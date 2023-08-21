@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import Loading from "../common/Loading";
 import ProductCardGrid from "./ProductCardsGrid";
 import { useCallback, useEffect, useState } from "react";
@@ -29,16 +30,14 @@ export default function ProductCardsGridInfiniteScroll({
         sortBy: sortBy ?? "",
       });
       const path = `/api/collections/${collection}?${searchParams.toString()}`;
-      const { productCards: nextProductCards } = await fetch(path, {
-        next: {
-          tags: ["collections", collection],
-        },
-      }).then((res) => res.json());
+      const {
+        data: { productCards: nextProductCards },
+      } = await axios.get(path);
       // const { productCards: nextProductCards } = fetchProductCards(collection, page, perPage, sortBy)
       setProductCards([...productCards, ...nextProductCards]);
       setIsLoading(false);
     },
-    [collection, perPage, sortBy],
+    [collection, perPage, sortBy]
   );
 
   useEffect(() => {

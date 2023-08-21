@@ -1,3 +1,4 @@
+import axios from "axios";
 import cheerio from "cheerio";
 
 async function scrapeBlogs(): Promise<{
@@ -7,12 +8,13 @@ async function scrapeBlogs(): Promise<{
   const blogCards: BlogCard[] = [];
   try {
     const url = new URL(
-      "https://www.lttstore.com/blogs/the-newsletter-archive",
+      "https://www.lttstore.com/blogs/the-newsletter-archive"
     );
-    const html = await fetch(url).then((res) => res.text());
+    const path = url.toString();
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $(
-      "main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article",
+      "main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article"
     ).each((i, el) => {
       const blogCardEl = $(el).find("div.card > div.card__inner");
       const path =
@@ -30,9 +32,9 @@ async function scrapeBlogs(): Promise<{
       const date = new Date(
         $(blogCardEl)
           .find(
-            "div.card__content div.card__information div.article-card__info time",
+            "div.card__content div.card__information div.article-card__info time"
           )
-          .prop("datetime"),
+          .prop("datetime")
       );
       const imgSrc = $(blogCardEl)
         .find("div.article-card__image-wrapper img")
@@ -49,7 +51,7 @@ async function scrapeBlogs(): Promise<{
       });
     });
     const blogContents = await Promise.all(
-      blogCards.map((blogCard) => scrapeBlog(blogCard)),
+      blogCards.map((blogCard) => scrapeBlog(blogCard))
     );
     return { blogCards, blogContents };
   } catch (error) {
@@ -62,7 +64,8 @@ async function scrapeBlog(blogCard: BlogCard): Promise<BlogContent[]> {
   const blogContent: BlogContent[] = [];
   try {
     const url = new URL("https://www.lttstore.com" + blogCard.path);
-    const html = await fetch(url).then((res) => res.text());
+    const path = url.toString();
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $("main#MainContent article.article-template div.article-template__content")
       .children()

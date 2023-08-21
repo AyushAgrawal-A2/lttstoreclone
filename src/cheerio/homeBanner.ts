@@ -1,13 +1,14 @@
+import axios from "axios";
 import cheerio from "cheerio";
 
 async function scrapeHomeBanner() {
   const homeBanner: HomeBanner[] = [];
   try {
-    const url = new URL("https://www.lttstore.com");
-    const html = await fetch(url).then((res) => res.text());
+    const path = "https://www.lttstore.com";
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $(
-      "main#MainContent div.swiper div.swiper-wrapper div.ultimate-slideshow-slide",
+      "main#MainContent div.swiper div.swiper-wrapper div.ultimate-slideshow-slide"
     ).each((i, el) => {
       const link = $(el).find("a").prop("href") ?? "";
       const imgURL =

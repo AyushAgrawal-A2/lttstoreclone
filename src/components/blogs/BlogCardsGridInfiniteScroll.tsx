@@ -3,6 +3,7 @@
 import BlogCardsGrid from "./BlogCardsGrid";
 import Loading from "../common/Loading";
 import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 // import fetchBlogCards from '@/src/serverActions/fetchBlogCards';
 
 interface BlogCardsGridInfiniteScrollProps {
@@ -24,16 +25,14 @@ export default function BlogCardsGridInfiniteScroll({
         perPage: perPage.toString(),
       });
       const path = `/api/blogs/the-newsletter-archive?${searchParams.toString()}`;
-      const { blogCards: nextBlogCards } = await fetch(path, {
-        next: {
-          tags: ["blogs"],
-        },
-      }).then((res) => res.json());
+      const {
+        data: { blogCards: nextBlogCards },
+      } = await axios.get(path);
       // const { blogCards: nextBlogCards } = await fetchBlogCards(page, perPage);
       setBlogCards([...blogCards, ...nextBlogCards]);
       setIsLoading(false);
     },
-    [perPage],
+    [perPage]
   );
 
   useEffect(() => {

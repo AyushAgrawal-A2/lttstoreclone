@@ -1,3 +1,4 @@
+import axios from "axios";
 import cheerio from "cheerio";
 
 async function scrapeProducts() {
@@ -7,7 +8,8 @@ async function scrapeProducts() {
     let page = 1;
     while (true) {
       url.searchParams.set("page", page.toString());
-      const html = await fetch(url).then((res) => res.text());
+      const path = url.toString();
+      const { data: html } = await axios.get(path);
       const $ = cheerio.load(html);
       const productLiEl = $("ul#product-grid li.grid__item");
 
@@ -63,10 +65,11 @@ async function scrapeProducts() {
 async function scrapeProduct(product: Product) {
   try {
     const url = new URL("https://www.lttstore.com" + product.path);
-    const html = await fetch(url).then((res) => res.text());
+    const path = url.toString();
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     product.lttProductId = $(
-      "div.product div.product__info-wrapper div.jdgm-widget",
+      "div.product div.product__info-wrapper div.jdgm-widget"
     ).prop("data-id");
     scrapeProductImages(product, html);
     scrapeProductRatings(product, html);
@@ -84,7 +87,7 @@ async function scrapeProduct(product: Product) {
 function scrapeProductImages(product: Product, html: any) {
   const $ = cheerio.load(html);
   $(
-    "div.product div.product__media-wrapper ul.product__media-list li.product__media-item",
+    "div.product div.product__media-wrapper ul.product__media-list li.product__media-item"
   ).each((i, el) => {
     let src = $(el).find("img").prop("src");
     let overlay = $(el).find("div.product__media--overlay").text();
@@ -104,7 +107,7 @@ function scrapeProductRatings(product: Product, html: any) {
     .trim();
   if (reviewsText === "No reviews") return;
   product.rating.stars = parseFloat(
-    $(rataingEl).find("span.jdgm-prev-badge__stars").prop("data-score"),
+    $(rataingEl).find("span.jdgm-prev-badge__stars").prop("data-score")
   );
   product.rating.reviews = parseInt(reviewsText.split(" ")[0]);
 }
@@ -113,7 +116,7 @@ function scrapeProductPrice(product: Product, html: any) {
   const $ = cheerio.load(html);
   const priceText =
     $("div.product div.product__info-wrapper div.price span.money").prop(
-      "textContent",
+      "textContent"
     ) || "";
   product.price = parseFloat(priceText.slice(1, priceText.indexOf(" ")));
 }
@@ -121,7 +124,7 @@ function scrapeProductPrice(product: Product, html: any) {
 function scrapeProductColorSwatch(product: Product, html: any) {
   const $ = cheerio.load(html);
   const swatchListEl = $(
-    "div.product div.product__info-wrapper ul.ColorSwatchList",
+    "div.product div.product__info-wrapper ul.ColorSwatchList"
   );
   if (swatchListEl.length === 0) return;
 
@@ -143,7 +146,7 @@ function scrapeProductColorSwatch(product: Product, html: any) {
         : title;
     if (
       product.colorSwatch.find(
-        (colorSwatchItem) => colorSwatchItem.color.name === name,
+        (colorSwatchItem) => colorSwatchItem.color.name === name
       )
     )
       return;
@@ -166,7 +169,7 @@ function scrapeProductColorSwatch(product: Product, html: any) {
       if (style) {
         if (style["background-color"]) {
           const colorSwatchItem = product.colorSwatch.find(
-            (colorSwatchItem) => colorSwatchItem.color.name === name,
+            (colorSwatchItem) => colorSwatchItem.color.name === name
           );
           if (colorSwatchItem)
             colorSwatchItem.color.backgroundColor = style[
@@ -175,7 +178,7 @@ function scrapeProductColorSwatch(product: Product, html: any) {
         }
         if (style["background-image"]) {
           const colorSwatchItem = product.colorSwatch.find(
-            (colorSwatchItem) => colorSwatchItem.color.name === name,
+            (colorSwatchItem) => colorSwatchItem.color.name === name
           );
           if (colorSwatchItem) {
             let src = style["background-image"] as string;
@@ -197,7 +200,7 @@ function scrapeProductSizeOptions(product: Product, html: any) {
         .text()
         .replace(/\s{2,}/g, "");
       product.sizeOptions.push({ name, symbol });
-    },
+    }
   );
 }
 
@@ -224,7 +227,7 @@ function scrapeProductDetails(product: Product, html: any) {
                   $(el)
                     .text()
                     .replace(/[\r\n]+/g, "")
-                    .trim(),
+                    .trim()
                 );
               });
             table.push(row);
@@ -260,7 +263,7 @@ function scrapeProductDetails(product: Product, html: any) {
         };
       }
       product.details.push(detail);
-    },
+    }
   );
 }
 
@@ -277,7 +280,7 @@ function scrapeProductFeatureImages(product: Product, html: any) {
 function scrapeProductReviewStats(product: Product, html: any) {
   const $ = cheerio.load(html);
   $(
-    "main#MainContent div#judgeme_product_reviews div.jdgm-histogram div.jdgm-histogram__row",
+    "main#MainContent div#judgeme_product_reviews div.jdgm-histogram div.jdgm-histogram__row"
   ).each((i, el) => {
     const rating = ("star_" +
       $(el).prop("data-rating")) as keyof typeof product.reviewStats;
@@ -296,7 +299,7 @@ async function scrapeProductRanks(products: Product[]) {
     };
     for (const key in sortCriterias) {
       const url = new URL(
-        "https://www.lttstore.com/collections/all-products-1",
+        "https://www.lttstore.com/collections/all-products-1"
       );
       const sortCriteria = key as keyof typeof sortCriterias;
       url.searchParams.set("sort_by", sortCriterias[sortCriteria]);
@@ -304,7 +307,8 @@ async function scrapeProductRanks(products: Product[]) {
       let rank = 1;
       while (true) {
         url.searchParams.set("page", page.toString());
-        const html = await fetch(url).then((res) => res.text());
+        const path = url.toString();
+        const { data: html } = await axios.get(path);
         const $ = cheerio.load(html);
         const productLiEls = $("ul#product-grid li.grid__item");
         productLiEls.each((i, el) => {
@@ -331,7 +335,8 @@ async function scrapeCollections(products: Product[]) {
     }
     const collections: Collection = {};
     const url = new URL("https://www.lttstore.com/collections/");
-    const html = await fetch(url).then((res) => res.text());
+    const path = url.toString();
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $("main#MainContent ul.collection-list li.collection-list__item").each(
       (i, el) => {
@@ -339,10 +344,10 @@ async function scrapeCollections(products: Product[]) {
           "https://www.lttstore.com" + $(el).find("a:first").prop("href") ?? "";
         const collection = collectionURL.replace(
           "https://www.lttstore.com/collections/",
-          "",
+          ""
         );
         collections[collection] = collectionURL;
-      },
+      }
     );
     await Promise.all(
       Object.keys(collections).map(async (collection) => {
@@ -350,7 +355,8 @@ async function scrapeCollections(products: Product[]) {
         let page = 1;
         while (true) {
           url.searchParams.set("page", page.toString());
-          const html = await fetch(url).then((res) => res.text());
+          const path = url.toString();
+          const { data: html } = await axios.get(path);
           const $ = cheerio.load(html);
           const productLiEls = $("ul#product-grid li.grid__item");
           productLiEls.each((i, el) => {
@@ -364,7 +370,7 @@ async function scrapeCollections(products: Product[]) {
           if (productLiEls.length < 12) break;
           page++;
         }
-      }),
+      })
     );
   } catch (error) {
     console.error(error);
@@ -380,7 +386,8 @@ async function scrapeFilters(products: Product[]) {
       };
     } = {};
     const url = new URL("https://www.lttstore.com/collections/all-products-1");
-    const html = await fetch(url).then((res) => res.text());
+    const path = url.toString();
+    const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $("div.facets-container form#FacetFiltersForm details").each((i, el) => {
       let filter = $(el).find("summary.facets__summary div > span").text();
@@ -403,7 +410,7 @@ async function scrapeFilters(products: Product[]) {
 
     for (const filter in filters) {
       const url = new URL(
-        "https://www.lttstore.com/collections/all-products-1",
+        "https://www.lttstore.com/collections/all-products-1"
       );
       const { filterKey, filterValues } = filters[filter];
       for (const filterValue of filterValues) {
@@ -411,7 +418,8 @@ async function scrapeFilters(products: Product[]) {
         let page = 1;
         while (true) {
           url.searchParams.set("page", page.toString());
-          const html = await fetch(url).then((res) => res.text());
+          const path = url.toString();
+          const { data: html } = await axios.get(path);
           const $ = cheerio.load(html);
           const productLiEls = $("ul#product-grid li.grid__item");
           productLiEls.each((i, el) => {

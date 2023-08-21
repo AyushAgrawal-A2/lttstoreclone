@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import Loading from "../../common/Loading";
 import PageChanger from "../../common/PageChanger";
 import ProductReview from "./ProductReview";
@@ -31,9 +32,7 @@ export default function ProductReviews({
         reviewStarsFilter,
       });
       const path = `/api/reviews?${searchParams.toString()}`;
-      const reviewsResponse = await fetch(path, { cache: "no-store" })
-        .then((res) => res.json())
-        .catch(console.log);
+      const { data: reviewsResponse } = await axios.get(path);
       // const reviewsResponse = await fetchReviews(
       //   lttProductId,
       //   page,
@@ -42,7 +41,7 @@ export default function ProductReviews({
       setReviewsResponse(reviewsResponse);
       setIsLoading(false);
     },
-    [lttProductId],
+    [lttProductId]
   );
 
   const changePage = useCallback(
@@ -50,7 +49,7 @@ export default function ProductReviews({
       setPage(page);
       loadReviews(page, reviewStarsFilter);
     },
-    [loadReviews, reviewStarsFilter],
+    [loadReviews, reviewStarsFilter]
   );
 
   const changeFilter = useCallback(
@@ -59,7 +58,7 @@ export default function ProductReviews({
       setReviewStarsFilter(stars);
       loadReviews(1, stars);
     },
-    [loadReviews],
+    [loadReviews]
   );
 
   useEffect(() => {
@@ -73,7 +72,9 @@ export default function ProductReviews({
   if (!reviewsResponse.reviews.length) return <></>;
 
   return (
-    <div id="customerReviews" className="m-10">
+    <div
+      id="customerReviews"
+      className="m-10">
       <ProductReviewsHistogram
         reviewStats={reviewStats}
         changeFilter={changeFilter}
@@ -81,7 +82,10 @@ export default function ProductReviews({
       <div className="relative">
         <div className={`${isLoading && "opacity-25"}`}>
           {reviewsResponse.reviews.map((review) => (
-            <ProductReview key={review.time} review={review} />
+            <ProductReview
+              key={review.time}
+              review={review}
+            />
           ))}
           <PageChanger
             page={page}

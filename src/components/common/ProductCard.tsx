@@ -18,7 +18,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
       setColorIdx(idx);
       setImgPos(productCard.colorSwatch[idx].imgPosition);
     },
-    [productCard.colorSwatch],
+    [productCard.colorSwatch]
   );
 
   return (
@@ -37,8 +37,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
         <div
           className={`absolute bottom-0 left-0 m-4 py-1 px-2 bg-white text-black text-xs font-semibold border border-black rounded-full ${
             productCard.inStock && "hidden"
-          }`}
-        >
+          }`}>
           Sold Out
         </div>
       </div>
@@ -55,7 +54,7 @@ export default function ProductCard({ productCard }: ProductCardProps) {
           <div className="text-xl font-bold text-center hover:underline group-hover:underline">
             {productCard.title}
           </div>
-          <div className="font-bold text-center">{productCard.price}</div>
+          <div className="font-bold text-center">{`$${productCard.price} USD`}</div>
         </div>
       </Link>
     </div>

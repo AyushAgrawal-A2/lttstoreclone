@@ -18,7 +18,7 @@ export default function AppTheme() {
       Cookies.set("theme", theme);
       applyTheme(theme);
     },
-    [applyTheme],
+    [applyTheme]
   );
 
   useEffect(() => {
@@ -26,12 +26,12 @@ export default function AppTheme() {
     if (cookieTheme) applyTheme(cookieTheme);
     else {
       const operatingSystemTheme = window.matchMedia(
-        "(prefers-color-scheme: dark)",
+        "(prefers-color-scheme: dark)"
       );
       const systemTheme = operatingSystemTheme.matches ? "dark" : "light";
       applyTheme(systemTheme);
     }
-  }, []);
+  }, [applyTheme]);
 
   return (
     <button onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>

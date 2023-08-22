@@ -1,4 +1,4 @@
-import ProductCardsGridInfiniteScroll from "@/src/components/collections/ProductCardsGridInfiniteScroll";
+import InfiniteScroll from "@/src/components/common/InfiniteScroll";
 import ProductCardGrid from "@/src/components/collections/ProductCardsGrid";
 import SortBy from "@/src/components/collections/SortBy";
 import { getProductCards, getProductCollections } from "@/src/prisma/products";
@@ -36,6 +36,13 @@ export default async function Page({
     sortBy,
   });
 
+  const apiURLSearchParams = new URLSearchParams({
+    page: page.toString(),
+    perPage: perPage.toString(),
+    sortBy: sortBy ?? "",
+  });
+  const apiPath = `/api/collections/${collection}?${apiURLSearchParams.toString()}`;
+
   // if (category === 'all')
   //   document.title = 'All Products - Linus Tech Tips Store';
   // else if (category === 'accessories')
@@ -49,12 +56,12 @@ export default async function Page({
       <div className="mx-auto py-9 px-8 md:px-12">
         <SortBy totalCards={totalCards} />
         <ProductCardGrid productCards={productCards} />
-        <ProductCardsGridInfiniteScroll
-          key={`sortBy=${sortBy}`}
-          collection={collection}
-          perPage={perPage}
-          sortBy={sortBy}
-          totalCards={totalCards}
+        <InfiniteScroll
+          key={"sortBy=" + (sortBy ?? "")}
+          page={page}
+          totalPages={Math.ceil(totalCards / perPage)}
+          apiPath={apiPath}
+          DisplayGridComponent={<ProductCardGrid productCards={[]} />}
         />
       </div>
     </main>

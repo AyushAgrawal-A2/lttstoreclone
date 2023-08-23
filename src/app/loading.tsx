@@ -1,0 +1,9 @@
+import LoadingSpinner from "../components/common/Loading";
+
+export default function Loading() {
+  return (
+    <div className="m-12">
+      <LoadingSpinner isLoading={true} />
+    </div>
+  );
+}

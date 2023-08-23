@@ -10,6 +10,7 @@
     --background-secondary-rgb: #000;
     --foreground-tertiary-rgb: #4d4d4d;
     --background-tertiary-rgb: #f3f3f3;
+    --foreground-quaternary-rgb: #000;
     --gradient-stops: 92.28deg, #e31886 2.18%, #fb7800 90.32%;
     --ltt-orange: #f94d09;
   }
@@ -21,6 +22,7 @@
     --background-secondary-rgb: #ddd;
     --foreground-tertiary-rgb: #bfbfbf;
     --background-tertiary-rgb: #373737;
+    --foreground-quaternary-rgb: #fff;
     --gradient-stops: to right, #1a2a6c, #b21f1f, #ac7f1f;
   }
 }

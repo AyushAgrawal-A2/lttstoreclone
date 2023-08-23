@@ -6,7 +6,6 @@ import Header from "@/src/components/common/Header";
 import Navbar from "@/src/components/navbar/Navbar";
 import Footer from "@/src/components/common/Footer";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"] });
 config.autoAddCss = false;
@@ -28,11 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={
-          "min-h-screen w-full flex flex-col overflow-y-scroll " +
-          poppins.className
-        }
-      >
+        className={"min-h-screen w-full flex flex-col " + poppins.className}>
         <Header />
         <Navbar />
         <div className="grow w-full max-w-[1800px] mx-auto">{children}</div>

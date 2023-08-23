@@ -14,6 +14,7 @@ module.exports = {
         fgSecondary: "var(--foreground-secondary-rgb)",
         bgTertiary: "var(--background-tertiary-rgb)",
         fgTertiary: "var(--foreground-tertiary-rgb)",
+        fgQuaternary: "var(--foreground-quaternary-rgb)",
         LTTOrange: "var(--ltt-orange)",
       },
       backgroundImage: {

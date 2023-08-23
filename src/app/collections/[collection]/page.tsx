@@ -35,13 +35,13 @@ export default async function Page({
     perPage,
     sortBy,
   });
-
   const apiURLSearchParams = new URLSearchParams({
     page: page.toString(),
     perPage: perPage.toString(),
     sortBy: sortBy ?? "",
   });
   const apiPath = `/api/collections/${collection}?${apiURLSearchParams.toString()}`;
+  const time = new Date().toString();
 
   // if (category === 'all')
   //   document.title = 'All Products - Linus Tech Tips Store';
@@ -55,6 +55,7 @@ export default async function Page({
     <main className="md:mx-8">
       <div className="mx-auto py-9 px-8 md:px-12">
         <SortBy totalCards={totalCards} />
+        <div>{time}</div>
         <ProductCardGrid productCards={productCards} />
         <InfiniteScroll
           key={"sortBy=" + (sortBy ?? "")}

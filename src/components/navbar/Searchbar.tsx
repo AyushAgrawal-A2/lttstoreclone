@@ -109,7 +109,7 @@ export default function Searchbar() {
           className="relative bg-bgSecondary rounded-md flex items-center h-12 w-10/12 lg:w-3/5">
           <input
             id="search-items"
-            placeholder=" "
+            placeholder=""
             className="peer bg-bgSecondary pt-3 pl-3 rounded-md outline-0 text-fgSecondary w-[95%] font-semibold"
             value={searchText}
             onChange={handleSearchInput}

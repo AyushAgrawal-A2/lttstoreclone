@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonSimple from "@/src/components/common/ButtonSimple";
 import InputBox from "@/src/components/common/InputBox";
 import Link from "next/link";
 import { useCallback } from "react";
@@ -43,8 +44,11 @@ export default function Page() {
             Forgot your password?
           </Link>
         </div>
-        <div className="w-fit mx-auto">
-          <button type="submit">Sign in</button>
+        <div className="w-fit mx-auto py-8">
+          <ButtonSimple
+            text="Sign in"
+            onClick={() => {}}
+          />
         </div>
       </form>
       <Link

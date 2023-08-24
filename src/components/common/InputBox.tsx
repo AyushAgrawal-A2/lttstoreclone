@@ -12,8 +12,7 @@ export default function InputBox({ id, type, label }: InputBoxProps) {
           id={id}
           type={type}
           placeholder=" "
-          className="peer bg-transparent autofill:shadow-[inset_0_0_0px_1000px_var(--background-primary-rgb)]
- outline-0 w-full"
+          className="peer bg-transparent outline-0 w-full"
         />
         <label
           htmlFor={id}

@@ -2,15 +2,20 @@
 
 import ButtonSimple from "@/src/components/common/ButtonSimple";
 import InputBoxFormik from "../common/InputBoxFormik";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { z } from "zod";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 import { useCallback } from "react";
 
 const registerFormSchema = z.object({
   firstName: z.string({ required_error: "Please enter your first name" }),
   lastName: z.string({ required_error: "Please enter your last name" }),
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().email("Please enter a valid email"),
+  email: z
+    .string({ required_error: "Please enter your email" })
+    .email("Please enter a valid email"),
+  password: z
+    .string({ required_error: "Please enter a password" })
+    .email("Please enter a valid email"),
 });
 
 type RegisterFormInputs = z.infer<typeof registerFormSchema>;
@@ -28,6 +33,7 @@ export default function Register() {
       </h2>
       <Formik
         initialValues={{ firstName: "", lastName: "", email: "", password: "" }}
+        validationSchema={toFormikValidationSchema(registerFormSchema)}
         onSubmit={handleSubmit}>
         <Form>
           <InputBoxFormik
@@ -42,7 +48,7 @@ export default function Register() {
           />
           <InputBoxFormik
             name="email"
-            type="email"
+            type="text"
             label="Email"
           />
           <InputBoxFormik

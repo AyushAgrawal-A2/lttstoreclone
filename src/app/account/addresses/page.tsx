@@ -2,7 +2,6 @@
 
 import ButtonSimple from "@/src/components/common/ButtonSimple";
 import InputBox from "@/src/components/common/InputBox";
-import { Metadata } from "next";
 import { useCallback } from "react";
 
 interface CustomElements extends HTMLFormControlsCollection {
@@ -32,22 +31,22 @@ export default function Page() {
       </h2>
       <form onSubmit={handleSubmit}>
         <InputBox
-          id="firstName"
+          name="firstName"
           type="text"
           label="First name"
         />
         <InputBox
-          id="lastName"
+          name="lastName"
           type="text"
           label="Last name"
         />
         <InputBox
-          id="email"
+          name="email"
           type="email"
           label="Email"
         />
         <InputBox
-          id="password"
+          name="password"
           type="password"
           label="Password"
         />

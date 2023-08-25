@@ -28,12 +28,12 @@ export default function Page() {
       </h2>
       <form onSubmit={handleSubmit}>
         <InputBox
-          id="email"
+          name="email"
           type="email"
           label="Email"
         />
         <InputBox
-          id="password"
+          name="password"
           type="password"
           label="Password"
         />

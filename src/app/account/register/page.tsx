@@ -1,60 +1,12 @@
-"use client";
-
-import ButtonSimple from "@/src/components/common/ButtonSimple";
-import InputBox from "@/src/components/common/InputBox";
+import Register from "@/src/components/account/Register";
 import { Metadata } from "next";
-import { useCallback } from "react";
 
-interface CustomElements extends HTMLFormControlsCollection {
-  firstName: HTMLInputElement;
-  lastName: HTMLInputElement;
-  email: HTMLInputElement;
-  password: HTMLInputElement;
-}
+export const metadata: Metadata = {
+  title: "Create Account",
+  description:
+    "This website a clone of lttstore.com, developed as a hobby project to learn fullstack development",
+};
 
-interface CustomForm extends HTMLFormElement {
-  readonly elements: CustomElements;
-}
-
-export default function Page() {
-  const handleSubmit = useCallback((e: React.FormEvent<CustomForm>) => {
-    e.preventDefault();
-    console.log(e.currentTarget.elements.firstName.value);
-    console.log(e.currentTarget.elements.lastName.value);
-    console.log(e.currentTarget.elements.email.value);
-    console.log(e.currentTarget.elements.password.value);
-  }, []);
-
-  return (
-    <main className="m-8 flex flex-col items-center">
-      <h2 className="my-8 font-semibold text-3xl md:text-[40px] text-fgQuaternary">
-        Create account
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <InputBox
-          id="firstName"
-          type="text"
-          label="First name"
-        />
-        <InputBox
-          id="lastName"
-          type="text"
-          label="Last name"
-        />
-        <InputBox
-          id="email"
-          type="email"
-          label="Email"
-        />
-        <InputBox
-          id="password"
-          type="password"
-          label="Password"
-        />
-        <div className="w-fit mx-auto py-8">
-          <ButtonSimple text="Create" />
-        </div>
-      </form>
-    </main>
-  );
+export default async function Page() {
+  return <Register />;
 }

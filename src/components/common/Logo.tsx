@@ -13,7 +13,7 @@ export default function Logo({ size }: LogoProps) {
         width={size}
         height={size}
       />
-      <div className="rotate-[-15deg] text-LTTOrange font-bold absolute top-[35%] left-[92%]">
+      <div className="rotate-[-15deg] text-LTTOrange font-bold absolute top-[35%] left-[93%]">
         clone
       </div>
     </div>

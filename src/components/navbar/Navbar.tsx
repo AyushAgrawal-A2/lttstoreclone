@@ -7,9 +7,11 @@ import Sidebar from "./Sidebar";
 import Searchbar from "./Searchbar";
 import AppTheme from "./AppTheme";
 import Logo from "../common/Logo";
+import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function Navbar() {
+  const cookieTheme = cookies().get("theme")?.value;
   return (
     <div
       id="navbar"
@@ -41,7 +43,7 @@ export default async function Navbar() {
           />
         </div>
         <div className="flex flex-row w-24 md:w-32 gap-1">
-          <AppTheme />
+          <AppTheme cookieTheme={cookieTheme} />
           <Searchbar />
           <div className="hidden md:block px-2">
             <NavbarIcon

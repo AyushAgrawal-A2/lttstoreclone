@@ -6,6 +6,7 @@ import Header from "@/src/components/common/Header";
 import Navbar from "@/src/components/navbar/Navbar";
 import Footer from "@/src/components/common/Footer";
 import { Metadata } from "next";
+import { cookies } from "next/headers";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600", "700"] });
 config.autoAddCss = false;
@@ -24,8 +25,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieTheme = cookies().get("theme")?.value;
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme={cookieTheme === "dark" ? "dark" : "light"}>
       <body
         className={"min-h-screen w-full flex flex-col " + poppins.className}>
         <Header />

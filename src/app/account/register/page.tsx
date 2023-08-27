@@ -1,5 +1,5 @@
-import Register from "@/src/components/account/Register";
 import { Metadata } from "next";
+import RegisterForm from "./RegisterForm";
 
 export const metadata: Metadata = {
   title: "Create Account",
@@ -8,5 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return <Register />;
+  return (
+    <main className="m-8 flex flex-col items-center">
+      <h2 className="my-8 font-semibold text-3xl md:text-[40px] text-fgQuaternary">
+        Create account
+      </h2>
+      <RegisterForm />
+    </main>
+  );
 }

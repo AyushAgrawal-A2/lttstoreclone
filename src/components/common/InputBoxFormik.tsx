@@ -19,6 +19,7 @@ export default function InputBoxFormik({
       <div className="w-[300px] md:w-[450px] focus-within:shadow-[inset_0_0_0_2px_var(--foreground-quaternary-rgb)]">
         <div className="relative p-6 pb-2 font-semibold border-b border-bgSecondary hover:shadow-[inset_0_-6px_0_-2px_var(--foreground-quaternary-rgb)] focus-within:shadow-[inset_0_0_0_2px_var(--foreground-quaternary-rgb)]">
           <input
+            id={props.name}
             {...field}
             {...props}
             placeholder=" "

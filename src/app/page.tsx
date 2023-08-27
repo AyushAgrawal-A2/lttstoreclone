@@ -3,13 +3,14 @@ import ButtonGradient from "@/src/components/common/ButtonGradient";
 import ComponentSlides from "@/src/components/common/ComponentSlides";
 import ImageBanner from "@/src/components/home/ImageBanner";
 import ProductCard from "@/src/components/common/ProductCard";
-import { getHome } from "@/src/prisma/home";
+import cachedGetHome from "@/src/cachedFns/cachedGetHome";
 import Link from "next/link";
 
 // export const runtime = 'edge';
 
 export default async function Page() {
-  const { homeBanner, featured, bestseller, blogs }: Home = await getHome();
+  const { homeBanner, featured, bestseller, blogs }: Home =
+    await cachedGetHome();
 
   return (
     <main className="mx-8">

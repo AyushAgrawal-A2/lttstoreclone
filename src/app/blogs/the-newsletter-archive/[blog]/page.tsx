@@ -1,4 +1,5 @@
-import { getBlog, getBlogPaths } from "@/src/prisma/blogs";
+import cachedGetBlog from "@/src/cachedFns/cachedGetBlog";
+import { getBlogPaths } from "@/src/prisma/blogs";
 import Image from "next/image";
 
 // export const runtime = 'edge';
@@ -17,8 +18,7 @@ export async function generateMetadata({
 }: {
   params: { blog: string };
 }) {
-  const blogPath = "/blogs/the-newsletter-archive/" + params.blog;
-  const blog = await getBlog({ blogPath });
+  const blog = await cachedGetBlog(params.blog);
   if (!blog)
     return {
       title: params.blog.toUpperCase(),
@@ -30,8 +30,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { blog: string } }) {
-  const blogPath = "/blogs/the-newsletter-archive/" + params.blog;
-  const blog = await getBlog({ blogPath });
+  const blog = await cachedGetBlog(params.blog);
   if (!blog) return <></>;
   const {
     heading,
@@ -59,11 +58,10 @@ export default async function Page({ params }: { params: { blog: string } }) {
             ) : (
               <p
                 key={data}
-                className="whitespace-pre-line py-2 font-semibold text-sm md:text-base"
-              >
+                className="whitespace-pre-line py-2 font-semibold text-sm md:text-base">
                 {data}
               </p>
-            ),
+            )
           )}
         </div>
       </div>

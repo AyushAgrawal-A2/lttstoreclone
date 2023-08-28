@@ -7,11 +7,8 @@ import ProductRating from "@/src/components/product/reviews/ProductRating";
 import ProductRecommendation from "@/src/components/product/ProductRecommendation";
 import ProductReviews from "@/src/components/product/reviews/ProductReviews";
 import ProductTitle from "@/src/components/product/ProductTitle";
-import {
-  getProduct,
-  getProductCards,
-  getProductPaths,
-} from "@/src/prisma/products";
+import { getProductPaths } from "@/src/prisma/products";
+import cachedGetProduct from "@/src/cachedFns/cachedGetProduct";
 
 // export const runtime = 'edge';
 
@@ -29,15 +26,14 @@ export async function generateMetadata({
 }: {
   params: { product: string };
 }) {
-  const path = "/products/" + params.product;
-  const product = await getProduct(path);
+  const { product } = await cachedGetProduct(params.product);
   if (!product)
     return {
       title: params.product.toUpperCase(),
     };
   const productDetails = product.details as Detail[];
   const descriptionBox = productDetails.find(
-    (detail) => detail.title === "Description",
+    (detail) => detail.title === "Description"
   );
   return {
     title: product.title,
@@ -51,25 +47,17 @@ export default async function Page({
 }: {
   params: { product: string };
 }) {
-  const path = "/products/" + params.product;
-  const productPromise = getProduct(path);
-  const recommendationsPromise = getProductCards({
-    collection: "all-products-1",
-    page: 1,
-    perPage: 8,
-    sortBy: "bestseller,asc",
-  });
-  const [product, { productCards: recommendations }] = await Promise.all([
-    productPromise,
-    recommendationsPromise,
-  ]);
+  const { product, recommendations } = await cachedGetProduct(params.product);
   if (!product) return <></>;
 
   return (
     <main className="md:mx-8 py-9 px-12">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-[50%] lg:w-[55%] self-start md:sticky top-0 md:pr-4 z-10">
-          <Images title={product.title} images={product.images} />
+          <Images
+            title={product.title}
+            images={product.images}
+          />
         </div>
         <div className="w-full md:w-[50%] lg:w-[45%] self-start md:sticky top-0 md:pl-4 z-0">
           <ProductTitle title={product.title} />

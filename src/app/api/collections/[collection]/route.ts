@@ -1,12 +1,12 @@
-import { getProductCards } from "@/src/prisma/products";
+import cachedGetProductCards from "@/src/cachedFns/cachedGetProductCards";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 // export const runtime = 'edge';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { collection: string } },
+  { params }: { params: { collection: string } }
 ): Promise<
   NextResponse<{
     productCards: ProductCard[];
@@ -19,13 +19,12 @@ export async function GET(
   const perPage = parseInt(searchParams.get("perPage") ?? "12");
   const sortBy = searchParams.get("sortBy") ?? undefined;
   const searchText = searchParams.get("searchText") ?? "";
-  const { productCards, totalCards } = await getProductCards({
+  const { productCards, totalCards } = await cachedGetProductCards(
     collection,
-    page: isNaN(page) ? 1 : page,
-    perPage: isNaN(perPage) ? 12 : perPage,
+    page,
+    perPage,
     sortBy,
-    searchText,
-    filter: undefined,
-  });
+    searchText
+  );
   return NextResponse.json({ productCards, totalCards });
 }

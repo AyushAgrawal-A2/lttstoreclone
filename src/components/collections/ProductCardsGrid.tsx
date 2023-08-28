@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCard from "../common/ProductCard";
+import ProductCard from "@/src/components/common/ProductCard";
 
 interface ProductCardGridProps {
   productCards: ProductCard[];
@@ -10,13 +10,12 @@ export default function ProductCardGrid({
   productCards,
 }: ProductCardGridProps) {
   return (
-    <div className="flex flex-wrap">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
       {productCards.map((productCard) => (
-        <div
+        <ProductCard
           key={productCard.path}
-          className="w-1/2 lg:w-1/3 p-1">
-          <ProductCard productCard={productCard} />
-        </div>
+          productCard={productCard}
+        />
       ))}
     </div>
   );

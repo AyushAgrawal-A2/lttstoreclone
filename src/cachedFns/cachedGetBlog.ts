@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { getBlog } from "../prisma/blogs";
+import { getBlog } from "@/src/prisma/blogs";
 
 export default async function cachedGetBlog(blog: string) {
   return await unstable_cache(() => {

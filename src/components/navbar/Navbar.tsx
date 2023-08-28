@@ -6,7 +6,7 @@ import ScrollUp from "./ScrollUp";
 import Sidebar from "./Sidebar";
 import Searchbar from "./Searchbar";
 import AppTheme from "./AppTheme";
-import Logo from "../common/Logo";
+import Logo from "@/src/components/common/Logo";
 import { cookies } from "next/headers";
 import Link from "next/link";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import ButtonSimple from "@/src/components/common/ButtonSimple";
-import InputBoxFormik from "../../../components/common/InputBoxFormik";
+import InputBoxFormik from "@/src/components/common/InputBoxFormik";
 import { Formik, Form } from "formik";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -20,12 +20,10 @@ const registerFormSchema = z.object({
 
 type RegisterFormInputs = z.infer<typeof registerFormSchema>;
 
-export default function RegisterForm() {
-  const handleSubmit = useCallback(
-    (values: RegisterFormInputs) => alert(JSON.stringify(values, null, 2)),
-    []
-  );
+const handleSubmit = (values: RegisterFormInputs) =>
+  alert(JSON.stringify(values, null, 2));
 
+export default function RegisterForm() {
   return (
     <Formik
       initialValues={{ firstName: "", lastName: "", email: "", password: "" }}

@@ -1,5 +1,5 @@
 import ProductDetailBox from "./ProductDetailBox";
-import ProductCard from "../../common/ProductCard";
+import ProductCard from "@/src/components/common/ProductCard";
 
 type ProductDetailBoxRelatedProductsProps = {
   relatedProducts: ProductCard[];

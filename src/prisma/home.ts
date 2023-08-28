@@ -1,6 +1,6 @@
 import prisma from ".";
-import { getBlogCards } from "../prisma/blogs";
-import { getProductCards } from "../prisma/products";
+import { getBlogCards } from "@/src/prisma/blogs";
+import { getProductCards } from "@/src/prisma/products";
 
 export async function saveHomeBanner({
   homeBanner,
@@ -13,8 +13,8 @@ export async function saveHomeBanner({
       homeBanner.map((data) =>
         prisma.homeBanner.create({
           data,
-        }),
-      ),
+        })
+      )
     );
   } catch (error) {
     console.log(error);

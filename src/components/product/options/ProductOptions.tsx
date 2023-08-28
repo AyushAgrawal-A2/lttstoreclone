@@ -1,6 +1,6 @@
 "use client";
 
-import ProductColorSwatch from "../../common/ProductColorSwatch";
+import ProductColorSwatch from "@/src/components/common/ProductColorSwatch";
 import ProductSizeOptions from "./ProductSizeOptions";
 import { useCallback, useState } from "react";
 
@@ -29,7 +29,7 @@ export default function ProductOptions({
       setColorIdx(idx);
       scrollProductImages(colorSwatch[idx].imgPosition);
     },
-    [colorSwatch, scrollProductImages],
+    [colorSwatch, scrollProductImages]
   );
 
   return (

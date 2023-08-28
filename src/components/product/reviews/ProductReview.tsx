@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
-import RatingStars from "../../common/RatingStars";
+import RatingStars from "@/src/components/common/RatingStars";
 
 interface ProductReviewProps {
   review: Review;

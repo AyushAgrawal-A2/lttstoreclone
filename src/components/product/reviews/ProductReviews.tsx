@@ -1,8 +1,8 @@
 "use client";
 
 import axios from "axios";
-import Loading from "../../common/Loading";
-import PageChanger from "../../common/PageChanger";
+import Loading from "@/src/components/common/Loading";
+import PageChanger from "@/src/components/common/PageChanger";
 import ProductReview from "./ProductReview";
 import ProductReviewsHistogram from "./ProductReviewsHistogram";
 import { useCallback, useEffect, useRef, useState } from "react";

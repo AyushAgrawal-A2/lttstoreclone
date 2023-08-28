@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { getProductCards } from "../prisma/products";
+import { getProductCards } from "@/src/prisma/products";
 
 export default async function cachedGetProductCards(
   collection: string,

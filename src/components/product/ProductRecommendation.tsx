@@ -1,4 +1,4 @@
-import ProductCard from "../common/ProductCard";
+import ProductCard from "@/src/components/common/ProductCard";
 
 interface ProductRecommendationProps {
   productCards: ProductCard[];
@@ -12,11 +12,12 @@ export default function ProductRecommendation({
       <div className="text-4xl font-semibold py-8 text-fgTertiary">
         CUSTOMERS ALSO LIKE
       </div>
-      <div className="flex flex-wrap">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
         {productCards.map((productCard) => (
-          <div key={productCard.path} className="w-1/2 lg:w-1/4 pr-2">
-            <ProductCard productCard={productCard} />
-          </div>
+          <ProductCard
+            key={productCard.path}
+            productCard={productCard}
+          />
         ))}
       </div>
     </div>

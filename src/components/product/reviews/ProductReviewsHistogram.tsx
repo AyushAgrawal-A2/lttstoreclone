@@ -1,6 +1,6 @@
 "use client";
 
-import RatingStars from "../../common/RatingStars";
+import RatingStars from "@/src/components/common/RatingStars";
 
 interface ProductReviewsHistogramProps {
   reviewStats: ReviewStats;

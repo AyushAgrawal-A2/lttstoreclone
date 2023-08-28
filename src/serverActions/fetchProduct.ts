@@ -1,7 +1,7 @@
 "use server";
 
 import { unstable_cache } from "next/cache";
-import { getProduct, getProductCards } from "../prisma/products";
+import { getProduct, getProductCards } from "@/src/prisma/products";
 
 export default async function fetchProduct(productName: string) {
   return await unstable_cache(async () => {

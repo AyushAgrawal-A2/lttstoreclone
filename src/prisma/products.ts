@@ -1,5 +1,5 @@
 import prisma from ".";
-import asyncSeq from "../utils/asyncSeq";
+import asyncSeq from "@/src/utils/asyncSeq";
 
 export async function saveProducts({ products }: { products: Product[] }) {
   try {

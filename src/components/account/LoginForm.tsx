@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Formik, Form } from "formik";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useCallback } from "react";
 
 const loginFormSchema = z.object({
   email: z
@@ -19,12 +18,10 @@ const loginFormSchema = z.object({
 
 type LoginFormInputs = z.infer<typeof loginFormSchema>;
 
-export default function LoginForm() {
-  const handleSubmit = useCallback(
-    (values: LoginFormInputs) => alert(JSON.stringify(values, null, 2)),
-    []
-  );
+const handleSubmit = (values: LoginFormInputs) =>
+  alert(JSON.stringify(values, null, 2));
 
+export default function LoginForm() {
   return (
     <Formik
       initialValues={{ email: "", password: "" }}

@@ -1,6 +1,6 @@
 "use client";
 
-import BlogCard from "../common/BlogCard";
+import BlogCard from "@/src/components/common/BlogCard";
 
 interface BlogCardsGridProps {
   blogCards: BlogCard[];
@@ -8,13 +8,12 @@ interface BlogCardsGridProps {
 
 export default function BlogCardsGrid({ blogCards }: BlogCardsGridProps) {
   return (
-    <div className="flex flex-wrap">
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
       {blogCards.map((blogCard) => (
-        <div
+        <BlogCard
           key={blogCard.path}
-          className="w-full md:w-1/3 md:p-4">
-          <BlogCard blogCard={blogCard} />
-        </div>
+          blogCard={blogCard}
+        />
       ))}
     </div>
   );

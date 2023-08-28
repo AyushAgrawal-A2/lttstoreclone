@@ -1,7 +1,7 @@
 "use server";
 
 import { unstable_cache } from "next/cache";
-import { getBlogCards } from "../prisma/blogs";
+import { getBlogCards } from "@/src/prisma/blogs";
 
 export default async function fetchBlogCards(page: number, perPage: number) {
   return await unstable_cache(

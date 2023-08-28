@@ -1,16 +1,13 @@
-import { getBlogCards } from "@/src/prisma/blogs";
 import BlogCardsGrid from "@/src/components/blogs/BlogCardsGrid";
 import InfiniteScroll from "@/src/components/common/InfiniteScroll";
+import cachedGetBlogCards from "@/src/cachedFns/cachedGetBlogCards";
 
 // export const runtime = 'edge';
 
 export default async function Page() {
   const page = 1;
   const perPage = 12;
-  const { blogCards, totalCards } = await getBlogCards({
-    page,
-    perPage,
-  });
+  const { blogCards, totalCards } = await cachedGetBlogCards(page, perPage);
 
   const apiURLSearchParams = new URLSearchParams({
     page: page.toString(),

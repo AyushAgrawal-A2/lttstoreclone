@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import AddressesForm from "./AddressesForm";
+import AddressesForm from "@/src/components/account/AddressesForm";
 
 export const metadata: Metadata = {
   title: "Addresses",

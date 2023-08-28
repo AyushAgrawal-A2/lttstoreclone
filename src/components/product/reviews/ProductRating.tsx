@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import RatingStars from "../../common/RatingStars";
+import RatingStars from "@/src/components/common/RatingStars";
 
 type ProductRatingProps = {
   rating: Rating;
@@ -23,8 +23,7 @@ export default function ProductRating({
   return (
     <div
       className="py-1 hover:cursor-pointer w-max max-w-full mx-auto md:mx-0"
-      onClick={handleClick}
-    >
+      onClick={handleClick}>
       <RatingStars stars={stars} />
       <span className="my-1 font-semibold text-fgTertiary pl-1">
         {reviews} reviews

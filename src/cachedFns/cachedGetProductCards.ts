@@ -19,6 +19,14 @@ export default async function cachedGetProductCards(
         searchText,
         filter,
       }),
-    ["collections", collection]
+    [
+      "collections",
+      collection,
+      page.toString(),
+      perPage.toString(),
+      sortBy,
+      searchText,
+      JSON.stringify(filter),
+    ]
   )();
 }

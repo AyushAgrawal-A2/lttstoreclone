@@ -14,5 +14,5 @@ export default async function fetchProduct(productName: string) {
       sortBy: "bestseller,asc",
     });
     return { product, recommendations };
-  }, ["products", productName])();
+  }, ["all", "products", productName])();
 }

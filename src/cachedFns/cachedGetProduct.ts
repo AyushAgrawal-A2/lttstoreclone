@@ -12,5 +12,5 @@ export default async function cachedGetProduct(productName: string) {
       sortBy: "bestseller,asc",
     });
     return { product, recommendations };
-  }, ["products", productName])();
+  }, ["all", "products", productName])();
 }

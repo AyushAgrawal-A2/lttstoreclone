@@ -11,6 +11,12 @@ export default async function cachedGetBlogCards(
         page,
         perPage,
       }),
-    ["blogs", "the-newsletter-archive"]
+    [
+      "all",
+      "blogs",
+      "the-newsletter-archive",
+      page.toString(),
+      perPage.toString(),
+    ]
   )();
 }

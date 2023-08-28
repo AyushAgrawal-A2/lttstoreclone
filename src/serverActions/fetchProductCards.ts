@@ -9,7 +9,7 @@ export default async function fetchProductCards(
   perPage: number,
   sortBy = "",
   searchText = "",
-  filter = [],
+  filter = []
 ) {
   return await unstable_cache(
     () =>
@@ -21,6 +21,15 @@ export default async function fetchProductCards(
         searchText,
         filter,
       }),
-    ["collections", collection],
+    [
+      "all",
+      "collections",
+      collection,
+      page.toString(),
+      perPage.toString(),
+      sortBy,
+      searchText,
+      JSON.stringify(filter),
+    ]
   )();
 }

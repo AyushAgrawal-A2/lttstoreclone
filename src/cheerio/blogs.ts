@@ -15,7 +15,7 @@ async function scrapeBlogs(): Promise<{
     const $ = cheerio.load(html);
     $(
       "main#MainContent div.main-blog div.blog-articles div.blog-articles__article.article"
-    ).each((i, el) => {
+    ).each((_i, el) => {
       const blogCardEl = $(el).find("div.card > div.card__inner");
       const path =
         $(blogCardEl)
@@ -69,7 +69,7 @@ async function scrapeBlog(blogCard: BlogCard): Promise<BlogContent[]> {
     const $ = cheerio.load(html);
     $("main#MainContent article.article-template div.article-template__content")
       .children()
-      .each((i, el) => {
+      .each((_i, el) => {
         const text =
           $(el)
             .prop("innerHTML")

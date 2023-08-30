@@ -6,8 +6,7 @@ export default async function cachedGetProductCards(
   page: number,
   perPage: number,
   sortBy = "",
-  searchText = "",
-  filter = []
+  searchText = ""
 ) {
   return await unstable_cache(
     () =>
@@ -17,16 +16,15 @@ export default async function cachedGetProductCards(
         perPage,
         sortBy,
         searchText,
-        filter,
       }),
     [
+      "all",
       "collections",
       collection,
       page.toString(),
       perPage.toString(),
       sortBy,
       searchText,
-      JSON.stringify(filter),
     ]
   )();
 }

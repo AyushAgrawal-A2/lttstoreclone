@@ -13,7 +13,7 @@ async function scrapeProducts() {
       const $ = cheerio.load(html);
       const productLiEl = $("ul#product-grid li.grid__item");
 
-      productLiEl.each((i, el) => {
+      productLiEl.each((_i, el) => {
         const productLinkEl = $(el).find("a:first");
         const path = productLinkEl.prop("href") ?? "Path not found";
         const title =
@@ -88,7 +88,7 @@ function scrapeProductImages(product: Product, html: any) {
   const $ = cheerio.load(html);
   $(
     "div.product div.product__media-wrapper ul.product__media-list li.product__media-item"
-  ).each((i, el) => {
+  ).each((_i, el) => {
     let src = $(el).find("img").prop("src");
     let overlay = $(el).find("div.product__media--overlay").text();
     if (src) {
@@ -163,7 +163,7 @@ function scrapeProductColorSwatch(product: Product, html: any) {
 
   $(swatchListEl)
     .find("li label")
-    .each((i, el) => {
+    .each((_i, el) => {
       const name = $(el).prop("title");
       const style = $(el).prop("style");
       if (style) {
@@ -193,7 +193,7 @@ function scrapeProductColorSwatch(product: Product, html: any) {
 function scrapeProductSizeOptions(product: Product, html: any) {
   const $ = cheerio.load(html);
   $("div.product div.product__info-wrapper input.product-variant-size").each(
-    (i, el) => {
+    (_i, el) => {
       const name = $(el).prop("value");
       const symbol = $(el)
         .next()
@@ -207,7 +207,7 @@ function scrapeProductSizeOptions(product: Product, html: any) {
 function scrapeProductDetails(product: Product, html: any) {
   const $ = cheerio.load(html);
   $("div.product div.product__info-wrapper details.product__details").each(
-    (i, el) => {
+    (_i, el) => {
       const title =
         $(el)
           .find("summary.product__detail-header")
@@ -218,11 +218,11 @@ function scrapeProductDetails(product: Product, html: any) {
         const table: string[][] = [];
         $(el)
           .find("div.content table tr")
-          .each((i, el) => {
+          .each((_i, el) => {
             const row: string[] = [];
             $(el)
               .find("td")
-              .each((i, el) => {
+              .each((_i, el) => {
                 row.push(
                   $(el)
                     .text()
@@ -240,7 +240,7 @@ function scrapeProductDetails(product: Product, html: any) {
       } else if ($(el).find("div.content.related-product-content").length > 0) {
         $(el)
           .find("div.content.related-product-content div.card-wrapper")
-          .each((i, el) => {
+          .each((_i, el) => {
             const href = $(el).find("a:first").prop("href");
             if (href) product.relatedProducts.push({ path: href });
           });
@@ -269,7 +269,7 @@ function scrapeProductDetails(product: Product, html: any) {
 
 function scrapeProductFeatureImages(product: Product, html: any) {
   const $ = cheerio.load(html);
-  $("main#MainContent section:nth-child(2) > div > img").each((i, el) => {
+  $("main#MainContent section:nth-child(2) > div > img").each((_i, el) => {
     const src = $(el).prop("src");
     if (src) {
       product.featureImages.push(src.slice(0, src.indexOf("?")));
@@ -281,7 +281,7 @@ function scrapeProductReviewStats(product: Product, html: any) {
   const $ = cheerio.load(html);
   $(
     "main#MainContent div#judgeme_product_reviews div.jdgm-histogram div.jdgm-histogram__row"
-  ).each((i, el) => {
+  ).each((_i, el) => {
     const rating = ("star_" +
       $(el).prop("data-rating")) as keyof typeof product.reviewStats;
     const count = $(el).prop("data-frequency");
@@ -311,7 +311,7 @@ async function scrapeProductRanks(products: Product[]) {
         const { data: html } = await axios.get(path);
         const $ = cheerio.load(html);
         const productLiEls = $("ul#product-grid li.grid__item");
-        productLiEls.each((i, el) => {
+        productLiEls.each((_i, el) => {
           const productLinkEl = $(el).find("a:first");
           const path = productLinkEl.prop("href") ?? "Path not found";
           const product = products.find((product) => product.path === path);
@@ -339,7 +339,7 @@ async function scrapeCollections(products: Product[]) {
     const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
     $("main#MainContent ul.collection-list li.collection-list__item").each(
-      (i, el) => {
+      (_i, el) => {
         const collectionURL =
           "https://www.lttstore.com" + $(el).find("a:first").prop("href") ?? "";
         const collection = collectionURL.replace(
@@ -359,7 +359,7 @@ async function scrapeCollections(products: Product[]) {
           const { data: html } = await axios.get(path);
           const $ = cheerio.load(html);
           const productLiEls = $("ul#product-grid li.grid__item");
-          productLiEls.each((i, el) => {
+          productLiEls.each((_i, el) => {
             const productLinkEl = $(el).find("a:first");
             const path = productLinkEl.prop("href") ?? "Path not found";
             const product = products.find((product) => product.path === path);
@@ -389,7 +389,7 @@ async function scrapeFilters(products: Product[]) {
     const path = url.toString();
     const { data: html } = await axios.get(path);
     const $ = cheerio.load(html);
-    $("div.facets-container form#FacetFiltersForm details").each((i, el) => {
+    $("div.facets-container form#FacetFiltersForm details").each((_i, el) => {
       let filter = $(el).find("summary.facets__summary div > span").text();
       if (!filter.includes("Type") && !filter.includes("Gender")) return;
       if (filter.includes("("))
@@ -402,7 +402,7 @@ async function scrapeFilters(products: Product[]) {
         .find("fieldset.facets-wrap ul.no-js-list.list-unstyled.no-js")
         .prev()
         .find("input")
-        .each((i, el) => {
+        .each((_i, el) => {
           filters[filter].filterKey = $(el).attr("name") ?? "";
           filters[filter].filterValues.push($(el).prop("value"));
         });
@@ -422,7 +422,7 @@ async function scrapeFilters(products: Product[]) {
           const { data: html } = await axios.get(path);
           const $ = cheerio.load(html);
           const productLiEls = $("ul#product-grid li.grid__item");
-          productLiEls.each((i, el) => {
+          productLiEls.each((_i, el) => {
             const productLinkEl = $(el).find("a:first");
             const href = productLinkEl.prop("href") ?? "Path not found";
             const path = href.slice(0, href.indexOf("?"));

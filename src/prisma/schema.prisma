@@ -11,6 +11,58 @@ datasource db {
   // directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id               String    @id @default(uuid())
+  email            String    @unique
+  password         String
+  firstName        String
+  lastName         String
+  addresses        Address[]
+  defaultAddress   Address?  @relation(name: "defaultAddress", fields: [defaultAddressId], references: [id])
+  cart             Cart?
+  defaultAddressId String?   @unique
+
+  @@index([email])
+}
+
+model Address {
+  id             String @id @default(uuid())
+  firstName      String
+  lastName       String
+  company        String
+  address1       String
+  address2       String
+  city           String
+  country        String
+  province       String
+  postalCode     Int
+  phone          String
+  User           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String @unique
+  defaultForUser User?  @relation(name: "defaultAddress")
+}
+
+model Cart {
+  id       String     @id @default(uuid())
+  cartItem CartItem[]
+  User     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String     @unique
+}
+
+model CartItem {
+  id            String      @id @default(uuid())
+  product       Product     @relation(fields: [productId], references: [id])
+  size          SizeOption  @relation(fields: [sizeOptionId], references: [id])
+  color         ColorSwatch @relation(fields: [colorSwatchId], references: [id])
+  Cart          Cart?       @relation(fields: [cartId], references: [id])
+  productId     String
+  sizeOptionId  String
+  colorSwatchId String
+  cartId        String?
+
+  @@unique([productId, sizeOptionId, colorSwatchId])
+}
+
 model Product {
   id                String        @id @default(uuid())
   path              String        @unique
@@ -31,6 +83,7 @@ model Product {
   colorSwatch       ColorSwatch[]
   relatedProducts   Product[]     @relation("RelatedProducts")
   relatedToProducts Product[]     @relation("RelatedProducts")
+  CartItem          CartItem[]
 
   @@index([path])
 }
@@ -71,19 +124,21 @@ model Color {
 }
 
 model ColorSwatch {
-  id          String  @id @default(uuid())
+  id          String     @id @default(uuid())
   imgPosition Int
-  color       Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+  color       Color      @relation(fields: [colorId], references: [id], onDelete: Cascade)
   colorId     String
-  Product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   String
+  CartItem    CartItem[]
 }
 
 model SizeOption {
-  id      String    @id @default(uuid())
-  symbol  String    @unique
-  name    String
-  Product Product[]
+  id       String     @id @default(uuid())
+  symbol   String     @unique
+  name     String
+  Product  Product[]
+  CartItem CartItem[]
 
   @@index([symbol])
 }

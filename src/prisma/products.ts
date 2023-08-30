@@ -75,7 +75,7 @@ export async function saveProducts({ products }: { products: Product[] }) {
                 })),
               },
             },
-          }),
+          })
     );
     await asyncSeq(fnArray);
     await Promise.all(
@@ -89,8 +89,8 @@ export async function saveProducts({ products }: { products: Product[] }) {
               })),
             },
           },
-        }),
-      ),
+        })
+      )
     );
   } catch (error) {
     console.log(error);
@@ -113,7 +113,6 @@ export async function getProductCards({
   perPage = 12,
   sortBy = "featured,desc",
   searchText = "",
-  filter = [],
 }) {
   try {
     const [sortRank, sortDirection] = sortBy.split(",");
@@ -221,7 +220,7 @@ export async function getProductCards({
 export async function getProduct(path: string) {
   return await prisma.product.findUnique({
     where: {
-      path: path,
+      path,
     },
     select: {
       path: true,

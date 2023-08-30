@@ -8,8 +8,7 @@ export default async function fetchProductCards(
   page: number,
   perPage: number,
   sortBy = "",
-  searchText = "",
-  filter = []
+  searchText = ""
 ) {
   return await unstable_cache(
     () =>
@@ -19,7 +18,6 @@ export default async function fetchProductCards(
         perPage,
         sortBy,
         searchText,
-        filter,
       }),
     [
       "all",
@@ -29,7 +27,6 @@ export default async function fetchProductCards(
       perPage.toString(),
       sortBy,
       searchText,
-      JSON.stringify(filter),
     ]
   )();
 }

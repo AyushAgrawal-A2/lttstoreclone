@@ -30,7 +30,7 @@ export default function AppTheme({ cookieTheme }: AppThemeProps) {
   return (
     <button onClick={() => changeTheme(theme === "dark" ? "light" : "dark")}>
       <FontAwesomeIcon
-        icon={theme === "dark" ? faMoon : faSun}
+        icon={theme === "dark" ? faSun : faMoon}
         size={"lg"}
         className="hover:scale-[1.15] pr-2"
       />

@@ -27,7 +27,7 @@ async function getProductReviews({
       total_count,
     };
     const $ = cheerio.load(html);
-    $("div.jdgm-rev-widg__reviews div.jdgm-rev").each((i, el) => {
+    $("div.jdgm-rev-widg__reviews div.jdgm-rev").each((_i, el) => {
       const stars = parseFloat(
         $(el)
           .find("div.jdgm-rev__header span.jdgm-rev__rating")

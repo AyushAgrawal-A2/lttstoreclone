@@ -14,17 +14,20 @@
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@prisma/client": "^5.1.1",
+    "@prisma/client": "^5.2.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/js-cookie": "^3.0.3",
     "@types/node": "^20.4.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "^10.4.15",
     "axios": "^1.4.0",
+    "bcrypt": "^5.1.1",
     "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.47.0",
     "eslint-config-next": "^13.4.13",
     "formik": "^2.4.3",
+    "jose": "^4.14.4",
     "js-cookie": "^3.0.5",
     "next": "^13.4.19",
     "postcss": "^8.4.28",
@@ -40,7 +43,7 @@
   "devDependencies": {
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
-    "prisma": "^5.1.1"
+    "prisma": "^5.2.0"
   },
   "prisma": {
     "schema": "src/prisma/schema.prisma"

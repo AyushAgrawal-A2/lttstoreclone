@@ -1,11 +1,12 @@
 import cachedGetBlog from "@/src/cachedFns/cachedGetBlog";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 // export const dynamic = "force-dynamic";
 // export const runtime = 'edge';
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { blog: string } }
 ) {
   const blog = await cachedGetBlog(params.blog);
